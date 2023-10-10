@@ -64,11 +64,6 @@ function(create_zip output_file input_files working_dir)
     )
 endfunction()
 
-file(GLOB ZIP_FILES "${CMAKE_CURRENT_SOURCE_DIR}/game/assets/*")
-create_zip("${CMAKE_CURRENT_BINARY_DIR}/debug/data/data.zip" "${ZIP_FILES}" "${CMAKE_CURRENT_SOURCE_DIR}/game/assets")
-
-add_custom_target("project-data" ALL DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/debug/data/data.zip")
-
 add_subdirectory("engine/submodules/glfw")
 add_subdirectory("engine/submodules/glslang")
 add_subdirectory("engine/submodules/physfs")
@@ -86,3 +81,8 @@ ADD_EXECUTABLE(tinyGameEngine
                 "game/src/first_app.cpp")
 
 target_link_libraries(tinyGameEngine Vulkan::Vulkan glfw SPIRV simdjson physfs glslang)
+
+file(GLOB ZIP_FILES "${CMAKE_CURRENT_SOURCE_DIR}/game/assets/*")
+create_zip("${CMAKE_CURRENT_BINARY_DIR}/debug/data/data.zip" "${ZIP_FILES}" "${CMAKE_CURRENT_SOURCE_DIR}/game/assets")
+
+add_custom_target("project-data" ALL DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/debug/data/data.zip")
