@@ -75,11 +75,13 @@ add_subdirectory("engine/submodules/physfs")
 add_subdirectory("engine/submodules/simdjson")
 
 ADD_EXECUTABLE(tinyGameEngine
-                "engine/src/vulkan/tge_window.cpp"
                 "engine/src/file/filesystem.cpp"
+                "engine/src/file/JsonFile.cpp"
+                "engine/src/vulkan/tge_window.cpp"
                 "engine/src/vulkan/tge_shadercomp.cpp"
                 "engine/src/vulkan/tge_pipeline.cpp"
                 "engine/src/vulkan/tge_device.cpp"
+                "game/src/JsonFiles.cpp"
                 "game/src/main.cpp"
                 "game/src/first_app.cpp")
 

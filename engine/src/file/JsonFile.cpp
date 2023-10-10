@@ -11,7 +11,7 @@ template<class T>
 T JsonFile::GetCriticalField(const std::string &key) {
     T                          value{};
     const simdjson::error_code error = m_document.at_key(key).get(value);
-    DebugCheckCriticalSimdJson(error, "Failed to find key '{}': {}", key);
+    std::cout << "Failed to find key '" << error << "': " << key << '\n';
     return value;
 }
 

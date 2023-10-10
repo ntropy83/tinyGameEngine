@@ -4,7 +4,7 @@ namespace tge {
 
   void FirstApp::run() {
 
-    while (!tgeWindow.shouldClose()) {
+  while (!tgeWindow.shouldClose()) {
       glfwPollEvents();
     }
   };
