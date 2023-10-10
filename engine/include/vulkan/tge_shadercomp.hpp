@@ -24,6 +24,7 @@ namespace tge {
       std::vector<uint32_t> Compile(vk::ShaderStageFlagBits stage, const std::string &source);
 
       std::vector<uint32_t> CompileFromFile(vk::ShaderStageFlagBits stage, const std::string &filename);
+
     private:
       std::unique_ptr<ShaderIncluder> m_includer; 
     };

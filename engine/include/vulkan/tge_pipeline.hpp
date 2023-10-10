@@ -9,6 +9,8 @@
 
 namespace tge {
 
+  class TgeShaderCompiler;
+
   class TgePipeline {
     public:
       TgePipeline(
@@ -16,6 +18,7 @@ namespace tge {
         const std::string&      fragFilepath);
 
     private:
+      const std::string test;
       void createGraphicsPipeline(const std::string& vertFilepath, const std::string& fragFilepath);
   };
 } // namespace tge

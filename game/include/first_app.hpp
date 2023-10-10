@@ -17,6 +17,6 @@ namespace tge {
     
     private:
       TgeWindow tgeWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
-      TgePipeline tgePipeline{"shaders/simple_shader.vert", "shaders/simple_shader.frag"};
+      TgePipeline tgePipeline{"shaders/simple_shader.vert.spv", "shaders/simple_shader.frag.spv"};
   };
 } // namespace tge
