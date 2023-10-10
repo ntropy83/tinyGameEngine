@@ -1,9 +1,12 @@
 #pragma once
 
+#include "file/filesystem.hpp"
+
 #include "vulkan/tge_window.hpp"
 #include "vulkan/tge_pipeline.hpp"
 
 namespace tge {
+
   class FirstApp {
 
     public:
@@ -14,6 +17,6 @@ namespace tge {
     
     private:
       TgeWindow tgeWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
-      //TgePipeline tgePipeline{"shaders/simple_shader.vert.spv", "shaders/simple_shader.frag.spv"};
+      TgePipeline tgePipeline{"shaders/simple_shader.vert", "shaders/simple_shader.frag"};
   };
 } // namespace tge

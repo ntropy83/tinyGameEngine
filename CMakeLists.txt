@@ -51,6 +51,24 @@ SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/debug)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/debug/lib)
 
+add_custom_target(build-time-make-directory ALL
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/data)
+
+function(create_zip output_file input_files working_dir)
+    add_custom_command(
+        COMMAND ${CMAKE_COMMAND} -E tar "cf" "${output_file}" --format=zip -- ${input_files}
+        WORKING_DIRECTORY "${working_dir}"
+        OUTPUT  "${output_file}"
+        DEPENDS ${input_files}
+        COMMENT "Zipping to ${output_file}."
+    )
+endfunction()
+
+file(GLOB ZIP_FILES "${CMAKE_CURRENT_SOURCE_DIR}/game/assets/*")
+create_zip("${CMAKE_CURRENT_BINARY_DIR}/debug/data/data.zip" "${ZIP_FILES}" "${CMAKE_CURRENT_SOURCE_DIR}/game/assets")
+
+add_custom_target("project-data" ALL DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/debug/data/data.zip")
+
 add_subdirectory("engine/submodules/glfw")
 add_subdirectory("engine/submodules/glslang")
 add_subdirectory("engine/submodules/physfs")
@@ -66,5 +84,3 @@ ADD_EXECUTABLE(tinyGameEngine
                 "game/src/first_app.cpp")
 
 target_link_libraries(tinyGameEngine Vulkan::Vulkan glfw SPIRV simdjson physfs glslang)
-
-file(COPY game/assets DESTINATION debug/)

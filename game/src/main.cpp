@@ -7,7 +7,7 @@
 
 int main() {
   FileSystem::Init();
-  FileSystem::Mount("game", "/");
+  FileSystem::Mount("build/debug/data/data.zip", "/");
   
   tge::FirstApp app{};
 
@@ -18,5 +18,6 @@ int main() {
     return EXIT_FAILURE;
   }
 
+  FileSystem::Shutdown();
   return EXIT_SUCCESS;
 }
