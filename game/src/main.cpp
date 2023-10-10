@@ -7,7 +7,7 @@
 
 int main() {
   FileSystem::Init();
-  FileSystem::Mount("build/debug/data/data.zip", "/");
+  FileSystem::Mount("data/data.zip", "/");
   
   tge::FirstApp app{};
 
