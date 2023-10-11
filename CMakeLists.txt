@@ -18,11 +18,13 @@ include_directories(${CMAKE_SOURCE_DIR}/game/assets)
 link_directories(${CMAKE_SOURCE_DIR}/build/debug)
 
 # options GLFW
+set(GLFW_LIBRARY_TYPE "SHARED")
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 # options GLSLANG
+option(BUILD_SHARED_LIBS "Build Shared Libraries" ON)
 set(SKIP_GLSLANG_INSTALL ON)
 option(ENABLE_SPVREMAPPER "Enables building of SPVRemapper" OFF)
 option(ENABLE_GLSLANG_BINARIES "Builds glslang and spirv-remap" OFF)
@@ -34,6 +36,10 @@ option(PHYSFS_BUILD_STATIC "Build static library" FALSE)
 option(PHYSFS_BUILD_TEST "Build stdio test program." FALSE)
 option(PHYSFS_BUILD_DOCS "Build doxygen based documentation" FALSE)
 set(PHYSFS_TARGETNAME_UNINSTALL "uninstall_1" CACHE STRING "Name of 'uninstall' build target")
+
+# options simdjson
+option(SIMDJSON_BUILD_STATIC_LIB "Build simdjson_static library along with simdjson" OFF)
+option(BUILD_SHARED_LIBS "Build simdjson as a shared library" ON)
 
 SET(GCC_COVERAGE_COMPILE_FLAGS "-std=c++17 -O2")
 SET(GCC_COVERAGE_LINK_FLAGS    "-ldl -lX11 -lXxf86vm -lXrandr -lXi")
