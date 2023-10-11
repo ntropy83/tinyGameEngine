@@ -45,8 +45,8 @@ set(CMAKE_USE_WIN32_THREADS_INIT 0)
 set(CMAKE_USE_PTHREADS_INIT 1)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 
-SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
-SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/debug)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/debug/lib)
@@ -63,6 +63,11 @@ function(create_zip output_file input_files working_dir)
         COMMENT "Zipping to ${output_file}."
     )
 endfunction()
+
+file(GLOB ZIP_FILES "${CMAKE_CURRENT_SOURCE_DIR}/game/assets/*")
+create_zip("${CMAKE_CURRENT_SOURCE_DIR}/build/debug/data/data.zip" "${ZIP_FILES}" "${CMAKE_CURRENT_SOURCE_DIR}/game/assets")
+
+add_custom_target("project-data" ALL DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/build/debug/data/data.zip")
 
 add_subdirectory("engine/submodules/glfw")
 add_subdirectory("engine/submodules/glslang")
@@ -81,8 +86,3 @@ ADD_EXECUTABLE(tinyGameEngine
                 "game/src/first_app.cpp")
 
 target_link_libraries(tinyGameEngine Vulkan::Vulkan glfw SPIRV simdjson physfs glslang)
-
-file(GLOB ZIP_FILES "${CMAKE_CURRENT_SOURCE_DIR}/game/assets/*")
-create_zip("${CMAKE_CURRENT_BINARY_DIR}/debug/data/data.zip" "${ZIP_FILES}" "${CMAKE_CURRENT_SOURCE_DIR}/game/assets")
-
-add_custom_target("project-data" ALL DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/debug/data/data.zip")
