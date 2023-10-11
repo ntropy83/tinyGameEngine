@@ -11,6 +11,12 @@ glslang         - runtime shader compiler from GLSL to SPIR-V
 Release - Milestone 1: red vulkan triangle
 
 # Build
+Deps on Ubuntu:
+```
+sudo apt-get install vulkan-validationlayers-dev \
+                     spirv-tools libxxf86vm-dev libxi-dev libxrandr-dev \
+                     libxinerama-dev libxcursor-dev mesa-common-dev
+```
 
 ```
 git clone --recursive https://github.com/ntropy83/tinyGameEngine
