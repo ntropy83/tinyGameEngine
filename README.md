@@ -19,4 +19,4 @@ cmake .. && make -j${nproc}
 ```
 All necessary runtime files go to build/debug.
 
-![MainWindow](https://github.com/ntropy83/tinyGameEngine/blob/master/screenshot_triangle.png)
+![Vulkan Triangle](https://github.com/ntropy83/tinyGameEngine/blob/main/screenshot_triangle.png?raw=true)
