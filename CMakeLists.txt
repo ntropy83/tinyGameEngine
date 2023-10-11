@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.4)
+cmake_minimum_required(VERSION 3.5)
 CMAKE_POLICY ( SET CMP0003 NEW )
 
 set(CMAKE_BUILD_TYPE MinSizeRel)
