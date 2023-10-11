@@ -8,7 +8,7 @@ jobs:
       fail-fast: false
       matrix:
         compiler: [
-            g++, g++-mingw-w64
+            g++, g++-mingw-w64"
         ]
 
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
           cmake \
             $GITHUB_WORKSPACE \
              -DBUILD_TESTING=ON -DBUILD_DOCS=ON -DINSTALL_APPS=ON \
-             -DCMAKE_INSTALL_PREFIX="${{ runner.workspace }}/instdir"
+             -DCMAKE_INSTALL_PREFIX="${{ runner.workspace }}/instdir -G "MinGW Makefiles"
 
       - name: Build
         working-directory: ${{ runner.workspace }}/build
