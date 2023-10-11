@@ -8,7 +8,7 @@ jobs:
       fail-fast: false
       matrix:
         compiler: [
-            g++, mingw-w64-gcc"
+            g++, mingw-w64-gcc
         ]
 
     runs-on: ubuntu-latest
