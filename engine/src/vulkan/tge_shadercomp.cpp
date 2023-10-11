@@ -1,11 +1,11 @@
 //std
 #include <iostream>
-#include <filesystem>
 
+#include "file/filesystem.hpp"
 #include "vulkan/tge_shadercomp.hpp"
 
-#include "glslang/glslang/Public/ResourceLimits.h"
-#include "glslang/glslang/Public/ShaderLang.h"
+#include "glslang/Public/ResourceLimits.h"
+#include "glslang/Public/ShaderLang.h"
 #include "glslang/SPIRV/GlslangToSpv.h"
 
 // std
@@ -95,7 +95,7 @@ namespace tge {
         shader.setEnvClient(glslang::EShClientVulkan, glslang::EShTargetVulkan_1_3);
         shader.setEnvTarget(glslang::EshTargetSpv, glslang::EShTargetSpv_1_0);
     
-      /*  if (!shader.parse(GetDefaultResources(), 100, false, EShMsgDefault, *m_includer)) {
+        if (!shader.parse(GetDefaultResources(), 100, false, EShMsgDefault, *m_includer)) {
             std::cout << "Failed to parse " << stageName << "shader: " << shader.getInfoLog() << "\n";
             return {};
         } else {
@@ -103,7 +103,7 @@ namespace tge {
             if (std::strlen(infoLog)) {
                 std::cout << "Shader compilation warning: " << infoLog << "\n";
             } 
-        } */
+        } 
     
         glslang::TProgram program;
         program.addShader(&shader);

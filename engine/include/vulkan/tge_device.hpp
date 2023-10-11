@@ -40,8 +40,6 @@ class TgeDevice {
   void operator=(const TgeDevice &) = delete;
   TgeDevice(TgeDevice &&) = delete;
   TgeDevice &operator=(TgeDevice &&) = delete;
-
-  VkShaderModule CreateShaderModule(const std::vector<uint32_t> &spirv);
  
   VkCommandPool getCommandPool() { return commandPool; }
   VkDevice device() { return device_; }

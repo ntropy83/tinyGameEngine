@@ -7,11 +7,9 @@ project(tinyGameEngine)
 
 find_package(Vulkan REQUIRED)
 
-#if(WIN32)
-#  set(_Vulkan_library_name vulkan-1)
-
 include_directories(${CMAKE_SOURCE_DIR}/engine/include)
 include_directories(${CMAKE_SOURCE_DIR}/engine/submodules)
+include_directories(${CMAKE_SOURCE_DIR}/engine/submodules/glslang)
 include_directories(${CMAKE_SOURCE_DIR}/game/include)
 include_directories(${CMAKE_SOURCE_DIR}/game/assets)
 
@@ -92,4 +90,8 @@ ADD_EXECUTABLE(tinyGameEngine
                 "game/src/main.cpp"
                 "game/src/first_app.cpp")
 
-target_link_libraries(tinyGameEngine Vulkan::Vulkan glfw SPIRV simdjson physfs glslang)
+target_link_libraries(tinyGameEngine 
+                        Vulkan::Vulkan 
+                        glfw 
+                        simdjson physfs
+                        glslang glslang-default-resource-limits SPIRV MachineIndependent GenericCodeGen OSDependent)

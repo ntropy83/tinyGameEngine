@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/engine/include",
-                "${workspaceFolder}/engine/submodules"
+                "${workspaceFolder}/engine/submodules",
+                "${workspaceFolder}/engine/submodules/glslang"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

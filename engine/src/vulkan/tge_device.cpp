@@ -179,20 +179,6 @@ void TgeDevice::createLogicalDevice() {
   vkGetDeviceQueue(device_, indices.presentFamily, 0, &presentQueue_);
 }
 
-VkShaderModule TgeDevice::CreateShaderModule(const std::vector<uint32_t>& spirv){
-    VkShaderModuleCreateInfo createInfo{};
-    createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-    createInfo.codeSize = spirv.size() * sizeof(uint32_t);
-    createInfo.pCode = spirv.data();
-
-    const auto [result, shaderModule] = device_.createShaderModule(createInfo);
-
-    if(result != VK_SUCCESS){
-      throw std::runtime_error("Failed to create ShaderModule...");
-    }
-    return shaderModule;
-}
-
 void TgeDevice::createCommandPool() {
   QueueFamilyIndices queueFamilyIndices = findPhysicalQueueFamilies();
 

@@ -15,10 +15,10 @@ namespace tge {
   : tgeDevice{device} {
 
       const std::vector<uint32_t> vertexSpirv = compiler.CompileFromFile(vk::ShaderStageFlagBits::eVertex, vertFilepath);
-      //vertShaderModule                        = tgeDevice->CreateShaderModule(vertexSpirv);
+      CreateShaderModule(vertexSpirv, vertShaderModule);
 
       const std::vector<uint32_t> fragSpirv = compiler.CompileFromFile(vk::ShaderStageFlagBits::eFragment, fragFilepath);
-      //fragShaderModule                        = tgeDevice->CreateShaderModule(fragSpirv);
+      CreateShaderModule(fragSpirv, fragShaderModule);
 
       createGraphicsPipeline(configInfo);
   }
@@ -28,6 +28,17 @@ namespace tge {
     vkDestroyShaderModule(tgeDevice.device(), fragShaderModule, nullptr);
     vkDestroyPipeline(tgeDevice.device(), graphicsPipeline, nullptr);
   } 
+
+  void TgePipeline::CreateShaderModule(const std::vector<uint32_t>& spirv, VkShaderModule &shaderModule){
+    VkShaderModuleCreateInfo createInfo{};
+    createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+    createInfo.codeSize = spirv.size() * sizeof(uint32_t);
+    createInfo.pCode = spirv.data();
+
+    if(vkCreateShaderModule(tgeDevice.device(), &createInfo, nullptr, &shaderModule) != VK_SUCCESS){
+      throw std::runtime_error("Failed to create ShaderModule...");
+    }
+}
 
   void TgePipeline::createGraphicsPipeline(
           const PipelineConfigInfo&     configInfo) 
@@ -92,6 +103,10 @@ namespace tge {
           &graphicsPipeline) != VK_SUCCESS) {
         throw std::runtime_error("failed to create graphics pipeline");
   }
+  }
+
+  void TgePipeline::bind(VkCommandBuffer commandBuffer) {
+      vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
   }
 
   PipelineConfigInfo TgePipeline::defaultPipelineConfigInfo(uint32_t width, uint32_t height){

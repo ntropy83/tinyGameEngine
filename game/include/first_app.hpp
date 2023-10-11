@@ -1,7 +1,6 @@
 #pragma once
 
-#include "file/filesystem.hpp"
-#include "JsonFiles.hpp"
+//#include "JsonFiles.hpp"
 
 #include "vulkan/tge_device.hpp"
 #include "vulkan/tge_pipeline.hpp"
@@ -20,8 +19,8 @@ namespace tge {
 
     public:
 
-      static constexpr int WIDTH = 800;
-      static constexpr int HEIGHT = 600;
+      static constexpr int WIDTH = 1280;
+      static constexpr int HEIGHT = 800;
       
       FirstApp();
       ~FirstApp();

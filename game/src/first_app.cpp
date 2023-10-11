@@ -2,6 +2,7 @@
 #include "vulkan/tge_shadercomp.hpp"
 
 //std
+#include <array>
 #include <stdexcept>
 
 namespace tge {
@@ -19,7 +20,10 @@ namespace tge {
   void FirstApp::run() {
     while (!tgeWindow.shouldClose()) {
         glfwPollEvents();
+        drawFrame();
       }
+
+      vkDeviceWaitIdle(tgeDevice.device());
   };
 
   void FirstApp::createPipelineLayout(){
@@ -69,10 +73,49 @@ namespace tge {
       throw std::runtime_error("Failed to allocate command buffers ...");
     }
 
+    for(int i = 0; i < commandBuffers.size(); i++){
+      VkCommandBufferBeginInfo beginInfo{};
+      beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+
+if (vkBeginCommandBuffer(commandBuffers[i], &beginInfo) != VK_SUCCESS) {
+      throw std::runtime_error("failed to begin recording command buffer!");
+    }
+
+    VkRenderPassBeginInfo renderPassInfo{};
+    renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+    renderPassInfo.renderPass = tgeSwapChain.getRenderPass();
+    renderPassInfo.framebuffer = tgeSwapChain.getFrameBuffer(i);
+
+    renderPassInfo.renderArea.offset = {0, 0};
+    renderPassInfo.renderArea.extent = tgeSwapChain.getSwapChainExtent();
+
+    std::array<VkClearValue, 2> clearValues{};
+    clearValues[0].color = {0.1f, 0.1f, 0.1f, 1.0f};
+    clearValues[1].depthStencil = {1.0f, 0};
+    renderPassInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
+    renderPassInfo.pClearValues = clearValues.data();
+
+    vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+    tgePipeline->bind(commandBuffers[i]);
+    vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);
+
+    vkCmdEndRenderPass(commandBuffers[i]);
+    if (vkEndCommandBuffer(commandBuffers[i]) != VK_SUCCESS) {
+      throw std::runtime_error("failed to record command buffer!");
+    }
+  }
+}
+void FirstApp::drawFrame() {
+  uint32_t imageIndex;
+  auto result = tgeSwapChain.acquireNextImage(&imageIndex);
+  if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
+    throw std::runtime_error("failed to acquire swap chain image!");
   }
 
-  void FirstApp::drawFrame(){
-
+  result = tgeSwapChain.submitCommandBuffers(&commandBuffers[imageIndex], &imageIndex);
+  if (result != VK_SUCCESS) {
+    throw std::runtime_error("failed to present swap chain image!");
   }
-
+}
 } // namespace tge

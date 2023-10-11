@@ -39,7 +39,11 @@ namespace tge {
       TgePipeline(const TgePipeline&) = delete;
       void operator = (const TgePipeline&) = delete;
 
+      void bind(VkCommandBuffer commandBuffer);
+
       static PipelineConfigInfo defaultPipelineConfigInfo(uint32_t width, uint32_t height);
+
+      void CreateShaderModule(const std::vector<uint32_t>& spirv, VkShaderModule& shaderModule);
 
     private:
       void createGraphicsPipeline(
