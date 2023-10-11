@@ -15,7 +15,6 @@ namespace tge {
   struct PipelineConfigInfo{
     VkViewport viewport;
     VkRect2D scissor;
-    VkPipelineViewportStateCreateInfo viewportInfo;
     VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
     VkPipelineRasterizationStateCreateInfo rasterizationInfo;
     VkPipelineMultisampleStateCreateInfo multisampleInfo;
@@ -35,7 +34,7 @@ namespace tge {
         const std::string&            vertFilepath, 
         const std::string&            fragFilepath,
         const PipelineConfigInfo&     configInfo);
-      ~TgePipeline() {}
+      ~TgePipeline();
 
       TgePipeline(const TgePipeline&) = delete;
       void operator = (const TgePipeline&) = delete;

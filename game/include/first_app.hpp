@@ -3,10 +3,14 @@
 #include "file/filesystem.hpp"
 #include "JsonFiles.hpp"
 
-#include "vulkan/tge_window.hpp"
-#include "vulkan/tge_pipeline.hpp"
 #include "vulkan/tge_device.hpp"
-#include "vulkan/tge_shadercomp.hpp"
+#include "vulkan/tge_pipeline.hpp"
+#include "vulkan/tge_swap_chain.hpp"
+#include "vulkan/tge_window.hpp"
+
+// std
+#include <memory>
+#include <vector>
 
 namespace tge {
 
@@ -19,18 +23,25 @@ namespace tge {
       static constexpr int WIDTH = 800;
       static constexpr int HEIGHT = 600;
       
+      FirstApp();
+      ~FirstApp();
+
+      FirstApp(const FirstApp &) = delete;
+			FirstApp &operator=(const FirstApp &) = delete;
+      
       void run();
     
     private:
+      void createPipelineLayout();
+      void createPipeline();
+      void createCommandBuffers();
+      void drawFrame();
 
       TgeWindow tgeWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
       TgeDevice tgeDevice{tgeWindow};
-      TgeShaderCompiler compiler{"shaders_includes/"};
-      TgePipeline tgePipeline{
-        tgeDevice,
-        compiler, 
-        "shaders/simple_shader.vert", 
-        "shaders/simple_shader.frag",
-        TgePipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)};
+      TgeSwapChain tgeSwapChain{tgeDevice, tgeWindow.getExtent()};
+      std::unique_ptr<TgePipeline> tgePipeline;
+      VkPipelineLayout pipelineLayout;
+      std::vector<VkCommandBuffer> commandBuffers;
   };
 } // namespace tge

@@ -3,7 +3,6 @@
 
 // std
 #include <iostream>
-#include <cassert>
 
 namespace tge {
 
@@ -16,32 +15,24 @@ namespace tge {
   : tgeDevice{device} {
 
       const std::vector<uint32_t> vertexSpirv = compiler.CompileFromFile(vk::ShaderStageFlagBits::eVertex, vertFilepath);
-      createShaderModule(vertexSpirv, &vertShaderModule);
+      //vertShaderModule                        = tgeDevice->CreateShaderModule(vertexSpirv);
 
       const std::vector<uint32_t> fragSpirv = compiler.CompileFromFile(vk::ShaderStageFlagBits::eFragment, fragFilepath);
-      createShaderModule(fragSpirv, &fragShaderModule);
+      //fragShaderModule                        = tgeDevice->CreateShaderModule(fragSpirv);
 
       createGraphicsPipeline(configInfo);
   }
 
-/*  TgePipeline::~TgePipeline(){
+  TgePipeline::~TgePipeline(){
     vkDestroyShaderModule(tgeDevice.device(), vertShaderModule, nullptr);
     vkDestroyShaderModule(tgeDevice.device(), fragShaderModule, nullptr);
     vkDestroyPipeline(tgeDevice.device(), graphicsPipeline, nullptr);
-  } */
+  } 
 
   void TgePipeline::createGraphicsPipeline(
           const PipelineConfigInfo&     configInfo) 
   {
-      assert(
-        configInfo.pipelineLayout != VK_NULL_HANDLE &&
-        "Cannot create graphics pipeline: no pipelineLayout provided in configInfo");
-      assert(
-        configInfo.renderPass != VK_NULL_HANDLE &&
-        "Cannot create graphics pipeline: no renderPass provided in configInfo");
-
       VkPipelineShaderStageCreateInfo shaderStages[2];
-
       shaderStages[0].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
       shaderStages[0].stage = VK_SHADER_STAGE_VERTEX_BIT;
       shaderStages[0].module = vertShaderModule;
@@ -64,6 +55,13 @@ namespace tge {
       vertexInputInfo.vertexBindingDescriptionCount = 0;
       vertexInputInfo.pVertexAttributeDescriptions = nullptr;
       vertexInputInfo.pVertexBindingDescriptions = nullptr;
+
+      VkPipelineViewportStateCreateInfo viewportInfo{};
+      viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+      viewportInfo.viewportCount = 1;
+      viewportInfo.pViewports = &configInfo.viewport;
+      viewportInfo.scissorCount = 1;
+      viewportInfo.pScissors = &configInfo.scissor;
       
       VkGraphicsPipelineCreateInfo pipelineInfo{};
       pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
@@ -71,7 +69,7 @@ namespace tge {
       pipelineInfo.pStages = shaderStages;
       pipelineInfo.pVertexInputState = &vertexInputInfo;
       pipelineInfo.pInputAssemblyState = &configInfo.inputAssemblyInfo;
-      pipelineInfo.pViewportState = &configInfo.viewportInfo;
+      pipelineInfo.pViewportState = &viewportInfo;
       pipelineInfo.pRasterizationState = &configInfo.rasterizationInfo;
       pipelineInfo.pMultisampleState = &configInfo.multisampleInfo;
       pipelineInfo.pColorBlendState = &configInfo.colorBlendInfo;
@@ -96,17 +94,6 @@ namespace tge {
   }
   }
 
-  void TgePipeline::createShaderModule(const std::vector<uint32_t>& spirv, VkShaderModule* shaderModule){
-      VkShaderModuleCreateInfo createInfo{};
-      createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-      createInfo.codeSize = spirv.size() * sizeof(uint32_t);
-      createInfo.pCode = spirv.data();
-
-      if(vkCreateShaderModule(tgeDevice.device(), &createInfo, nullptr, shaderModule) != VK_SUCCESS){
-        throw std::runtime_error("Failed to create ShaderModule...");
-      }
-  }
-
   PipelineConfigInfo TgePipeline::defaultPipelineConfigInfo(uint32_t width, uint32_t height){
       PipelineConfigInfo configInfo{};
 
@@ -123,12 +110,6 @@ namespace tge {
 
       configInfo.scissor.offset = {0, 0};
       configInfo.scissor.extent = {width, height};
-
-      configInfo.viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-      configInfo.viewportInfo.viewportCount = 1;
-      configInfo.viewportInfo.pViewports = &configInfo.viewport;
-      configInfo.viewportInfo.scissorCount = 1;
-      configInfo.viewportInfo.pScissors = &configInfo.scissor;
 
       configInfo.rasterizationInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
       configInfo.rasterizationInfo.depthClampEnable = VK_FALSE;

@@ -2,6 +2,8 @@
 
 #include "tge_window.hpp"
 
+#include <vulkan/vulkan.hpp>
+
 // std lib headers
 #include <string>
 #include <vector>
@@ -39,6 +41,8 @@ class TgeDevice {
   TgeDevice(TgeDevice &&) = delete;
   TgeDevice &operator=(TgeDevice &&) = delete;
 
+  VkShaderModule CreateShaderModule(const std::vector<uint32_t> &spirv);
+ 
   VkCommandPool getCommandPool() { return commandPool; }
   VkDevice device() { return device_; }
   VkSurfaceKHR surface() { return surface_; }

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 CMAKE_POLICY ( SET CMP0003 NEW )
 
-set(CMAKE_BUILD_TYPE MinSizeRel)
+set(CMAKE_BUILD_TYPE Debug)
 
 project(tinyGameEngine)
 
@@ -83,10 +83,11 @@ add_subdirectory("engine/submodules/simdjson")
 ADD_EXECUTABLE(tinyGameEngine
                 "engine/src/file/filesystem.cpp"
                 "engine/src/file/JsonFile.cpp"
-                "engine/src/vulkan/tge_window.cpp"
                 "engine/src/vulkan/tge_shadercomp.cpp"
-                "engine/src/vulkan/tge_pipeline.cpp"
                 "engine/src/vulkan/tge_device.cpp"
+                "engine/src/vulkan/tge_pipeline.cpp"
+                "engine/src/vulkan/tge_swap_chain.cpp"
+                "engine/src/vulkan/tge_window.cpp"                
                 "game/src/JsonFiles.cpp"
                 "game/src/main.cpp"
                 "game/src/first_app.cpp")
