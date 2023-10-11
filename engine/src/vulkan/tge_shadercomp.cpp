@@ -8,6 +8,9 @@
 #include "glslang/glslang/Public/ShaderLang.h"
 #include "glslang/SPIRV/GlslangToSpv.h"
 
+// std
+#include <stdexcept>
+
 namespace tge {
 
     struct ShaderIncluder : glslang::TShader::Includer {
@@ -39,11 +42,11 @@ namespace tge {
         std::map<std::string, std::string> m_headerFiles;
     };
 
-    TgeShaderCompiler::TgeShaderCompiler(vk::ShaderStageFlagBits stage, std::string &filename) {
+    TgeShaderCompiler::TgeShaderCompiler(const std::string &includesDir) {
 
         std::cout << "glslang version: " << glslang::GetGlslVersionString() << "\n";
-        if (!glslang::InitializeProcess()) { std::cout << "Failed to initialize glslang." << "\n"; }
-        CompileFromFile(stage, filename);
+        if (!glslang::InitializeProcess()) { throw std::runtime_error("Failed to initialize glslang.\n"); }
+        m_includer = std::make_unique<ShaderIncluder>(includesDir);
     }
     
     TgeShaderCompiler::~TgeShaderCompiler() {
@@ -106,7 +109,7 @@ namespace tge {
         program.addShader(&shader);
     
         if (!program.link(EShMsgDefault)) {
-            std::cout << "Failed to link " << stageName << "shader program: " << program.getInfoLog() << "\n";
+            std::cout << "Failed to link " << stageName << " shader program: " << program.getInfoLog() << "\n";
             return {};
         }
     
@@ -117,7 +120,7 @@ namespace tge {
     
     std::vector<uint32_t> TgeShaderCompiler::CompileFromFile(vk::ShaderStageFlagBits stage, const std::string &filename) {
         const char *stageName = GetShaderStageName(stage);
-        std::cout << "Compiling " << stageName << "shader: " << filename << "\n";
+        std::cout << "Compiling " << stageName << " shader: " << filename << "\n";
         
         return Compile(stage, FileSystem::Read(filename));
     }

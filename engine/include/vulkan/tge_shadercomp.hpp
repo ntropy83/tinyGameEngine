@@ -11,21 +11,24 @@
 
 namespace tge {
 
-    struct ShaderIncluder;
+#include <vulkan/vulkan.hpp>
 
-    class TgeShaderCompiler {
-    public:
-      TgeShaderCompiler(vk::ShaderStageFlagBits stage, std::string &filename);
-      ~TgeShaderCompiler();
+struct ShaderIncluder;
 
-      TgeShaderCompiler(TgeShaderCompiler &&) = delete;
-      TgeShaderCompiler &operator=(TgeShaderCompiler &&) = delete;
+class TgeShaderCompiler {
+public:
+    explicit TgeShaderCompiler(const std::string &includesDir);
 
-      std::vector<uint32_t> Compile(vk::ShaderStageFlagBits stage, const std::string &source);
+    ~TgeShaderCompiler();
 
-      std::vector<uint32_t> CompileFromFile(vk::ShaderStageFlagBits stage, const std::string &filename);
+    TgeShaderCompiler(const TgeShaderCompiler&) = delete;
+    void operator=(const TgeShaderCompiler&) = delete;
 
-    private:
-      std::unique_ptr<ShaderIncluder> m_includer; 
-    };
+    std::vector<uint32_t> Compile(vk::ShaderStageFlagBits stage, const std::string &source);
+
+    std::vector<uint32_t> CompileFromFile(vk::ShaderStageFlagBits stage, const std::string &filename);
+
+private:
+    std::unique_ptr<ShaderIncluder> m_includer;
+};
 } // namespace tge

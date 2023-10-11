@@ -5,6 +5,8 @@
 
 #include "vulkan/tge_window.hpp"
 #include "vulkan/tge_pipeline.hpp"
+#include "vulkan/tge_device.hpp"
+#include "vulkan/tge_shadercomp.hpp"
 
 namespace tge {
 
@@ -16,11 +18,19 @@ namespace tge {
 
       static constexpr int WIDTH = 800;
       static constexpr int HEIGHT = 600;
-
+      
       void run();
     
     private:
+
       TgeWindow tgeWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
-      TgePipeline tgePipeline{FileSystem::Read("shaders/simple_shader.vert.spv"), FileSystem::Read("shaders/simple_shader.frag.spv")};
+      TgeDevice tgeDevice{tgeWindow};
+      TgeShaderCompiler compiler{"shaders_includes/"};
+      TgePipeline tgePipeline{
+        tgeDevice,
+        compiler, 
+        "shaders/simple_shader.vert", 
+        "shaders/simple_shader.frag",
+        TgePipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)};
   };
 } // namespace tge
