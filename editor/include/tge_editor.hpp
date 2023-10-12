@@ -41,11 +41,15 @@ namespace tge {
       void createCommandBuffers();
       void drawFrame();
 
+      GLFWwindow*   g_MainWindowData;
+
       TgeWindow tgeWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
       TgeDevice tgeDevice{tgeWindow};
       TgeSwapChain tgeSwapChain{tgeDevice, tgeWindow.getExtent()};
       std::unique_ptr<TgePipeline> tgePipeline;
       VkPipelineLayout pipelineLayout;
       std::vector<VkCommandBuffer> commandBuffers;
+
+      TgeEditorUI tgeEditorUI{};
   };
 } // namespace tge

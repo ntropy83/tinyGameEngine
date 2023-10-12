@@ -13,7 +13,6 @@ glslang         - runtime shader compiler from GLSL to SPIR-V
 
 Dear ImGUI      - glfw and Vulkan compatible GUI
 
-
 # Build
 Deps on Ubuntu:
 ```

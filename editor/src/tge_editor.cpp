@@ -21,6 +21,26 @@ namespace tge {
     while (!tgeWindow.shouldClose()) {
         glfwPollEvents();
         drawFrame();
+
+      /*  if (ui.SwapChainRebuild()){
+
+          ui-> = false;
+          ImGui_ImplVulkan_SetMinImageCount(tgeEditorUI.MinImageCount()));
+          ImGui_ImplVulkanH_CreateWindow(tgeEditorUI.getInstance(), tgeEditorUI.getPhysicalDevice(), tgeEditorUI.getDevice(), tgeEditorUI.getWindow(), 
+          tgeEditorUI.getQueueFamily(), tgeEditorUI.getAllocator(), g_SwapChainResizeWidth, g_SwapChainResizeHeight, tgeEditorUI.MinImageCount());
+          g_MainWindowData.FrameIndex = 0;
+        } */
+
+        ImGui_ImplVulkan_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        ImGui::ShowDemoWindow();
+        ImGui::Render();
+
+    /*  memcpy(&wd->ClearValue.color.float32[0], &clear_color, 4 * sizeof(float));
+        FrameRender(wd);
+        FramePresent(wd); */
+
       }
 
       vkDeviceWaitIdle(tgeDevice.device());

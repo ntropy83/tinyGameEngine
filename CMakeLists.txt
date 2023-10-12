@@ -105,6 +105,7 @@ add_executable(tinyGameEngine
                 "editor/src/JsonFiles.cpp"
                 "editor/src/main.cpp"
                 "editor/src/tge_editor.cpp"
+                "editor/src/ui/tge_gui.cpp"
                 ## ImGUI
                 "editor/submodules/imgui/imgui.cpp"
                 "editor/submodules/imgui/imgui_demo.cpp"
