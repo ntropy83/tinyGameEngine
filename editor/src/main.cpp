@@ -1,4 +1,4 @@
-#include "first_app.hpp"
+#include "tge_editor.hpp"
 
 // std
 #include <cstdlib>
@@ -9,7 +9,7 @@ int main() {
   FileSystem::Init();
   FileSystem::Mount("data/data.zip", "/");
   
-  tge::FirstApp app{};
+  tge::TgeEditor app{};
 
   try {
     app.run();

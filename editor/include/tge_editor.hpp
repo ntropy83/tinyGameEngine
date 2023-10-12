@@ -7,6 +7,9 @@
 #include "vulkan/tge_swap_chain.hpp"
 #include "vulkan/tge_window.hpp"
 
+// ImGUI
+#include "ui/tge_gui.hpp"
+
 // std
 #include <memory>
 #include <vector>
@@ -15,18 +18,20 @@ namespace tge {
 
   // const GameConfig gameConfig(FileSystem::Read("game.json"));
 
-  class FirstApp {
+  class TgeEditor {
 
     public:
 
       static constexpr int WIDTH = 1280;
       static constexpr int HEIGHT = 800;
       
-      FirstApp();
-      ~FirstApp();
+      TgeEditor();
+      ~TgeEditor();
 
-      FirstApp(const FirstApp &) = delete;
-			FirstApp &operator=(const FirstApp &) = delete;
+      TgeEditor(const TgeEditor &) = delete;
+			TgeEditor &operator=(const TgeEditor &) = delete;
+
+      std::vector<VkCommandBuffer> commandBuffer(){ return commandBuffers; }
       
       void run();
     

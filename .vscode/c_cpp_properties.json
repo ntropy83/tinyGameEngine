@@ -6,7 +6,9 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/engine/include",
                 "${workspaceFolder}/engine/submodules",
-                "${workspaceFolder}/engine/submodules/glslang"
+                "${workspaceFolder}/engine/submodules/glslang",
+                "${workspaceFolder}/editor/include",
+                "${workspaceFolder}/editor/submodules/imgui"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

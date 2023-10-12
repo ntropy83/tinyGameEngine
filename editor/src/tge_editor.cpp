@@ -1,4 +1,4 @@
-#include "first_app.hpp"
+#include "tge_editor.hpp"
 #include "vulkan/tge_shadercomp.hpp"
 
 //std
@@ -7,17 +7,17 @@
 
 namespace tge {
 
-  FirstApp::FirstApp(){
+  TgeEditor::TgeEditor(){
     createPipelineLayout();
     createPipeline();
     createCommandBuffers();
   }
 
-  FirstApp::~FirstApp(){
+  TgeEditor::~TgeEditor(){
     vkDestroyPipelineLayout(tgeDevice.device(), pipelineLayout, nullptr);
   }
 
-  void FirstApp::run() {
+  void TgeEditor::run() {
     while (!tgeWindow.shouldClose()) {
         glfwPollEvents();
         drawFrame();
@@ -26,7 +26,7 @@ namespace tge {
       vkDeviceWaitIdle(tgeDevice.device());
   };
 
-  void FirstApp::createPipelineLayout(){
+  void TgeEditor::createPipelineLayout(){
     VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
     pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     pipelineLayoutInfo.setLayoutCount = 0;
@@ -41,7 +41,7 @@ namespace tge {
     }
   }
 
-  void FirstApp::createPipeline(){
+  void TgeEditor::createPipeline(){
     auto pipelineConfig = 
       TgePipeline::defaultPipelineConfigInfo(tgeSwapChain.width(), tgeSwapChain.height());
     pipelineConfig.renderPass = tgeSwapChain.getRenderPass();
@@ -57,7 +57,7 @@ namespace tge {
         pipelineConfig);
   }
 
-  void FirstApp::createCommandBuffers(){
+  void TgeEditor::createCommandBuffers(){
     commandBuffers.resize(tgeSwapChain.imageCount());
 
     VkCommandBufferAllocateInfo allocInfo{};
@@ -106,7 +106,7 @@ if (vkBeginCommandBuffer(commandBuffers[i], &beginInfo) != VK_SUCCESS) {
     }
   }
 }
-void FirstApp::drawFrame() {
+void TgeEditor::drawFrame() {
   uint32_t imageIndex;
   auto result = tgeSwapChain.acquireNextImage(&imageIndex);
   if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {

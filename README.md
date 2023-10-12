@@ -1,5 +1,5 @@
 # tiny GameEngine in Vulkan
-Playground to create a tiny vulkan game engine
+Playground to create a tiny vulkan game engine and editor
 
 Implemented:
 
@@ -11,7 +11,8 @@ simdJson        - read Json config files quickly(integrated but not implemented 
 
 glslang         - runtime shader compiler from GLSL to SPIR-V
 
-Release - Milestone 1: red vulkan triangle
+Dear ImGUI      - glfw and Vulkan compatible GUI
+
 
 # Build
 Deps on Ubuntu:
