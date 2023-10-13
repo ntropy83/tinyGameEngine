@@ -2,17 +2,24 @@
 
 // std
 #include <cstdlib>
+#include <stdexcept>
 
 namespace tge {
 
-   static void check_vk_result(VkResult err)
-   {
-    if (err == 0)
-        return;
-    fprintf(stderr, "[vulkan] Error: VkResult = %d\n", err);
-    if (err < 0)
-        abort();
-   } 
+ /* void TgeEditorUI::check_vk_result(VkResult err)
+  {
+      if (err == 0)
+          return;
+      fprintf(stderr, "[vulkan] Error: VkResult = %d\n", err);
+      if (err < 0)
+          abort();
+  } */
+
+  TgeEditorUI::TgeEditorUI(){
+    imgui_init();
+  };
+
+  TgeEditorUI::~TgeEditorUI(){};
 
   void TgeEditorUI::imgui_init(){
     // Setup Dear ImGui context
@@ -64,12 +71,12 @@ namespace tge {
     init_info.DescriptorPool = g_DescriptorPool;
     init_info.Allocator = nullptr;
     init_info.MinImageCount = g_MinImageCount;
-    init_info.ImageCount = swapChain.imageCount();
-    init_info.CheckVkResultFn = check_vk_result;
+    init_info.ImageCount = swapChainImages.size();
+    //init_info.CheckVkResultFn = check_vk_result;
 
 
     VkAttachmentDescription attachment = {};
-    attachment.format = swapChain.getSwapChainImageFormat();
+    attachment.format = swapChainImageFormat;
     attachment.samples = VK_SAMPLE_COUNT_1_BIT;
     attachment.loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
     attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;

@@ -22,14 +22,14 @@ namespace tge {
         glfwPollEvents();
         drawFrame();
 
-      /*  if (ui.SwapChainRebuild()){
+        if (tgeEditorUI.SwapChainRebuild()){
 
-          ui-> = false;
-          ImGui_ImplVulkan_SetMinImageCount(tgeEditorUI.MinImageCount()));
-          ImGui_ImplVulkanH_CreateWindow(tgeEditorUI.getInstance(), tgeEditorUI.getPhysicalDevice(), tgeEditorUI.getDevice(), tgeEditorUI.getWindow(), 
-          tgeEditorUI.getQueueFamily(), tgeEditorUI.getAllocator(), g_SwapChainResizeWidth, g_SwapChainResizeHeight, tgeEditorUI.MinImageCount());
-          g_MainWindowData.FrameIndex = 0;
-        } */
+          //ui-> = false;
+          ImGui_ImplVulkan_SetMinImageCount(tgeEditorUI.MinImageCount());
+          ImGui_ImplVulkanH_CreateOrResizeWindow(tgeEditorUI.getInstance(), tgeEditorUI.getPhysicalDevice(), tgeEditorUI.getDevice(), TgeEditor::g_MainWindowData, 
+          tgeEditorUI.getQueueFamily(), tgeEditorUI.getAllocator(), tgeWindow.get_window_width(), tgeWindow.get_window_height(), tgeEditorUI.MinImageCount());
+            //g_MainWindowData.FrameIndex = 0;
+        }
 
         ImGui_ImplVulkan_NewFrame();
         ImGui_ImplGlfw_NewFrame();

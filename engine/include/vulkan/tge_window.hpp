@@ -17,6 +17,8 @@ namespace tge {
 
 			bool shouldClose() { return glfwWindowShouldClose(window); }
 			VkExtent2D getExtent() { return {static_cast<uint32_t>(width), static_cast<uint32_t>(height)};}
+			int get_window_width() { return width; }
+			int get_window_height() { return height; }
 
 			void createWindowSurface(VkInstance instance, VkSurfaceKHR *surface);
 

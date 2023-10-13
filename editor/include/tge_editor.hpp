@@ -41,7 +41,8 @@ namespace tge {
       void createCommandBuffers();
       void drawFrame();
 
-      GLFWwindow*   g_MainWindowData;
+      ImGui_ImplVulkanH_Window*       g_MainWindowData;
+      
 
       TgeWindow tgeWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
       TgeDevice tgeDevice{tgeWindow};

@@ -4,10 +4,9 @@
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_vulkan.h"
 
-#include "vulkan/tge_swap_chain.hpp"
-
 // std
 #include <memory>
+#include <vector>
 
 namespace tge {
   class TgeEditorUI {
@@ -20,7 +19,7 @@ namespace tge {
 			TgeEditorUI &operator=(const TgeEditorUI &) = delete;
 
       void imgui_init();
-      static void check_vk_result(VkResult err);
+      //void check_vk_result(VkResult err);      
 
       GLFWwindow* getWindow(){ return window; }
       VkInstance getInstance(){ return g_Instance; }
@@ -45,7 +44,8 @@ namespace tge {
       int                            g_MinImageCount = 2;
       bool                           g_SwapChainRebuild = false;
 
-      TgeSwapChain                   swapChain;
+      VkFormat swapChainImageFormat;
+      std::vector<VkImage> swapChainImages;
       VkRenderPass                   imGuiRenderPass;
       VkCommandBuffer                commandBuffers;
   };
