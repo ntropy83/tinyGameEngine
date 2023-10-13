@@ -28,7 +28,8 @@ namespace tge {
       uint32_t getQueueFamily(){ return g_QueueFamily; }
       VkAllocationCallbacks* getAllocator(){ return g_Allocator; }
       int MinImageCount(){ return g_MinImageCount; }
-      bool SwapChainRebuild(){ return g_SwapChainRebuild; }
+      
+      bool                           g_SwapChainRebuild = false;
 
     private:
       GLFWwindow*                    window;
@@ -42,7 +43,6 @@ namespace tge {
       VkDescriptorPool               g_DescriptorPool;
       VkAllocationCallbacks*         g_Allocator;
       int                            g_MinImageCount = 2;
-      bool                           g_SwapChainRebuild = false;
 
       VkFormat swapChainImageFormat;
       std::vector<VkImage> swapChainImages;

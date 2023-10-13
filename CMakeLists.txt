@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 CMAKE_POLICY ( SET CMP0003 NEW )
 
-set(CMAKE_BUILD_TYPE MINSIZEREL)
+set(CMAKE_BUILD_TYPE DEBUG)
 
 project(tinyGameEngine CXX)
 

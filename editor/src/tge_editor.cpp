@@ -1,4 +1,5 @@
 #include "tge_editor.hpp"
+#include "ui/tge_gui.hpp"
 #include "vulkan/tge_shadercomp.hpp"
 
 //std
@@ -11,6 +12,7 @@ namespace tge {
     createPipelineLayout();
     createPipeline();
     createCommandBuffers();
+    tgeEditorUI.imgui_init();
   }
 
   TgeEditor::~TgeEditor(){
@@ -22,7 +24,11 @@ namespace tge {
         glfwPollEvents();
         drawFrame();
 
-        if (tgeEditorUI.SwapChainRebuild()){
+        vkDeviceWaitIdle(tgeDevice.device());
+        
+        /* bool g_SwapChainRebuild = true;
+
+        if (g_SwapChainRebuild){
 
           //ui-> = false;
           ImGui_ImplVulkan_SetMinImageCount(tgeEditorUI.MinImageCount());
@@ -37,13 +43,11 @@ namespace tge {
         ImGui::ShowDemoWindow();
         ImGui::Render();
 
-    /*  memcpy(&wd->ClearValue.color.float32[0], &clear_color, 4 * sizeof(float));
+        memcpy(&wd->ClearValue.color.float32[0], &clear_color, 4 * sizeof(float));
         FrameRender(wd);
-        FramePresent(wd); */
+        FramePresent(wd); */ 
 
       }
-
-      vkDeviceWaitIdle(tgeDevice.device());
   };
 
   void TgeEditor::createPipelineLayout(){

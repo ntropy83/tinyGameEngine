@@ -91,6 +91,7 @@ class TgeDevice {
   void hasGflwRequiredInstanceExtensions();
   bool checkDeviceExtensionSupport(VkPhysicalDevice device);
   SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
+  VkPhysicalDevice getphysicalDevice(){ return physicalDevice; }
 
   VkInstance instance;
   VkDebugUtilsMessengerEXT debugMessenger;

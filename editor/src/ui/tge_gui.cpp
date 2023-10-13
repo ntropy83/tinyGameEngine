@@ -16,10 +16,13 @@ namespace tge {
   } */
 
   TgeEditorUI::TgeEditorUI(){
-    imgui_init();
   };
 
-  TgeEditorUI::~TgeEditorUI(){};
+  TgeEditorUI::~TgeEditorUI(){
+    ImGui_ImplVulkan_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+  };
 
   void TgeEditorUI::imgui_init(){
     // Setup Dear ImGui context
@@ -33,7 +36,7 @@ namespace tge {
     ImGui::StyleColorsDark();
     //ImGui::StyleColorsClassic();
 
-    uint32_t count;
+/*    uint32_t count;
     vkGetPhysicalDeviceQueueFamilyProperties(g_PhysicalDevice, &count, nullptr);
     VkQueueFamilyProperties* queues = (VkQueueFamilyProperties*)malloc(sizeof(VkQueueFamilyProperties) * count);
     vkGetPhysicalDeviceQueueFamilyProperties(g_PhysicalDevice, &count, queues);
@@ -45,13 +48,13 @@ namespace tge {
             break;
         }
     free(queues);
-    IM_ASSERT(g_QueueFamily != (uint32_t)-1);
+    IM_ASSERT(g_QueueFamily != (uint32_t)-1); */
 
     VkSurfaceCapabilitiesKHR surface_capabilities;
     if( vkGetPhysicalDeviceSurfaceCapabilitiesKHR( g_PhysicalDevice,
         g_Surface, &surface_capabilities ) != VK_SUCCESS ) {
             printf( "Could not check presentation surface capabilities!\n" );
-    }
+    } 
 
     uint32_t image_count = surface_capabilities.minImageCount + 1;
     if( (surface_capabilities.maxImageCount > 0) &&
