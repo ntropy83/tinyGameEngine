@@ -15,8 +15,7 @@ namespace tge {
           abort();
   } */
 
-  TgeEditorUI::TgeEditorUI(){
-  };
+  TgeEditorUI::TgeEditorUI(){};
 
   TgeEditorUI::~TgeEditorUI(){
     ImGui_ImplVulkan_Shutdown();
@@ -36,8 +35,8 @@ namespace tge {
     ImGui::StyleColorsDark();
     //ImGui::StyleColorsClassic();
 
-/*    uint32_t count;
-    vkGetPhysicalDeviceQueueFamilyProperties(g_PhysicalDevice, &count, nullptr);
+    uint32_t count;
+    vkGetPhysicalDeviceQueueFamilyProperties(&device, &count, nullptr);
     VkQueueFamilyProperties* queues = (VkQueueFamilyProperties*)malloc(sizeof(VkQueueFamilyProperties) * count);
     vkGetPhysicalDeviceQueueFamilyProperties(g_PhysicalDevice, &count, queues);
     
@@ -48,7 +47,7 @@ namespace tge {
             break;
         }
     free(queues);
-    IM_ASSERT(g_QueueFamily != (uint32_t)-1); */
+    IM_ASSERT(g_QueueFamily != (uint32_t)-1);
 
     VkSurfaceCapabilitiesKHR surface_capabilities;
     if( vkGetPhysicalDeviceSurfaceCapabilitiesKHR( g_PhysicalDevice,

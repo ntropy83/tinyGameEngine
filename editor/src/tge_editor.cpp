@@ -1,5 +1,4 @@
 #include "tge_editor.hpp"
-#include "ui/tge_gui.hpp"
 #include "vulkan/tge_shadercomp.hpp"
 
 //std
@@ -12,7 +11,7 @@ namespace tge {
     createPipelineLayout();
     createPipeline();
     createCommandBuffers();
-    tgeEditorUI.imgui_init();
+    //tgeEditorUI.imgui_init();
   }
 
   TgeEditor::~TgeEditor(){

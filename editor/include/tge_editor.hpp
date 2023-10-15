@@ -8,7 +8,7 @@
 #include "vulkan/tge_window.hpp"
 
 // ImGUI
-#include "ui/tge_gui.hpp"
+//#include "ui/tge_gui.hpp"
 
 // std
 #include <memory>
@@ -41,7 +41,7 @@ namespace tge {
       void createCommandBuffers();
       void drawFrame();
 
-      ImGui_ImplVulkanH_Window*       g_MainWindowData;
+      //ImGui_ImplVulkanH_Window*       g_MainWindowData;
       
 
       TgeWindow tgeWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
@@ -50,7 +50,5 @@ namespace tge {
       std::unique_ptr<TgePipeline> tgePipeline;
       VkPipelineLayout pipelineLayout;
       std::vector<VkCommandBuffer> commandBuffers;
-
-      TgeEditorUI tgeEditorUI{};
   };
 } // namespace tge

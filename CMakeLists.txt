@@ -1,14 +1,11 @@
-cmake_minimum_required(VERSION 2.8)
-CMAKE_POLICY ( SET CMP0003 NEW )
+cmake_minimum_required(VERSION 3.4 FATAL_ERROR)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
 set(CMAKE_BUILD_TYPE DEBUG)
 
-project(tinyGameEngine CXX)
+set(NAME tinyGameEngine)
 
-SET(GCC_COVERAGE_COMPILE_FLAGS "-std=c++17 -O2")
-SET(GCC_COVERAGE_LINK_FLAGS    "-ldl -lX11 -lXxf86vm -lXrandr -lXi")
-
-find_package(Vulkan REQUIRED)
+project(${NAME})
 
 include_directories(${CMAKE_SOURCE_DIR}/engine/include)
 include_directories(${CMAKE_SOURCE_DIR}/editor/include)
@@ -17,6 +14,41 @@ include_directories(${CMAKE_SOURCE_DIR}/editor/submodules)
 include_directories(${CMAKE_SOURCE_DIR}/editor/submodules/imgui)
 
 include_directories(${CMAKE_SOURCE_DIR}/editor/assets)
+
+# Use FindVulkan module added with CMAKE 3.7
+IF (NOT CMAKE_VERSION VERSION_LESS 3.7.0)
+	message(STATUS "Using module to find Vulkan")
+	find_package(Vulkan)
+ENDIF()
+
+IF(UNIX AND NOT APPLE)
+	set(LINUX TRUE)
+ENDIF()
+
+IF(WIN32)
+    IF (NOT Vulkan_FOUND)
+	    find_library(Vulkan_LIBRARY NAMES vulkan-1 vulkan PATHS ${CMAKE_SOURCE_DIR}/libs/vulkan)
+	    IF (Vulkan_LIBRARY)
+		    set(Vulkan_FOUND ON)
+		    MESSAGE("Using bundled Vulkan library version")
+        ENDIF()
+    ENDIF()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_WIN32_KHR")
+ELSEIF(LINUX)
+	IF (NOT Vulkan_FOUND)
+		find_library(Vulkan_LIBRARY NAMES vulkan HINTS "$ENV{VULKAN_SDK}/lib" "${CMAKE_SOURCE_DIR}/libs/vulkan" REQUIRED)
+		IF (Vulkan_LIBRARY)
+			set(Vulkan_FOUND ON)
+			MESSAGE("Using bundled Vulkan library version")
+		ENDIF()
+	ENDIF()
+    SET(GCC_COVERAGE_COMPILE_FLAGS "-std=c++17 -O2")
+    SET(GCC_COVERAGE_LINK_FLAGS    "-ldl -lX11 -lXxf86vm -lXrandr -lXi")
+	find_package(Threads REQUIRED)
+ELSEIF(APPLE)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_MACOS_MVK -DVK_EXAMPLE_XCODE_GENERATED")
+	# Todo : android?
+ENDIF(WIN32)
 
 # options GLFW
 set(GLFW_LIBRARY_TYPE "SHARED")
@@ -45,11 +77,11 @@ option(SIMDJSON_BUILD_STATIC_LIB "Build simdjson_static library along with simdj
 option(BUILD_SHARED_LIBS "Build simdjson as a shared library" ON)
 
 # lpthread fix
-set(CMAKE_THREAD_LIBS_INIT "-lpthread")
-set(CMAKE_HAVE_THREADS_LIBRARY 1)
-set(CMAKE_USE_WIN32_THREADS_INIT 0)
-set(CMAKE_USE_PTHREADS_INIT 1)
-set(THREADS_PREFER_PTHREAD_FLAG ON)
+#set(CMAKE_THREAD_LIBS_INIT "-lpthread")
+#set(CMAKE_HAVE_THREADS_LIBRARY 1)
+#set(CMAKE_USE_WIN32_THREADS_INIT 0)
+#set(CMAKE_USE_PTHREADS_INIT 1)
+#set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 ## Dear ImGui
 set(IMGUI_PATH  "engine/submodules/imgui")
@@ -92,7 +124,7 @@ add_subdirectory("engine/submodules/glslang")
 add_subdirectory("engine/submodules/physfs")
 add_subdirectory("engine/submodules/simdjson")
 
-add_executable(tinyGameEngine
+add_executable(${NAME}
                 ## Vulkan Engine
                 "engine/src/file/filesystem.cpp"
                 "engine/src/file/JsonFile.cpp"
@@ -105,7 +137,7 @@ add_executable(tinyGameEngine
                 "editor/src/JsonFiles.cpp"
                 "editor/src/main.cpp"
                 "editor/src/tge_editor.cpp"
-                "editor/src/ui/tge_gui.cpp"
+        #        "editor/src/ui/tge_gui.cpp"
                 ## ImGUI
                 "editor/submodules/imgui/imgui.cpp"
                 "editor/submodules/imgui/imgui_demo.cpp"
@@ -115,7 +147,7 @@ add_executable(tinyGameEngine
                 "editor/submodules/imgui/backends/imgui_impl_vulkan.cpp"
                 "editor/submodules/imgui/backends/imgui_impl_glfw.cpp")
 
-target_link_libraries(tinyGameEngine 
+target_link_libraries(${NAME} 
                         Vulkan::Vulkan 
                         glfw 
                         simdjson physfs
