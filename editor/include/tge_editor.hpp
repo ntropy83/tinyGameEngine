@@ -43,7 +43,6 @@ namespace tge {
 
       //ImGui_ImplVulkanH_Window*       g_MainWindowData;
       
-
       TgeWindow tgeWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
       TgeDevice tgeDevice{tgeWindow};
       TgeSwapChain tgeSwapChain{tgeDevice, tgeWindow.getExtent()};

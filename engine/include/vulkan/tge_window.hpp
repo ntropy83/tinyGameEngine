@@ -1,5 +1,8 @@
 #pragma once
 
+#include <QWidget>
+#include <qtmetamacros.h>
+
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
@@ -7,9 +10,12 @@
 
 namespace tge {
 
-	class TgeWindow {
+	class TgeWindow : public QWidget {
+
+		Q_OBJECT
+
 		public:
-			TgeWindow(int w, int h, std::string name);
+			TgeWindow(int w, int h, std::string name, QWidget *parent = nullptr);
 			~TgeWindow();
 
 			TgeWindow(const TgeWindow &) = delete;

@@ -4,7 +4,7 @@
 #include <stdexcept>
 namespace tge {
 
-  TgeWindow::TgeWindow(int w, int h, std::string name) : width{w}, height{h}, windowName{name} {
+  TgeWindow::TgeWindow(int w, int h, std::string name, QWidget *parent) : width{w}, height{h}, windowName{name} {
     initWindow();
   }
 
