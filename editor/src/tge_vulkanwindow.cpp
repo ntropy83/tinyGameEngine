@@ -1,5 +1,6 @@
-#include "tge_editor.hpp"
+#include "tge_vulkanwindow.hpp"
 #include "vulkan/tge_shadercomp.hpp"
+#include "vulkan/tge_window.hpp"
 
 //std
 #include <array>
@@ -7,46 +8,24 @@
 
 namespace tge {
 
-  TgeEditor::TgeEditor(){
+  TgeEditor::TgeEditor() :
+      tgeWindow(WIDTH, HEIGHT, "Hello Vulkan!"),
+      tgeDevice(tgeWindow),
+      tgeSwapChain(tgeDevice, tgeWindow.getExtent())
+  {
     createPipelineLayout();
     createPipeline();
     createCommandBuffers();
-    //tgeEditorUI.imgui_init();
   }
 
   TgeEditor::~TgeEditor(){
     vkDestroyPipelineLayout(tgeDevice.device(), pipelineLayout, nullptr);
   }
 
-  void TgeEditor::run() {
-    while (!tgeWindow.shouldClose()) {
+  void TgeEditor::update() {
         glfwPollEvents();
         drawFrame();
-
         vkDeviceWaitIdle(tgeDevice.device());
-        
-        /* bool g_SwapChainRebuild = true;
-
-        if (g_SwapChainRebuild){
-
-          //ui-> = false;
-          ImGui_ImplVulkan_SetMinImageCount(tgeEditorUI.MinImageCount());
-          ImGui_ImplVulkanH_CreateOrResizeWindow(tgeEditorUI.getInstance(), tgeEditorUI.getPhysicalDevice(), tgeEditorUI.getDevice(), TgeEditor::g_MainWindowData, 
-          tgeEditorUI.getQueueFamily(), tgeEditorUI.getAllocator(), tgeWindow.get_window_width(), tgeWindow.get_window_height(), tgeEditorUI.MinImageCount());
-            //g_MainWindowData.FrameIndex = 0;
-        }
-
-        ImGui_ImplVulkan_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-        ImGui::ShowDemoWindow();
-        ImGui::Render();
-
-        memcpy(&wd->ClearValue.color.float32[0], &clear_color, 4 * sizeof(float));
-        FrameRender(wd);
-        FramePresent(wd); */ 
-
-      }
   };
 
   void TgeEditor::createPipelineLayout(){

@@ -11,6 +11,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 include_directories(${CMAKE_SOURCE_DIR}/editor/src)
 include_directories(${CMAKE_SOURCE_DIR}/editor/include)
 include_directories(${CMAKE_SOURCE_DIR}/engine/include)
@@ -60,16 +62,11 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Gui
 set(TS_FILES editor/lang/tge_qt_gui_de_DE.ts)
 
 set(PROJECT_SOURCES
-    #    editor/include/tge_qt_gui.hpp
-    #    editor/include/tge_qt_vulkan.hpp
         editor/src/mainwindow.ui
         editor/src/main.cpp
         editor/src/tge_mainwindow.cpp
         editor/include/tge_mainwindow.h
-        editor/src/tge_editor.cpp
-    #    editor/src/tge_qt_gui.cpp
-    #    editor/src/tge_qt_gui.ui 
-    #    editor/src/tge_qt_vulkan.cpp       
+        editor/src/tge_vulkanwindow.cpp      
     #    ${TS_FILES}
         ## Vulkan Engine
         engine/src/file/filesystem.cpp

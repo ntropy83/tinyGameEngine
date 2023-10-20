@@ -2,6 +2,8 @@
 
 // include std
 #include <stdexcept>
+#include <iostream>
+
 namespace tge {
 
   TgeWindow::TgeWindow(int w, int h, std::string name, QWidget *parent) : width{w}, height{h}, windowName{name} {
@@ -17,6 +19,7 @@ namespace tge {
     glfwInit();
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 
     window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
   }
@@ -26,6 +29,5 @@ namespace tge {
       throw std::runtime_error("failed to create window surface");
     }
   }
-
 } // namespace tge
 

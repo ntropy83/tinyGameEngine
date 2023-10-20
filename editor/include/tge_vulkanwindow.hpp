@@ -32,22 +32,24 @@ namespace tge {
 			TgeEditor &operator=(const TgeEditor &) = delete;
 
       std::vector<VkCommandBuffer> commandBuffer(){ return commandBuffers; }
+
+      TgeWindow& getWindow() { return tgeWindow; }
       
-      void run();
-    
+      void update();
+
     private:
       void createPipelineLayout();
       void createPipeline();
       void createCommandBuffers();
       void drawFrame();
 
-      //ImGui_ImplVulkanH_Window*       g_MainWindowData;
-      
-      TgeWindow tgeWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
-      TgeDevice tgeDevice{tgeWindow};
-      TgeSwapChain tgeSwapChain{tgeDevice, tgeWindow.getExtent()};
+      TgeWindow tgeWindow;
+      TgeDevice tgeDevice;
+      TgeSwapChain tgeSwapChain;
       std::unique_ptr<TgePipeline> tgePipeline;
       VkPipelineLayout pipelineLayout;
       std::vector<VkCommandBuffer> commandBuffers;
+
+      bool window_should_close(){ return tgeWindow.shouldClose(); }
   };
 } // namespace tge
