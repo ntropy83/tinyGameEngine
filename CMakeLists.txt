@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 
 set(NAME tgEngine)
 
@@ -26,6 +27,7 @@ ENDIF()
 
 IF(UNIX AND NOT APPLE)
 	set(LINUX TRUE)
+    find_package(X11 REQUIRED)
 ENDIF()
 
 IF(WIN32)
@@ -46,7 +48,7 @@ ELSEIF(LINUX)
 		ENDIF()
 	ENDIF()
     SET(GCC_COVERAGE_COMPILE_FLAGS "-std=c++17 -O2")
-    SET(GCC_COVERAGE_LINK_FLAGS    "-ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi")
+    SET(GCC_COVERAGE_LINK_FLAGS    "")
 
 	find_package(Threads REQUIRED)
 ELSEIF(APPLE)
@@ -62,11 +64,11 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Gui
 set(TS_FILES editor/lang/tge_qt_gui_de_DE.ts)
 
 set(PROJECT_SOURCES
-        editor/src/mainwindow.ui
+        editor/src/ui/mainwindow.ui
         editor/src/main.cpp
-        editor/src/tge_mainwindow.cpp
-        editor/include/tge_mainwindow.h
-        editor/src/tge_vulkanwindow.cpp      
+        editor/src/ui/tge_mainwindow.cpp
+        editor/include/ui/tge_mainwindow.h
+        editor/src/ui/tge_vulkanwindow.cpp      
     #    ${TS_FILES}
         ## Vulkan Engine
         engine/src/file/filesystem.cpp
@@ -106,6 +108,11 @@ else()
 
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
+
+IF(LINUX)
+    target_link_libraries(${NAME} PRIVATE ${X11_LIBRARIES})
+    target_include_directories(${NAME} PRIVATE ${X11_INCLUDE_DIR})
+ENDIF()
 
 target_link_libraries(${NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Core
                         Vulkan::Vulkan

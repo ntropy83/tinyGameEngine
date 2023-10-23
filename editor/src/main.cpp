@@ -1,8 +1,8 @@
 #include <QApplication>
 #include <QTimer>
 
-#include "tge_vulkanwindow.hpp"
-#include "tge_mainwindow.h"
+#include "ui/tge_vulkanwindow.hpp"
+#include "ui/tge_mainwindow.h"
 
 // std
 #include <cstdlib>
@@ -13,13 +13,12 @@ int main(int argc, char *argv[]) {
     FileSystem::Init();
     FileSystem::Mount("data.zip", "/");
 
-    QApplication a(argc, argv);  
-
-    MainWindow w;
-    w.show();
-
+    QApplication a(argc, argv);
     tge::TgeEditor app{}; 
-    tge::TgeWindow& vulkan_window = app.getWindow();
+    tge::TgeWindow& vulkan_window = app.getWindow();  
+
+    MainWindow w(vulkan_window);
+    w.show();
 
     auto runBoth = [&]() {
         QTimer timer;

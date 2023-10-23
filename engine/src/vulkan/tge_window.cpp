@@ -1,4 +1,5 @@
 #include "vulkan/tge_window.hpp"
+#include "GLFW/glfw3.h"
 
 // include std
 #include <stdexcept>
@@ -28,6 +29,46 @@ namespace tge {
     if(glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS) {
       throw std::runtime_error("failed to create window surface");
     }
+  }
+
+  void TgeWindow::minimizeGLFWWindow(GLFWwindow* window) {
+      #ifdef __linux__
+        Display* display = glfwGetX11Display();
+        Window x11Window = glfwGetX11Window(window);
+        XIconifyWindow(display, x11Window, DefaultScreen(display));
+      #endif
+
+      #ifdef _WIN32
+        HWND hwnd = glfwGetWin32Window(window);
+        ShowWindow(hwnd, SW_MINIMIZE);
+      #endif
+  }
+
+  void TgeWindow::maximizeGLFWWindow(GLFWwindow* window) {
+      #ifdef __linux__
+        glfwMaximizeWindow(window);
+      #endif
+
+      #ifdef _WIN32
+        HWND hwnd = glfwGetWin32Window(window);
+        ShowWindow(hwnd, SW_MAXIMIZE);
+      #endif
+  }
+
+  void TgeWindow::restoreGLFWWindow(GLFWwindow* window) {
+      #ifdef __linux__
+        if (glfwGetWindowAttrib(window, GLFW_ICONIFIED)) {
+          glfwRestoreWindow(window);
+        }
+        glfwShowWindow(window);
+      #endif
+
+      #ifdef _WIN32
+        if (IsIconic(glfwGetWin32Window(window))) {
+          glfwRestoreWindow(window);
+        }
+        glfwShowWindow(window);
+      #endif
   }
 } // namespace tge
 

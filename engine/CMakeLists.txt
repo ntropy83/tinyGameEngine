@@ -3,6 +3,7 @@ option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 set(CMAKE_BUILD_TYPE DEBUG)
 
 include_directories(${CMAKE_SOURCE_DIR}/editor/assets)
+include_directories(${CMAKE_SOURCE_DIR}/engine/submodules/glfw/include)
 
 # options GLFW
 set(GLFW_LIBRARY_TYPE "SHARED")
@@ -52,6 +53,7 @@ add_custom_target("project-data" ALL DEPENDS "${CMAKE_SOURCE_DIR}/build/data.zip
 
 ## Include subdirectories
 
+add_subdirectory("submodules/glfw")
 add_subdirectory("submodules/glslang")
 add_subdirectory("submodules/physfs")
 add_subdirectory("submodules/simdjson")

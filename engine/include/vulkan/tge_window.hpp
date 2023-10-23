@@ -5,6 +5,18 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
+#ifdef __linux__
+	#define GLFW_EXPOSE_NATIVE_X11
+	#include <GLFW/glfw3native.h>
+	#include <X11/Xlib.h>
+#endif
+
+#ifdef _WIN32
+	#define GLFW_EXPOSE_NATIVE_WIN32
+	#include <GLFW/glfw3native.h>
+	#include <Windows.h>
+#endif
+
 #include <string>
 
 namespace tge {
@@ -25,7 +37,12 @@ namespace tge {
 			int get_window_width() { return width; }
 			int get_window_height() { return height; }
 
+			void minimizeGLFWWindow(GLFWwindow* window);
+			void maximizeGLFWWindow(GLFWwindow* window);
+			void restoreGLFWWindow(GLFWwindow* window);
 			void createWindowSurface(VkInstance instance, VkSurfaceKHR *surface);
+
+			GLFWwindow *window;
 
 		private:
 
@@ -35,6 +52,5 @@ namespace tge {
 			const int height;
 
 			std::string windowName;
-			GLFWwindow *window;
 	};
 } // namespace tge
