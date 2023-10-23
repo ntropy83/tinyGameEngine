@@ -20,9 +20,13 @@ namespace tge {
     glfwInit();
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+    glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
 
     window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
+
+    int xpos = 0;
+    int ypos = 0;
+    glfwSetWindowPos(window, xpos, ypos);
   }
     
   void TgeWindow::createWindowSurface(VkInstance instance, VkSurfaceKHR *surface) {
