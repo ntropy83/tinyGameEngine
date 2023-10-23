@@ -164,4 +164,5 @@ cython_debug/
 
 # Build dir and binaries
 build/
+CMakeLists.txt.user
 
