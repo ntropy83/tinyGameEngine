@@ -31,6 +31,7 @@ IF(UNIX AND NOT APPLE)
 ENDIF()
 
 IF(WIN32)
+    include_directories($ENV{VULKAN_SDK}/include)
     IF (NOT Vulkan_FOUND)
 	    find_library(Vulkan_LIBRARY NAMES vulkan-1 vulkan PATHS ${CMAKE_SOURCE_DIR}/libs/vulkan)
 	    IF (Vulkan_LIBRARY)

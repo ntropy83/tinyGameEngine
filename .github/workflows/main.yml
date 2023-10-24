@@ -18,15 +18,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup xvfb
-        run: |
-          sudo apt-get install xvfb
-          export DISPLAY=':99.0'
-          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-          npm install browser-run
-          npm install electron # Without this, Electron complains it's not installed correctly
-          echo 'console.log(9001); window.close()' | ./node_modules/.bin/browser-run
-
       - name: Install Ubuntu Dependencies
         run: |
           sudo apt-get update
