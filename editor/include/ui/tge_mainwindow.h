@@ -3,8 +3,6 @@
 
 #include "vulkan/tge_window.hpp"
 #include <QMainWindow>
-#include <qmainwindow.h>
-#include <qobjectdefs.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

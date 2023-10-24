@@ -64,6 +64,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Gui
 set(TS_FILES editor/lang/tge_qt_gui_de_DE.ts)
 
 set(PROJECT_SOURCES
+        editor/src/debug/tge_QtDebug.cpp
         editor/src/ui/mainwindow.ui
         editor/src/main.cpp
         editor/src/ui/tge_mainwindow.cpp

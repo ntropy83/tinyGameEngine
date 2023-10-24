@@ -42,27 +42,3 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 
     event->accept();  // Continue with the regular close process
 }
-
-/* void MainWindow::customMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
-    Q_UNUSED(context);
-
-    QByteArray localMsg = msg.toLocal8Bit();
-
-    switch (type) {
-        case QtDebugMsg:
-            textEditConsole->append(QString("Debug: %1").arg(localMsg.constData()));
-            break;
-        case QtInfoMsg:
-            textEditConsole->append(QString("Info: %1").arg(localMsg.constData()));
-            break;
-        case QtWarningMsg:
-            textEditConsole->append(QString("Warning: %1").arg(localMsg.constData()));
-            break;
-        case QtCriticalMsg:
-            textEditConsole->append(QString("Critical: %1").arg(localMsg.constData()));
-            break;
-        case QtFatalMsg:
-            textEditConsole->append(QString("Fatal: %1").arg(localMsg.constData()));
-            abort();
-    } 
-} */
