@@ -11,7 +11,7 @@ simdJson        - read Json config files quickly(integrated but not implemented 
 
 glslang         - runtime shader compiler from GLSL to SPIR-V
 
-Dear ImGUI      - glfw and Vulkan compatible GUI
+QT              - create an Editor
 
 # Build
 Deps on Ubuntu:
