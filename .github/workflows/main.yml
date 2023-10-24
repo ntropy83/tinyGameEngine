@@ -18,7 +18,7 @@ jobs:
         with:
           submodules: recursive
 
-      - uses: actions/setup-node@v1
+      - name: Setup xvfb
         run: |
           sudo apt-get install xvfb
           export DISPLAY=':99.0'
