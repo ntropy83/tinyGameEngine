@@ -18,10 +18,12 @@ jobs:
         with:
           submodules: recursive
           
-      - name: Install X11 dependencies on MacOS
-        if: runner.os == 'macOS'
-        run: |
-          brew --cask install xquartz
+      - name: Run headless test
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: npm test
+          working-directory: ./ #optional
+          options: #optional
 
       - name: Install Ubuntu Dependencies
         run: |
