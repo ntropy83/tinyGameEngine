@@ -116,7 +116,7 @@ IF(LINUX)
 ENDIF()
 
 target_link_libraries(${NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Core
-                        Vulkan::Vulkan
+                        vulkan
                         glfw 
                         simdjson physfs
                         glslang glslang-default-resource-limits SPIRV MachineIndependent GenericCodeGen OSDependent)
