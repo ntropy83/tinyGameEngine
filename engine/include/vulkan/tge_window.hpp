@@ -38,15 +38,17 @@ namespace tge {
 			int get_window_width() { return width; }
 			int get_window_height() { return height; }
 
-			void minimizeGLFWWindow(GLFWwindow* window);
-			void maximizeGLFWWindow(GLFWwindow* window);
-			void restoreGLFWWindow(GLFWwindow* window);
+    		GLFWwindow* getGLFWWindow() {
+        		return window;
+    		}
+
 			void createWindowSurface(VkInstance instance, VkSurfaceKHR *surface);
 
-			GLFWwindow *window;
+			void integrateInto(QWidget* placeholder);
 
 		private:
 
+			GLFWwindow *window;
 			void initWindow();
 
 			const int width;

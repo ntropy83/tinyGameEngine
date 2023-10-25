@@ -35,44 +35,14 @@ namespace tge {
     }
   }
 
-  void TgeWindow::minimizeGLFWWindow(GLFWwindow* window) {
-      #ifdef __linux__
-        Display* display = glfwGetX11Display();
-        Window x11Window = glfwGetX11Window(window);
-        XIconifyWindow(display, x11Window, DefaultScreen(display));
-      #endif
+  void TgeWindow::integrateInto(QWidget* placeholder){
+      Window glfwNativeWindow = glfwGetX11Window(window);
+      Window qtNativeWindow = placeholder->winId();
 
-      #ifdef _WIN32
-        HWND hwnd = glfwGetWin32Window(window);
-        ShowWindow(hwnd, SW_MINIMIZE);
-      #endif
-  }
+      Display* display = glfwGetX11Display();
+      XReparentWindow(display, glfwNativeWindow, qtNativeWindow, 0, 0);
 
-  void TgeWindow::maximizeGLFWWindow(GLFWwindow* window) {
-      #ifdef __linux__
-        glfwMaximizeWindow(window);
-      #endif
-
-      #ifdef _WIN32
-        HWND hwnd = glfwGetWin32Window(window);
-        ShowWindow(hwnd, SW_MAXIMIZE);
-      #endif
-  }
-
-  void TgeWindow::restoreGLFWWindow(GLFWwindow* window) {
-      #ifdef __linux__
-        if (glfwGetWindowAttrib(window, GLFW_ICONIFIED)) {
-          glfwRestoreWindow(window);
-        }
-        glfwShowWindow(window);
-      #endif
-
-      #ifdef _WIN32
-        if (IsIconic(glfwGetWin32Window(window))) {
-          glfwRestoreWindow(window);
-        }
-        glfwShowWindow(window);
-      #endif
+      glfwShowWindow(window);
   }
 } // namespace tge
 

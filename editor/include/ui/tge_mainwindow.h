@@ -17,13 +17,11 @@ QT_END_NAMESPACE
         ~MainWindow();
 
     protected:
-        void changeEvent(QEvent* event) override;
-        void closeEvent(QCloseEvent *event) override;
         void customMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 
     private:
         Ui::MainWindow *ui;
-        tge::TgeWindow &window_;
+tge::TgeWindow &window_;
     };
 
 #endif // MAINWINDOW_H
