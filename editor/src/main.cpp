@@ -19,9 +19,12 @@ int main(int argc, char *argv[]) {
 
     MainWindow w(vulkan_window);
 
-    // Create placeholder widget
-    QWidget *glfwPlaceholder = new QWidget(&w);
-    w.setCentralWidget(glfwPlaceholder);
+
+    QWidget* glfwPlaceholder = w.findChild<QWidget*>("glfwPlaceholder");
+    if (!glfwPlaceholder) {
+        qCritical() << "Failed to find glfwPlaceholder";
+        return EXIT_FAILURE;
+    }
 
     // Integrate Vulkan window into the placeholder widget
     vulkan_window.integrateInto(glfwPlaceholder);
