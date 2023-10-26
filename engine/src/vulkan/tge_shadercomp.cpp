@@ -1,6 +1,8 @@
 //std
 #include <iostream>
 
+#include "debug/tge_vulDebug.hpp"
+
 #include "file/filesystem.hpp"
 #include "vulkan/tge_shadercomp.hpp"
 
@@ -120,7 +122,10 @@ namespace tge {
     
     std::vector<uint32_t> TgeShaderCompiler::CompileFromFile(vk::ShaderStageFlagBits stage, const std::string &filename) {
         const char *stageName = GetShaderStageName(stage);
-        std::cout << "Compiling " << stageName << " shader: " << filename << "\n";
+        std::ostringstream msg;
+        TgeVulDebug vulDebug;
+        msg << "Compiling " << stageName << " shader: " << filename << "\n";
+        vulDebug.writeToBuffer(msg.str());
         
         return Compile(stage, FileSystem::Read(filename));
     }

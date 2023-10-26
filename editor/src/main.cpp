@@ -1,4 +1,6 @@
 #include "debug/tge_QtDebug.hpp"
+#include "debug/tge_vulDebug.hpp"
+
 #include <QApplication>
 #include <QTimer>
 #include "ui/tge_vulkanwindow.hpp"
@@ -35,7 +37,14 @@ int main(int argc, char *argv[]) {
     debugInstance.setTextEdit(w.findChild<QTextEdit*>("textEdit"));
     qInstallMessageHandler(tge::TgeDebug::staticMessageHandler); 
 
-    qDebug() << "\nDevice count: 4\n...";  // Example debug output
+    qDebug() << "test";
+    std::ostringstream msg;
+    tge::TgeVulDebug vulDebug;
+
+    msg << vulDebug.flushBuffer();
+    QString str = QString::fromStdString(msg.str());
+
+    qDebug() << str; 
 
     auto runBoth = [&]() {
         QTimer timer;

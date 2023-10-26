@@ -73,6 +73,7 @@ set(PROJECT_SOURCES
         editor/src/ui/tge_vulkanwindow.cpp      
     #    ${TS_FILES}
         ## Vulkan Engine
+        engine/src/debug/tge_vulDebug.cpp
         engine/src/file/filesystem.cpp
         engine/src/file/JsonFile.cpp
         engine/src/vulkan/tge_shadercomp.cpp
