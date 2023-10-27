@@ -33,12 +33,10 @@ jobs:
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
-          - os: ubuntu-latest
-            c_compiler: clang
-            cpp_compiler: clang++
         exclude:
           - os: windows-latest
             c_compiler: gcc
+            name: Install Ubuntu Dependencies
           - os: windows-latest
             c_compiler: clang
           - os: ubuntu-latest
@@ -46,6 +44,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Install Ubuntu Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install libxxf86vm-dev libxi-dev libxrandr-dev \
+        libxinerama-dev libxcursor-dev mesa-common-dev libx11-dev xorg-dev
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3.3.0
