@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.7)
-set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+cmake_minimum_required(VERSION 3.20)
+#set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 
 set(NAME tgEngine)
 

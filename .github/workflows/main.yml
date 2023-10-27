@@ -36,7 +36,6 @@ jobs:
         exclude:
           - os: windows-latest
             c_compiler: gcc
-            name: Install Ubuntu Dependencies
           - os: windows-latest
             c_compiler: clang
           - os: ubuntu-latest
