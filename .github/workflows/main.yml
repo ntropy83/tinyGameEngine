@@ -13,26 +13,21 @@ jobs:
       image: ubuntu:20.04
       
     steps:
-    - name: Ensure Git is installed
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y git
-
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
-        submodules: recursive
-      
+        submodules: 'recursive'
+
     - name: Set up C++ environment
       run: |
-        sudo apt-get update
-        sudo apt-get install -y g++ cmake make
+        apt-get update
+        apt-get install -y g++ cmake make
         
     - name: Install Vulkan SDK
-      run: sudo apt-get install -y libvulkan-dev
+      run: apt-get install -y libvulkan-dev
         
     - name: Install Qt and dependencies
-      run: sudo apt-get install -y qtbase5-dev qttools5-dev-tools
+      run: apt-get install -y qtbase5-dev qttools5-dev-tools
 
     - name: Configure
       run: cmake -B build
@@ -44,15 +39,10 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - name: Ensure Git is installed
-      run: |
-        choco install git
-        $env:PATH += ";C:\Program Files\Git\cmd"
-        
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
-        submodules: recursive
+        submodules: 'recursive'
       
     - name: Set up C++ environment
       run: |
