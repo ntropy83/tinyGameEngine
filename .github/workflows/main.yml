@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ubuntu:20.04
-
-  - name: Ensure Git is installed
-    run: |
-      sudo apt-get update
-      sudo apt-get install -y git
       
     steps:
+    - name: Ensure Git is installed
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y git
+
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
