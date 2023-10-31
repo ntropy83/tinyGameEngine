@@ -1,4 +1,5 @@
 #include "debug/tge_QtDebug.hpp"
+#include <QScrollBar>
 
 namespace tge {  
 
@@ -9,27 +10,38 @@ namespace tge {
     void TgeDebug::staticMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
         Q_UNUSED(context);
 
-        QByteArray localMsg = msg.toLocal8Bit();
-
         if(TgeDebug::instance && TgeDebug::instance->textEditConsole) {
+            QString formattedMessage;
 
             switch (type) {
                 case QtDebugMsg:
-                    instance->textEditConsole->append(QString("Debug: %1").arg(localMsg.constData()));
+                    formattedMessage = QString("Debug: %1").arg(msg);
                     break;
                 case QtInfoMsg:
-                    instance->textEditConsole->append(QString("Info: %1").arg(localMsg.constData()));
+                    formattedMessage = QString("Info: %1").arg(msg);
                     break;
                 case QtWarningMsg:
-                    instance->textEditConsole->append(QString("Warning: %1").arg(localMsg.constData()));
+                    formattedMessage = QString("Warning: %1").arg(msg);
                     break;
                 case QtCriticalMsg:
-                    instance->textEditConsole->append(QString("Critical: %1").arg(localMsg.constData()));
+                    formattedMessage = QString("Critical: %1").arg(msg);
                     break;
                 case QtFatalMsg:
-                    instance->textEditConsole->append(QString("Fatal: %1").arg(localMsg.constData()));
+                    formattedMessage = QString("Fatal: %1").arg(msg);
                     abort();
             }
+
+            // Ensure that newline characters are correctly interpreted
+            formattedMessage.replace("\\n", "\n");
+
+            instance->textEditConsole->moveCursor(QTextCursor::End);
+            instance->textEditConsole->insertPlainText(formattedMessage);
+            instance->textEditConsole->append(""); // Move to a new line
+            instance->textEditConsole->moveCursor(QTextCursor::End);
+
+            // Ensure the latest text is visible
+            QScrollBar *scrollBar = instance->textEditConsole->verticalScrollBar();
+            scrollBar->setValue(scrollBar->maximum());
         } 
     }
 }

@@ -3,6 +3,9 @@
 
 #include <QApplication>
 #include <QTimer>
+#include <QTreeView>
+#include <QFileSystemModel>
+#include <QDir>
 #include "ui/tge_vulkanwindow.hpp"
 #include "ui/tge_mainwindow.h"
 
@@ -21,6 +24,12 @@ int main(int argc, char *argv[]) {
 
     MainWindow w(vulkan_window);
 
+    QTreeView* treeView = w.findChild<QTreeView*>("treeView");
+    QFileSystemModel fileSystemModel;
+    fileSystemModel.setRootPath(QDir::rootPath());
+    treeView->setModel(&fileSystemModel);
+    treeView->setRootIndex(fileSystemModel.index(QDir::currentPath()));
+
 
     QWidget* glfwPlaceholder = w.findChild<QWidget*>("glfwPlaceholder");
     if (!glfwPlaceholder) {
@@ -38,7 +47,6 @@ int main(int argc, char *argv[]) {
     qInstallMessageHandler(tge::TgeDebug::staticMessageHandler); 
 
     tge::TgeVulDebug vulDebug;
-    vulDebug.writeToBuffer("Test Vulkan Debug Message");
     std::string debugOutput = vulDebug.flushBuffer();
     qDebug() << QString::fromStdString(debugOutput);
 

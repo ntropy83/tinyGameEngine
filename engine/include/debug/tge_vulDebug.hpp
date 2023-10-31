@@ -1,23 +1,24 @@
-#pragma once
+#ifndef TGE_VULDEBUG_HPP
+#define TGE_VULDEBUG_HPP
 
-#include <iostream>
 #include <sstream>
-#include <string>
+#include <mutex>
 
 namespace tge {
-    class TgeVulDebug {
-        public:
 
-        	TgeVulDebug();
-			~TgeVulDebug();
+class TgeVulDebug {
+public:
+    TgeVulDebug();
+    ~TgeVulDebug();
 
-			TgeVulDebug(const TgeVulDebug &) = delete;
-			TgeVulDebug &operator=(const TgeVulDebug &) = delete;
+    void writeToBuffer(const std::string& text);
+    std::string flushBuffer();
 
-            std::ostringstream globalBuffer;
-            void writeToBuffer(const std::string& text);
-            std::string flushBuffer();
+private:
+    static std::ostringstream globalBuffer;
+    static std::mutex bufferMutex;
+};
 
-    };
+} // namespace tge
 
-}
+#endif // TGE_VULDEBUG_HPP

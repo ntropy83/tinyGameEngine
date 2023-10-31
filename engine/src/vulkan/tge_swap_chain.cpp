@@ -1,5 +1,7 @@
 #include "vulkan/tge_swap_chain.hpp"
 
+#include "debug/tge_vulDebug.hpp"
+
 // std
 #include <array>
 #include <cstdlib>
@@ -387,7 +389,11 @@ VkPresentModeKHR TgeSwapChain::chooseSwapPresentMode(
   //   }
   // }
 
-  std::cout << "Present mode: V-Sync " << std::endl;
+  std::ostringstream msg;
+  TgeVulDebug vulDebug;
+  msg << "Present mode: V-Sync " << std::endl;
+  vulDebug.writeToBuffer(msg.str());
+
   return VK_PRESENT_MODE_FIFO_KHR;
 }
 

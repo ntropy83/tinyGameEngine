@@ -116,7 +116,11 @@ void TgeDevice::pickPhysicalDevice() {
   if (deviceCount == 0) {
     throw std::runtime_error("failed to find GPUs with Vulkan support!");
   }
-  std::cout << "Device count: " << deviceCount << std::endl;
+  std::ostringstream msg;
+  TgeVulDebug vulDebug;
+  msg << "Device count: " << deviceCount << std::endl;
+  vulDebug.writeToBuffer(msg.str());
+
   std::vector<VkPhysicalDevice> devices(deviceCount);
   vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
@@ -132,7 +136,8 @@ void TgeDevice::pickPhysicalDevice() {
   }
 
   vkGetPhysicalDeviceProperties(physicalDevice, &properties);
-  std::cout << "physical device: " << properties.deviceName << std::endl;
+    msg << "physical device: " << properties.deviceName << std::endl;
+    vulDebug.writeToBuffer(msg.str());
 }
 
 void TgeDevice::createLogicalDevice() {
@@ -289,7 +294,7 @@ void TgeDevice::hasGflwRequiredInstanceExtensions() {
 
   std::unordered_set<std::string> available;
   for (const auto &extension : extensions) {
-    msg << "\t" << extension.extensionName << std::endl;
+    msg << extension.extensionName << std::endl;
     vulDebug.writeToBuffer(msg.str());    
     available.insert(extension.extensionName);
   }
@@ -300,7 +305,7 @@ void TgeDevice::hasGflwRequiredInstanceExtensions() {
   auto requiredExtensions = getRequiredExtensions();
   for (const auto &required : requiredExtensions) {
 
-    msg << "\t" << required << std::endl;
+    msg << required << std::endl;
     vulDebug.writeToBuffer(msg.str());
     if (available.find(required) == available.end()) {
       msg << "Missing required glfw extension" << '\n';

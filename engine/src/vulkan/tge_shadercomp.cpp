@@ -46,7 +46,11 @@ namespace tge {
 
     TgeShaderCompiler::TgeShaderCompiler(const std::string &includesDir) {
 
-        std::cout << "glslang version: " << glslang::GetGlslVersionString() << "\n";
+        std::ostringstream msg;
+        TgeVulDebug vulDebug;
+        msg << "glslang version: " << glslang::GetGlslVersionString() << "\n";
+        vulDebug.writeToBuffer(msg.str());
+        
         if (!glslang::InitializeProcess()) { throw std::runtime_error("Failed to initialize glslang.\n"); }
         m_includer = std::make_unique<ShaderIncluder>(includesDir);
     }
