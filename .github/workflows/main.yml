@@ -9,23 +9,25 @@ on:
 jobs:
   build-linux:
     runs-on: ubuntu-latest
-    
+    container:
+      image: ubuntu:20.04
+      
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
         submodules: recursive
       
-    - name: Install build essentials and CMake
+    - name: Set up C++ environment
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential cmake
+        sudo apt-get install -y g++ cmake make
         
     - name: Install Vulkan SDK
       run: sudo apt-get install -y libvulkan-dev
         
-    - name: Install Qt
-      run: sudo apt-get install -y qtbase5-dev
+    - name: Install Qt and dependencies
+      run: sudo apt-get install -y qtbase5-dev qttools5-dev-tools
 
     - name: Configure
       run: cmake -B build
@@ -42,18 +44,21 @@ jobs:
       with:
         submodules: recursive
       
-    - name: Install Chocolatey packages
+    - name: Set up C++ environment
       run: |
-        choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
-        choco install visualstudio2019community
-        choco install visualstudio2019-workload-vctools
-        choco install vulkansdk
+        choco install -y visualstudio2019buildtools
+        choco install -y visualstudio2019-workload-vctools
         
+    - name: Install Vulkan SDK
+      run: choco install vulkansdk
+
     - name: Install Qt
-      run: choco install qt-opensource-windows-x86-mingw530-5.7.0
+      run: |
+        pip install aqtinstall
+        python -m aqt install --outputdir C:\Qt 5.15.2 windows desktop win64_msvc2019_64 -m qttools
 
     - name: Configure
-      run: cmake -B build
+      run: cmake -B build -DCMAKE_PREFIX_PATH=C:\Qt\5.15.2\msvc2019_64
     
     - name: Build
       run: cmake --build build
