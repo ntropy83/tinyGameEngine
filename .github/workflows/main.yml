@@ -42,13 +42,13 @@ jobs:
 
   build-windows:
     runs-on: windows-latest
-
-  - name: Ensure Git is installed
-    run: |
-      choco install git
-      $env:PATH += ";C:\Program Files\Git\cmd"
     
     steps:
+    - name: Ensure Git is installed
+      run: |
+        choco install git
+        $env:PATH += ";C:\Program Files\Git\cmd"
+        
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
