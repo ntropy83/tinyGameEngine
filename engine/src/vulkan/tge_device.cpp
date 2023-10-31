@@ -1,5 +1,7 @@
 #include "vulkan/tge_device.hpp"
 
+#include "debug/tge_vulDebug.hpp"
+
 // std headers
 #include <cstring>
 #include <iostream>
@@ -75,9 +77,9 @@ void TgeDevice::createInstance() {
 
   VkApplicationInfo appInfo = {};
   appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-  appInfo.pApplicationName = "LittleVulkanEngine App";
+  appInfo.pApplicationName = "TinyGameEngine App";
   appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
-  appInfo.pEngineName = "No Engine";
+  appInfo.pEngineName = "tGE 0.1";
   appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
   appInfo.apiVersion = VK_API_VERSION_1_0;
 
@@ -280,18 +282,29 @@ void TgeDevice::hasGflwRequiredInstanceExtensions() {
   std::vector<VkExtensionProperties> extensions(extensionCount);
   vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
 
-  std::cout << "available extensions:" << std::endl;
+  std::ostringstream msg;
+  TgeVulDebug vulDebug;
+  msg << "available extensions:" << std::endl;
+  vulDebug.writeToBuffer(msg.str());
+
   std::unordered_set<std::string> available;
   for (const auto &extension : extensions) {
-    std::cout << "\t" << extension.extensionName << std::endl;
+    msg << "\t" << extension.extensionName << std::endl;
+    vulDebug.writeToBuffer(msg.str());    
     available.insert(extension.extensionName);
   }
 
-  std::cout << "required extensions:" << std::endl;
+  msg << "required extensions:" << std::endl;
+  vulDebug.writeToBuffer(msg.str());
+
   auto requiredExtensions = getRequiredExtensions();
   for (const auto &required : requiredExtensions) {
-    std::cout << "\t" << required << std::endl;
+
+    msg << "\t" << required << std::endl;
+    vulDebug.writeToBuffer(msg.str());
     if (available.find(required) == available.end()) {
+      msg << "Missing required glfw extension" << '\n';
+      vulDebug.writeToBuffer(msg.str());
       throw std::runtime_error("Missing required glfw extension");
     }
   }

@@ -16,4 +16,13 @@ MainWindow::MainWindow(tge::TgeWindow &tgeWindow, QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+
+    // Connect the Quit action to the slot
+    connect(ui->actionQuit, SIGNAL(triggered()), this, SLOT(on_actionQuit_triggered()));
 }
+
+void MainWindow::on_actionQuit_triggered()
+{
+    QApplication::quit();
+}
+

@@ -1,5 +1,5 @@
-#include "debug/tge_QtDebug.hpp"
 #include "debug/tge_vulDebug.hpp"
+#include "debug/tge_QtDebug.hpp"
 
 #include <QApplication>
 #include <QTimer>
@@ -34,17 +34,13 @@ int main(int argc, char *argv[]) {
     w.show();
 
     tge::TgeDebug debugInstance;
-    debugInstance.setTextEdit(w.findChild<QTextEdit*>("textEdit"));
+    debugInstance.setTextEdit(w.findChild<QTextEdit*>("debugConsole"));
     qInstallMessageHandler(tge::TgeDebug::staticMessageHandler); 
 
-    qDebug() << "test";
-    std::ostringstream msg;
     tge::TgeVulDebug vulDebug;
-
-    msg << vulDebug.flushBuffer();
-    QString str = QString::fromStdString(msg.str());
-
-    qDebug() << str; 
+    vulDebug.writeToBuffer("Test Vulkan Debug Message");
+    std::string debugOutput = vulDebug.flushBuffer();
+    qDebug() << QString::fromStdString(debugOutput);
 
     auto runBoth = [&]() {
         QTimer timer;
@@ -55,7 +51,7 @@ int main(int argc, char *argv[]) {
                 a.quit();
             }
         });
-        timer.start(33);  // Approx. 30fps
+        timer.start(33);  // Approx. 30fps, formula is 1000 / wanted fps
 
         return a.exec();
     };

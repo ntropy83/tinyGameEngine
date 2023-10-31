@@ -1,4 +1,7 @@
 #include "vulkan/tge_window.hpp"
+
+#include "debug/tge_vulDebug.hpp"
+
 #include "GLFW/glfw3.h"
 
 // include std
@@ -31,6 +34,10 @@ namespace tge {
     
   void TgeWindow::createWindowSurface(VkInstance instance, VkSurfaceKHR *surface) {
     if(glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS) {
+
+      TgeVulDebug vulDebug;
+      vulDebug.writeToBuffer("failed to create window surface");
+
       throw std::runtime_error("failed to create window surface");
     }
   }

@@ -19,9 +19,12 @@ QT_END_NAMESPACE
     protected:
         void customMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 
+    private slots:
+        void on_actionQuit_triggered();
+
     private:
         Ui::MainWindow *ui;
-tge::TgeWindow &window_;
+        tge::TgeWindow &window_;
     };
 
 #endif // MAINWINDOW_H
