@@ -13,6 +13,11 @@ jobs:
       image: ubuntu:20.04
       
     steps:
+    - name: Install Git
+      run: |
+        apt-get update
+        apt-get install -y git
+        
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
@@ -20,7 +25,6 @@ jobs:
 
     - name: Set up C++ environment
       run: |
-        apt-get update
         apt-get install -y g++ cmake make
         
     - name: Install Vulkan SDK
