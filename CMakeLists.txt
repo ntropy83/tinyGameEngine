@@ -9,9 +9,8 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include_directories(${CMAKE_SOURCE_DIR}/editor/src)
@@ -32,6 +31,7 @@ ENDIF()
 
 IF(WIN32)
     include_directories($ENV{VULKAN_SDK}/include)
+
     IF (NOT Vulkan_FOUND)
 	    find_library(Vulkan_LIBRARY NAMES vulkan-1 vulkan PATHS ${CMAKE_SOURCE_DIR}/libs/vulkan)
 	    IF (Vulkan_LIBRARY)
@@ -39,19 +39,21 @@ IF(WIN32)
 		    MESSAGE("Using bundled Vulkan library version")
         ENDIF()
     ENDIF()
+
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_WIN32_KHR")
 ELSEIF(LINUX)
+
 	IF (NOT Vulkan_FOUND)
-		find_library(Vulkan_LIBRARY NAMES vulkan HINTS "$ENV{VULKAN_SDK}/lib" "${CMAKE_SOURCE_DIR}/libs/vulkan" REQUIRED)
 		IF (Vulkan_LIBRARY)
 			set(Vulkan_FOUND ON)
 			MESSAGE("Using bundled Vulkan library version") 
 		ENDIF()
 	ENDIF()
+
     SET(GCC_COVERAGE_COMPILE_FLAGS "-std=c++17 -O2")
     SET(GCC_COVERAGE_LINK_FLAGS    "")
-
 	find_package(Threads REQUIRED)
+    
 ELSEIF(APPLE)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_MACOS_MVK -DVK_EXAMPLE_XCODE_GENERATED")
 	# Todo : android?
