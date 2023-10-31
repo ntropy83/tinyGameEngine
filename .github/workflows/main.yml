@@ -9,18 +9,29 @@ on:
 jobs:
   build-linux:
     runs-on: ubuntu-latest
-    
+    container:
+      image: ubuntu:20.04
+      
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
       
-    - name: Install dependencies
+    - name: Set up C++ environment
+      uses: actions/setup-cpp@v3
+      with:
+        compiler: gcc
+        cmake-version: '3.22.x'
+        
+    - name: Install Vulkan SDK
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential cmake libvulkan-dev qt5-default
+        sudo apt-get install -y libvulkan-dev
         
+    - name: Install Qt
+      run: sudo apt-get install -y qtbase5-dev
+
     - name: Configure
       run: cmake -B build
     
@@ -32,16 +43,21 @@ jobs:
     
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
       
-    - name: Install dependencies
-      run: |
-        choco install cmake --version=3.22.1
-        choco install vulkansdk
-        choco install qt5
+    - name: Set up C++ environment
+      uses: actions/setup-cpp@v3
+      with:
+        cmake-version: '3.22.x'
         
+    - name: Install Vulkan SDK
+      run: choco install vulkansdk
+
+    - name: Install Qt
+      run: choco install qt-opensource-windows-x86-5.15.2 --version=5.15.2
+
     - name: Configure
       run: cmake -B build
     
