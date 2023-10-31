@@ -14,7 +14,9 @@ jobs:
       
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
       
     - name: Set up C++ environment
       uses: actions/setup-cpp@v2
@@ -41,7 +43,9 @@ jobs:
     
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
       
     - name: Set up C++ environment
       uses: actions/setup-cpp@v2
