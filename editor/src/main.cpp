@@ -30,7 +30,6 @@ int main(int argc, char *argv[]) {
     treeView->setModel(&fileSystemModel);
     treeView->setRootIndex(fileSystemModel.index(QDir::currentPath()));
 
-
     QWidget* glfwPlaceholder = w.findChild<QWidget*>("glfwPlaceholder");
     if (!glfwPlaceholder) {
         qCritical() << "Failed to find glfwPlaceholder";
@@ -42,20 +41,22 @@ int main(int argc, char *argv[]) {
 
     w.show();
 
+    QTextEdit* debugConsole = w.findChild<QTextEdit*>("debugConsole");
     tge::TgeDebug debugInstance;
-    debugInstance.setTextEdit(w.findChild<QTextEdit*>("debugConsole"));
-    qInstallMessageHandler(tge::TgeDebug::staticMessageHandler); 
+    debugInstance.setTextEdit(debugConsole);
+    qInstallMessageHandler(tge::TgeDebug::staticMessageHandler);
 
+    // Flush any debug messages that might have been stored before the GUI was up
     tge::TgeVulDebug vulDebug;
-    std::string debugOutput = vulDebug.flushBuffer();
-    qDebug() << QString::fromStdString(debugOutput);
+    QString debugOutput = QString::fromStdString(vulDebug.flushBuffer());
+    debugConsole->setHtml(debugOutput);
 
     auto runBoth = [&]() {
         QTimer timer;
         QObject::connect(&timer, &QTimer::timeout, [&]() {
             if (!vulkan_window.shouldClose()) {
                 app.update();  
-            }else{
+            } else {
                 a.quit();
             }
         });
@@ -64,14 +65,14 @@ int main(int argc, char *argv[]) {
         return a.exec();
     };
 
+    int exitCode = EXIT_SUCCESS;
     try {
-        return runBoth();
+        exitCode = runBoth();
     } catch (const std::exception &e) {
-        FileSystem::Shutdown();
-        std::cerr << e.what() << '\n';
-        return EXIT_FAILURE;
+        qCritical() << "An exception occurred: " << e.what();
+        exitCode = EXIT_FAILURE;
     }
 
     FileSystem::Shutdown();
-    return EXIT_SUCCESS;
+    return exitCode;
 }

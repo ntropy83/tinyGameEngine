@@ -6,12 +6,20 @@
 
 namespace tge {
 
+enum class MessageType {
+    Debug,
+    Info,
+    Warning,
+    Critical,
+    Fatal
+};
+
 class TgeVulDebug {
 public:
     TgeVulDebug();
     ~TgeVulDebug();
 
-    void writeToBuffer(const std::string& text);
+    void writeToBuffer(const std::string& text, MessageType type);
     std::string flushBuffer();
 
 private:

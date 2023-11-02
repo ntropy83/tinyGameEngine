@@ -13,7 +13,7 @@ namespace tge {
 // local callback functions
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
     VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-    VkDebugUtilsMessageTypeFlagsEXT messageType,
+    VkDebugUtilsMessageTypeFlagsEXT MessageType,
     const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
     void *pUserData) {
   std::cerr <<  "validation layer: " << pCallbackData->pMessage << std::endl;
@@ -111,34 +111,44 @@ void TgeDevice::createInstance() {
 }
 
 void TgeDevice::pickPhysicalDevice() {
-  uint32_t deviceCount = 0;
-  vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
-  if (deviceCount == 0) {
-    throw std::runtime_error("failed to find GPUs with Vulkan support!");
-  }
-  std::ostringstream msg;
-  TgeVulDebug vulDebug;
-  msg << "Device count: " << deviceCount << std::endl;
-  vulDebug.writeToBuffer(msg.str());
-
-  std::vector<VkPhysicalDevice> devices(deviceCount);
-  vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
-
-  for (const auto &device : devices) {
-    if (isDeviceSuitable(device)) {
-      physicalDevice = device;
-      break;
+    uint32_t deviceCount = 0;
+    vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
+    if (deviceCount == 0) {
+        throw std::runtime_error("failed to find GPUs with Vulkan support!");
     }
-  }
+    
+    std::ostringstream msg;
+    TgeVulDebug vulDebug;
+    
+    msg << "Device count: " << deviceCount;
+    vulDebug.writeToBuffer(msg.str(), MessageType::Info);
+    std::cout << msg.str() << std::endl;
+    
+    // Clear the stringstream after writing to buffer
+    msg.str("");
+    msg.clear();
 
-  if (physicalDevice == VK_NULL_HANDLE) {
-    throw std::runtime_error("failed to find a suitable GPU!");
-  }
+    std::vector<VkPhysicalDevice> devices(deviceCount);
+    vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
-  vkGetPhysicalDeviceProperties(physicalDevice, &properties);
-    msg << "physical device: " << properties.deviceName << std::endl;
-    vulDebug.writeToBuffer(msg.str());
+    for (const auto &device : devices) {
+        if (isDeviceSuitable(device)) {
+            physicalDevice = device;
+            break;
+        }
+    }
+
+    if (physicalDevice == VK_NULL_HANDLE) {
+        throw std::runtime_error("failed to find a suitable GPU!");
+    }
+
+    vkGetPhysicalDeviceProperties(physicalDevice, &properties);
+    // Now start a new message for the physical device name
+    msg << "Physical device: " << properties.deviceName;
+    vulDebug.writeToBuffer(msg.str(), MessageType::Info);
+    std::cout << msg.str() << std::endl;
 }
+
 
 void TgeDevice::createLogicalDevice() {
   QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
@@ -282,37 +292,41 @@ std::vector<const char *> TgeDevice::getRequiredExtensions() {
 }
 
 void TgeDevice::hasGflwRequiredInstanceExtensions() {
-  uint32_t extensionCount = 0;
-  vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
-  std::vector<VkExtensionProperties> extensions(extensionCount);
-  vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
+    uint32_t extensionCount = 0;
+    vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+    std::vector<VkExtensionProperties> extensions(extensionCount);
+    vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
 
-  std::ostringstream msg;
-  TgeVulDebug vulDebug;
-  msg << "available extensions:" << std::endl;
-  vulDebug.writeToBuffer(msg.str());
+    TgeVulDebug vulDebug;
+    vulDebug.writeToBuffer("available extensions:\n", MessageType::Debug);
+    std::cout << "available extensions:" << std::endl;
 
-  std::unordered_set<std::string> available;
-  for (const auto &extension : extensions) {
-    msg << extension.extensionName << std::endl;
-    vulDebug.writeToBuffer(msg.str());    
-    available.insert(extension.extensionName);
-  }
-
-  msg << "required extensions:" << std::endl;
-  vulDebug.writeToBuffer(msg.str());
-
-  auto requiredExtensions = getRequiredExtensions();
-  for (const auto &required : requiredExtensions) {
-
-    msg << required << std::endl;
-    vulDebug.writeToBuffer(msg.str());
-    if (available.find(required) == available.end()) {
-      msg << "Missing required glfw extension" << '\n';
-      vulDebug.writeToBuffer(msg.str());
-      throw std::runtime_error("Missing required glfw extension");
+    std::unordered_set<std::string> available;
+    for (const auto &extension : extensions) {
+        std::ostringstream msg;  // Create a new stringstream for each extension
+        msg << extension.extensionName << '\n';
+        vulDebug.writeToBuffer(msg.str(), MessageType::Debug);
+        std::cout << extension.extensionName << std::endl;
+        available.insert(extension.extensionName);
     }
-  }
+
+    vulDebug.writeToBuffer("required extensions:\n", MessageType::Debug);
+    std::cout << "required extensions:" << std::endl;
+
+    auto requiredExtensions = getRequiredExtensions();
+    for (const auto &required : requiredExtensions) {
+        std::ostringstream msg;  // Create a new stringstream for each required extension
+        msg << required << '\n';
+        vulDebug.writeToBuffer(msg.str(), MessageType::Debug);
+        std::cout << required << std::endl;
+        if (available.find(required) == available.end()) {
+            msg.str(""); // Reset the stringstream
+            msg.clear(); // Clear any error flags
+            msg << "Missing required glfw extension\n";
+            vulDebug.writeToBuffer(msg.str(), MessageType::Debug);
+            throw std::runtime_error("Missing required glfw extension");
+        }
+    }
 }
 
 bool TgeDevice::checkDeviceExtensionSupport(VkPhysicalDevice device) {

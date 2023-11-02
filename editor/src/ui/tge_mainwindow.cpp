@@ -2,7 +2,7 @@
 #include <QTextEdit>
 
 #include "ui/tge_mainwindow.h"
-#include "ui_mainwindow.h"
+#include "qt_ui/ui_mainwindow.h"
 
 MainWindow::MainWindow(tge::TgeWindow &tgeWindow, QWidget *parent)
     : QMainWindow(parent),  

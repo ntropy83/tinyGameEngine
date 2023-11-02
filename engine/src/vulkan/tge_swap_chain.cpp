@@ -392,7 +392,7 @@ VkPresentModeKHR TgeSwapChain::chooseSwapPresentMode(
   std::ostringstream msg;
   TgeVulDebug vulDebug;
   msg << "Present mode: V-Sync " << std::endl;
-  vulDebug.writeToBuffer(msg.str());
+  vulDebug.writeToBuffer(msg.str(), MessageType::Info);
 
   return VK_PRESENT_MODE_FIFO_KHR;
 }

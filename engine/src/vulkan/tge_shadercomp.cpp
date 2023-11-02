@@ -32,6 +32,10 @@ namespace tge {
         IncludeResult *include(const std::string &headerName) {
             auto pair = m_headerFiles.find(headerName);
             if (pair == m_headerFiles.end()) {
+                std::ostringstream msg;
+                TgeVulDebug vulDebug;
+                msg << "Loading shader header file <" << headerName << "> into cache." << "\n";
+                vulDebug.writeToBuffer(msg.str(), MessageType::Info);
                 std::cout << "Loading shader header file <" << headerName << "> into cache." << "\n";
                 pair = m_headerFiles.emplace(headerName, FileSystem::Read(m_includesDir + headerName)).first;
             }
@@ -49,7 +53,8 @@ namespace tge {
         std::ostringstream msg;
         TgeVulDebug vulDebug;
         msg << "glslang version: " << glslang::GetGlslVersionString() << "\n";
-        vulDebug.writeToBuffer(msg.str());
+        vulDebug.writeToBuffer(msg.str(), MessageType::Info);
+        std::cout << "glslang version: " << glslang::GetGlslVersionString() << "\n";
         
         if (!glslang::InitializeProcess()) { throw std::runtime_error("Failed to initialize glslang.\n"); }
         m_includer = std::make_unique<ShaderIncluder>(includesDir);
@@ -102,11 +107,19 @@ namespace tge {
         shader.setEnvTarget(glslang::EshTargetSpv, glslang::EShTargetSpv_1_0);
     
         if (!shader.parse(GetDefaultResources(), 100, false, EShMsgDefault, *m_includer)) {
+            std::ostringstream msg;
+            TgeVulDebug vulDebug;
+            msg << "Failed to parse " << stageName << "shader: " << shader.getInfoLog() << "\n";
+            vulDebug.writeToBuffer(msg.str(), MessageType::Warning);
             std::cout << "Failed to parse " << stageName << "shader: " << shader.getInfoLog() << "\n";
             return {};
         } else {
             const char *infoLog = shader.getInfoLog();
             if (std::strlen(infoLog)) {
+                std::ostringstream msg;
+                TgeVulDebug vulDebug;
+                msg << "Shader compilation warning: " << infoLog << "\n";
+                vulDebug.writeToBuffer(msg.str(), MessageType::Warning);
                 std::cout << "Shader compilation warning: " << infoLog << "\n";
             } 
         } 
@@ -115,6 +128,10 @@ namespace tge {
         program.addShader(&shader);
     
         if (!program.link(EShMsgDefault)) {
+            std::ostringstream msg;
+            TgeVulDebug vulDebug;
+            msg << "Failed to link " << stageName << " shader program: " << program.getInfoLog() << "\n";
+            vulDebug.writeToBuffer(msg.str(), MessageType::Warning);
             std::cout << "Failed to link " << stageName << " shader program: " << program.getInfoLog() << "\n";
             return {};
         }
@@ -129,7 +146,8 @@ namespace tge {
         std::ostringstream msg;
         TgeVulDebug vulDebug;
         msg << "Compiling " << stageName << " shader: " << filename << "\n";
-        vulDebug.writeToBuffer(msg.str());
+        vulDebug.writeToBuffer(msg.str(), MessageType::Info);
+        std::cout << "Compiling " << stageName << " shader: " << filename << "\n";
         
         return Compile(stage, FileSystem::Read(filename));
     }

@@ -36,7 +36,7 @@ namespace tge {
     if(glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS) {
 
       TgeVulDebug vulDebug;
-      vulDebug.writeToBuffer("failed to create window surface");
+      vulDebug.writeToBuffer("failed to create window surface", MessageType::Critical);
 
       throw std::runtime_error("failed to create window surface");
     }
