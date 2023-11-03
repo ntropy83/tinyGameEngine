@@ -68,13 +68,16 @@ set(TS_FILES editor/lang/tge_qt_gui_de_DE.ts)
 
 set(PROJECT_SOURCES
         editor/src/debug/tge_QtDebug.cpp
-        editor/src/ui/qt_ui/mainwindow.ui
-        #editor/src/ui/tge_settingsdialog.ui
         editor/src/main.cpp
+        editor/include/ui/tge_mainwindow.h        
         editor/src/ui/tge_mainwindow.cpp
-        editor/include/ui/tge_mainwindow.h
-        #editor/src/ui/tge_settingsdialog.cpp
         #editor/include/ui/tge_settingsdialog.h
+        #editor/src/ui/tge_settingsdialog.cpp
+        editor/include/ui/tge_splashscreen.h
+        editor/src/ui/tge_splashscreen.cpp
+        editor/src/ui/qt_ui/mainwindow.ui
+        #editor/src/ui/qt_ui/tge_settingsdialog.ui
+        editor/src/ui/qt_ui/tge_splashscreen.ui
         editor/src/ui/tge_vulkanwindow.cpp      
     #    ${TS_FILES}
         ## Vulkan Engine
