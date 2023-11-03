@@ -58,13 +58,13 @@ jobs:
     - name: Install dependencies on Ubuntu
       if: runner.os == 'Linux'
       run: |
-        apt-get update
-        apt-get install -y libxxf86vm-dev
-        apt-get install -y libxi-dev
-        apt-get install -y libxrandr-dev
-        apt-get install -y libxinerama-dev
-        apt-get install -y libxcursor-dev
-        apt-get install -y mesa-common-dev 
+        sudo apt-get update
+        sudo apt-get install -y libxxf86vm-dev
+        sudo apt-get install -y libxi-dev
+        sudo apt-get install -y libxrandr-dev
+        sudo apt-get install -y libxinerama-dev
+        sudo apt-get install -y libxcursor-dev
+        sudo apt-get install -y mesa-common-dev 
       shell: bash
            
 #    - name: Install dependencies on Windows
