@@ -65,16 +65,13 @@ jobs:
         sudo apt-get install -y libxinerama-dev
         sudo apt-get install -y libxcursor-dev
         sudo apt-get install -y mesa-common-dev
-        sudo apt-get install -y libvulkan-dev
       shell: bash
            
-#    - name: Install dependencies on Windows
-#      if: runner.os == 'Windows'
-#      run: |
-#        choco install -y visualstudio2019community
-#        choco install -y qt-opensource-windows-x86-${{ matrix.qt_version }}
-#        choco install -y vulkan-sdk
-#      shell: powershell
+    - name: Set Vulkan SDK environment variable
+      if: runner.os == 'Windows'
+      run: |
+        echo "VULKAN_SDK=${env:VULKAN_SDK}" >> $GITHUB_ENV
+      shell: powershell
 
     - name: Configure CMake
       run: >

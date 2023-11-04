@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.11.0)
 
-message(STATUS "using ${CMAKE_GENERATOR}")
+message(STATUS "Using ${CMAKE_GENERATOR}")
+
 if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
     if (NOT MINGW_PATH) 
-      message(FATAL_ERROR "MINGW_PATH not set in .env.cmake")
+        message(FATAL_ERROR "MINGW_PATH not set in .env.cmake")
     endif()
     set(USE_MINGW "True")
-    set(CMAKE_C_COMPILER ${MINGW_PATH}/bin/gcc.exe)
-    set(CMAKE_CXX_COMPILER  ${MINGW_PATH}/bin/g++.exe)
+    set(CMAKE_C_COMPILER x86_64-w64-mingw32-gcc)
+    set(CMAKE_CXX_COMPILER x86_64-w64-mingw32-g++)
 endif()
 
 set(NAME tgEngine)
@@ -17,10 +18,6 @@ project(${NAME} VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include_directories(${CMAKE_SOURCE_DIR}/editor/src)
 include_directories(${CMAKE_SOURCE_DIR}/editor/include)
@@ -127,7 +124,7 @@ IF(LINUX)
 ENDIF()
 
 target_link_libraries(${NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Core
-                        vulkan
+                        Vulkan::Vulkan
                         glfw 
                         physfs
                         glslang glslang-default-resource-limits SPIRV MachineIndependent GenericCodeGen OSDependent)
