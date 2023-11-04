@@ -27,10 +27,6 @@ option(PHYSFS_BUILD_TEST "Build stdio test program." FALSE)
 option(PHYSFS_BUILD_DOCS "Build doxygen based documentation" FALSE)
 set(PHYSFS_TARGETNAME_UNINSTALL "uninstall_1" CACHE STRING "Name of 'uninstall' build target")
 
-# options simdjson
-option(SIMDJSON_BUILD_STATIC_LIB "Build simdjson_static library along with simdjson" OFF)
-option(BUILD_SHARED_LIBS "Build simdjson as a shared library" ON)
-
 ## Paths and package of game assets
 
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
@@ -56,4 +52,3 @@ add_custom_target("project-data" ALL DEPENDS "${CMAKE_SOURCE_DIR}/build/data.zip
 add_subdirectory("submodules/glfw")
 add_subdirectory("submodules/glslang")
 add_subdirectory("submodules/physfs")
-add_subdirectory("submodules/simdjson")

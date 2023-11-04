@@ -85,7 +85,6 @@ set(PROJECT_SOURCES
         ## Vulkan Engine
         engine/src/debug/tge_vulDebug.cpp
         engine/src/file/filesystem.cpp
-        engine/src/file/JsonFile.cpp
         engine/src/vulkan/tge_shadercomp.cpp
         engine/src/vulkan/tge_device.cpp
         engine/src/vulkan/tge_pipeline.cpp
@@ -130,7 +129,7 @@ ENDIF()
 target_link_libraries(${NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Core
                         vulkan
                         glfw 
-                        simdjson physfs
+                        physfs
                         glslang glslang-default-resource-limits SPIRV MachineIndependent GenericCodeGen OSDependent)
 
 set_target_properties(${NAME} PROPERTIES

@@ -1,9 +1,6 @@
 [submodule "engine/submodules/physfs"]
 	path = engine/submodules/physfs
 	url = https://github.com/icculus/physfs
-[submodule "engine/submodules/simdjson"]
-	path = engine/submodules/simdjson
-	url = https://github.com/simdjson/simdjson
 [submodule "engine/submodules/glfw"]
 	path = engine/submodules/glfw
 	url = https://github.com/glfw/glfw
