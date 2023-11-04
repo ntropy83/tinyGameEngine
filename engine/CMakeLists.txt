@@ -26,6 +26,16 @@ option(PHYSFS_BUILD_STATIC "Build static library" FALSE)
 option(PHYSFS_BUILD_TEST "Build stdio test program." FALSE)
 option(PHYSFS_BUILD_DOCS "Build doxygen based documentation" FALSE)
 set(PHYSFS_TARGETNAME_UNINSTALL "uninstall_1" CACHE STRING "Name of 'uninstall' build target")
+option(PHYSFS_ARCHIVE_7Z "Enable 7zip support" FALSE)
+option(PHYSFS_ARCHIVE_GRP "Enable Build Engine GRP support" FALSE)
+option(PHYSFS_ARCHIVE_WAD "Enable Doom WAD support" FALSE)
+option(PHYSFS_ARCHIVE_CSM "Enable Chasm: The Rift CSM.BIN support" FALSE)
+option(PHYSFS_ARCHIVE_HOG "Enable Descent I/II HOG support" FALSE)
+option(PHYSFS_ARCHIVE_MVL "Enable Descent I/II MVL support" FALSE)
+option(PHYSFS_ARCHIVE_QPAK "Enable Quake I/II QPAK support" FALSE)
+option(PHYSFS_ARCHIVE_SLB "Enable I-War / Independence War SLB support" FALSE)
+option(PHYSFS_ARCHIVE_ISO9660 "Enable ISO9660 support" FALSE)
+option(PHYSFS_ARCHIVE_VDF "Enable Gothic I/II VDF archive support" FALSE)
 
 ## Paths and package of game assets
 

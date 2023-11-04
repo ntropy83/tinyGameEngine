@@ -15,6 +15,9 @@ set(NAME tgEngine)
 
 project(${NAME} VERSION 0.1 LANGUAGES CXX)
 
+set(GCC_COVERAGE_COMPILE_FLAGS "-std=c++20 -O2")
+set(GCC_COVERAGE_LINK_FLAGS    "")
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -49,8 +52,6 @@ IF(WIN32)
     
 ELSEIF(LINUX)
 
-    set(GCC_COVERAGE_COMPILE_FLAGS "-std=c++20 -O2")
-    set(GCC_COVERAGE_LINK_FLAGS    "")
 	find_package(Threads REQUIRED)
     
 ELSEIF(APPLE)

@@ -56,7 +56,7 @@
           return {};
       }
       std::string bytes(length, '\0');
-      if (PHYSFS_readBytes(file, bytes.data(), length) == -1) {
+      if (PHYSFS_readBytes(file, static_cast<void*>(bytes.data()), length) == -1) {
           std::cout << "PhysFS failed to read file " << filename.c_str() << ": {}" << GetLastError() << "\n";
       }
       return bytes;

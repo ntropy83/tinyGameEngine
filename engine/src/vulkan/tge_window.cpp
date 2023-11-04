@@ -42,14 +42,35 @@ namespace tge {
     }
   }
 
-  void TgeWindow::integrateInto(QWidget* placeholder){
-      Window glfwNativeWindow = glfwGetX11Window(window);
-      Window qtNativeWindow = placeholder->winId();
+  void TgeWindow::integrateInto(QWidget* placeholder) {
+  #ifdef _WIN32
+      // Windows-specific code
+      HWND win32NativeWindow = glfwGetWin32Window(window);
+      HWND qtNativeWindow = static_cast<HWND>(placeholder->winId());
+
+      // You may need to do additional setup for integrating with Qt on Windows
+      // For example, setting parent-child relationships or window styles.
+
+      // Reparenting code specific to Windows, if necessary.
+      // Example:
+      // SetParent(win32NativeWindow, qtNativeWindow);
+
+      // Show the GLFW window
+      glfwShowWindow(window);
+  #else
+      // Linux-specific code (X11)
+      Window x11NativeWindow = glfwGetX11Window(window);
+      Window qtNativeWindow = static_cast<Window>(placeholder->winId());
 
       Display* display = glfwGetX11Display();
-      XReparentWindow(display, glfwNativeWindow, qtNativeWindow, 0, 0);
 
+      // Reparenting code for X11
+      XReparentWindow(display, x11NativeWindow, qtNativeWindow, 0, 0);
+
+      // Show the GLFW window
       glfwShowWindow(window);
+  #endif
   }
+
 } // namespace tge
 
