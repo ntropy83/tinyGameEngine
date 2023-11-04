@@ -3,6 +3,7 @@
 #include "debug/tge_vulDebug.hpp"
 
 // std
+#include <algorithm>
 #include <array>
 #include <cstdlib>
 #include <cstring>
@@ -128,7 +129,7 @@ void TgeSwapChain::createSwapChain() {
   VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
   VkExtent2D extent = chooseSwapExtent(swapChainSupport.capabilities);
 
-  uint32_t imageCount = swapChainSupport.capabilities.minImageCount + 1;
+  uint32_t imageCount = std::max(swapChainSupport.capabilities.minImageCount + 1, swapChainSupport.capabilities.maxImageCount);
   if (swapChainSupport.capabilities.maxImageCount > 0 &&
       imageCount > swapChainSupport.capabilities.maxImageCount) {
     imageCount = swapChainSupport.capabilities.maxImageCount;
