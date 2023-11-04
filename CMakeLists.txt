@@ -1,5 +1,14 @@
-cmake_minimum_required(VERSION 3.20)
-#set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+cmake_minimum_required(VERSION 3.11.0)
+
+message(STATUS "using ${CMAKE_GENERATOR}")
+if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
+    if (NOT MINGW_PATH) 
+      message(FATAL_ERROR "MINGW_PATH not set in .env.cmake")
+    endif()
+    set(USE_MINGW "True")
+    set(CMAKE_C_COMPILER ${MINGW_PATH}/bin/gcc.exe)
+    set(CMAKE_CXX_COMPILER  ${MINGW_PATH}/bin/g++.exe)
+endif()
 
 set(NAME tgEngine)
 
@@ -18,11 +27,19 @@ include_directories(${CMAKE_SOURCE_DIR}/editor/include)
 include_directories(${CMAKE_SOURCE_DIR}/engine/include)
 include_directories(${CMAKE_SOURCE_DIR}/engine/submodules)
 
-# Use FindVulkan module added with CMAKE 3.7
-IF (NOT CMAKE_VERSION VERSION_LESS 3.7.0)
-	message(STATUS "Using module to find Vulkan")
-	find_package(Vulkan)
-ENDIF()
+if (DEFINED VULKAN_SDK_PATH)
+  set(Vulkan_INCLUDE_DIRS "${VULKAN_SDK_PATH}/Include") # 1.1 Make sure this include path is correct
+  set(Vulkan_LIBRARIES "${VULKAN_SDK_PATH}/Lib") # 1.2 Make sure lib path is correct
+  set(Vulkan_FOUND "True")
+else()
+  find_package(Vulkan REQUIRED) # throws error if could not find Vulkan
+  message(STATUS "Found Vulkan: $ENV{VULKAN_SDK}")
+endif()
+if (NOT Vulkan_FOUND)
+    message(FATAL_ERROR "Could not find Vulkan library!")
+else()
+    message(STATUS "Using vulkan lib at: ${Vulkan_LIBRARIES}")
+endif()
 
 IF(UNIX AND NOT APPLE)
 	set(LINUX TRUE)
@@ -30,28 +47,13 @@ IF(UNIX AND NOT APPLE)
 ENDIF()
 
 IF(WIN32)
-    include_directories($ENV{VULKAN_SDK}/include)
-
-    IF (NOT Vulkan_FOUND)
-	    find_library(Vulkan_LIBRARY NAMES vulkan-1 vulkan PATHS ${CMAKE_SOURCE_DIR}/libs/vulkan)
-	    IF (Vulkan_LIBRARY)
-		    set(Vulkan_FOUND ON)
-		    MESSAGE("Using bundled Vulkan library version")
-        ENDIF()
-    ENDIF()
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_WIN32_KHR")
+    
 ELSEIF(LINUX)
 
-	IF (NOT Vulkan_FOUND)
-		IF (Vulkan_LIBRARY)
-			set(Vulkan_FOUND ON)
-			MESSAGE("Using bundled Vulkan library version") 
-		ENDIF()
-	ENDIF()
-
-    SET(GCC_COVERAGE_COMPILE_FLAGS "-std=c++17 -O2")
-    SET(GCC_COVERAGE_LINK_FLAGS    "")
+    set(GCC_COVERAGE_COMPILE_FLAGS "-std=c++20 -O2")
+    set(GCC_COVERAGE_LINK_FLAGS    "")
 	find_package(Threads REQUIRED)
     
 ELSEIF(APPLE)
