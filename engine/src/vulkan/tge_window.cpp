@@ -46,14 +46,14 @@ namespace tge {
   #ifdef _WIN32
       // Windows-specific code
       HWND win32NativeWindow = glfwGetWin32Window(window);
-      HWND qtNativeWindow = static_cast<HWND>(placeholder->winId());
+      HWND win32NativeWindow = reinterpret_cast<HWND>(static_cast<UINT_PTR>(placeholder->winId()));
 
       // You may need to do additional setup for integrating with Qt on Windows
       // For example, setting parent-child relationships or window styles.
 
       // Reparenting code specific to Windows, if necessary.
       // Example:
-      // SetParent(win32NativeWindow, qtNativeWindow);
+      SetParent(win32NativeWindow, qtNativeWindow);
 
       // Show the GLFW window
       glfwShowWindow(window);

@@ -7,18 +7,16 @@ Vulkan Pipeline - command and frame buffer
 
 PhysFS          - an isolated file tree from a zip for assets
 
-simdJson        - read Json config files quickly(integrated but not implemented yet)
-
 glslang         - runtime shader compiler from GLSL to SPIR-V
 
-QT              - create an Editor
+Qt              - create an Editor
 
 # Build
 Deps on Ubuntu:
 ```
 sudo apt-get install vulkan-validationlayers-dev \
                      spirv-tools libxxf86vm-dev libxi-dev libxrandr-dev \
-                     libxinerama-dev libxcursor-dev mesa-common-dev
+                     libxinerama-dev libxcursor-dev mesa-common-dev qt5-default libvulkan-dev
 ```
 
 ```
