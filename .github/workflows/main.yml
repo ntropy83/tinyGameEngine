@@ -43,9 +43,7 @@ jobs:
           ${{ runner.os }}-cmake-
 
     - name: Set reusable strings
-      id: strings
-      run: |
-        echo "BUILD_OUTPUT_DIR=${{ github.workspace }}/build" >> $GITHUB_ENV
+      run: echo "BUILD_OUTPUT_DIR=${{ github.workspace }}/build" | Out-File -Append -FilePath $Env:GITHUB_ENV
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
@@ -70,10 +68,11 @@ jobs:
     - name: Configure CMake (Windows)
       if: matrix.os == 'windows-latest'
       run: |
-        cmake -B ${{ env.BUILD_OUTPUT_DIR }} `
+        $env:BUILD_OUTPUT_DIR="${{ github.workspace }}/build"
+        cmake -B $env:BUILD_OUTPUT_DIR `
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} `
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} `
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} `
+        -DCMAKE_BUILD_TYPE=Debug `
         -S ${{ github.workspace }}
       shell: pwsh
 
