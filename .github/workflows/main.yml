@@ -28,11 +28,31 @@ jobs:
         exclude:
           - os: windows-latest
             c_compiler: clang
+            cpp_compiler: clang++
 
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: 'recursive'
+
+    - name: Cache CMake Build
+      uses: actions/cache@v2
+      with:
+        path: |
+          ${{ github.workspace }}/build
+          ~/.ccache  # if you use ccache, cache this directory
+        key: ${{ runner.os }}-cmake-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
+        restore-keys: |
+          ${{ runner.os }}-cmake-
+
+    - name: Cache Apt Packages
+      if: runner.os == 'Linux'
+      uses: actions/cache@v2
+      with:
+        path: /var/cache/apt/archives
+        key: ${{ runner.os }}-apt-${{ hashFiles('**/apt-packages.txt') }} # You need to create a file listing the packages
+        restore-keys: |
+          ${{ runner.os }}-apt-
 
     - name: Set reusable strings
       id: strings
