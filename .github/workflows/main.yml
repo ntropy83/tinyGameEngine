@@ -13,19 +13,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
+        os: [ubuntu-latest, windows-latest]
+        c_compiler: [gcc, clang]
+        cpp_compiler: [g++, clang++]
+        exclude:
           - os: ubuntu-latest
             c_compiler: gcc
-            cpp_compiler: g++
-            build_type: Debug
+            cpp_compiler: clang++
           - os: ubuntu-latest
             c_compiler: clang
-            cpp_compiler: clang++
-            build_type: Debug
-          - os: windows-latest
-            c_compiler: gcc
             cpp_compiler: g++
-            build_type: Debug
+          - os: windows-latest
+            c_compiler: clang
+            cpp_compiler: clang++
 
     steps:
     - uses: actions/checkout@v3
@@ -35,46 +35,44 @@ jobs:
     - name: Cache CMake Build
       uses: actions/cache@v2
       with:
-        path: |
-          ${{ github.workspace }}/build
-          ~/.ccache  # if you use ccache, cache this directory
+        path: ${{ github.workspace }}/build
         key: ${{ runner.os }}-cmake-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
-        restore-keys: |
-          ${{ runner.os }}-cmake-
+        restore-keys: ${{ runner.os }}-cmake-
 
-    - name: Set reusable strings
+    # (Rest of your steps)
+
+    - name: Set reusable strings (Windows)
+      if: matrix.os == 'windows-latest'
+      shell: pwsh
       run: echo "BUILD_OUTPUT_DIR=${{ github.workspace }}/build" | Out-File -Append -FilePath $Env:GITHUB_ENV
 
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v3
+    - name: Set reusable strings (Linux)
+      if: matrix.os != 'windows-latest'
+      run: echo "BUILD_OUTPUT_DIR=${{ github.workspace }}/build" >> $GITHUB_ENV
 
-    - name: Prepare Vulkan SDK
-      uses: humbletim/setup-vulkan-sdk@v1.2.0
-      with:
-        vulkan-query-version: 1.3.204.0
-        vulkan-components: Vulkan-Headers, Vulkan-Loader
-        vulkan-use-cache: true
+    - name: Install dependencies (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt-get update && sudo apt-get install -y <list-your-dependencies-here>
 
-    - name: Install dependencies on Ubuntu
-      if: runner.os == 'Linux'
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libxxf86vm-dev libxi-dev libxrandr-dev libxinerama-dev libxcursor-dev mesa-common-dev
-
-    - name: Set up MinGW on Windows
+    - name: Set up compilers (Windows)
       if: matrix.os == 'windows-latest'
-      run: choco install mingw -y
+      shell: pwsh
+      run: |
+        choco install mingw -y
+        echo "CC=gcc" | Out-File -Append -FilePath $Env:GITHUB_ENV
+        echo "CXX=g++" | Out-File -Append -FilePath $Env:GITHUB_ENV
+
+    # (Rest of your steps)
 
     - name: Configure CMake (Windows)
       if: matrix.os == 'windows-latest'
+      shell: pwsh
       run: |
-        $env:BUILD_OUTPUT_DIR="${{ github.workspace }}/build"
-        cmake -B $env:BUILD_OUTPUT_DIR `
+        cmake -B ${{ env.BUILD_OUTPUT_DIR }} `
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} `
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} `
         -DCMAKE_BUILD_TYPE=Debug `
         -S ${{ github.workspace }}
-      shell: pwsh
 
     - name: Configure CMake (Linux)
       if: matrix.os != 'windows-latest'
@@ -82,7 +80,7 @@ jobs:
         cmake -B ${{ env.BUILD_OUTPUT_DIR }} \
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+        -DCMAKE_BUILD_TYPE=Debug \
         -S ${{ github.workspace }}
 
     - name: Build
