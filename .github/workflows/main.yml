@@ -73,7 +73,12 @@ jobs:
         echo "CC=/mingw64/bin/gcc" >> $GITHUB_ENV
         echo "CXX=/mingw64/bin/g++" >> $GITHUB_ENV
 
-    - name: Configure CMake
+    - name: Configure CMake (Windows)
+      if: matrix.os == 'windows-latest'
+      run: cmake -B ${{ env.BUILD_OUTPUT_DIR }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_C_COMPILER=/mingw64/bin/gcc -DCMAKE_CXX_COMPILER=/mingw64/bin/g++ -S ${{ github.workspace }}
+    
+    - name: Configure CMake (Unix)
+      if: matrix.os != 'windows-latest'
       run: cmake -B ${{ env.BUILD_OUTPUT_DIR }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }}
 
     - name: Build

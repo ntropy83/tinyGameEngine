@@ -14,8 +14,8 @@ option(GLFW_INSTALL "Generate installation target" OFF)
 option(GLFW_DOCUMENT_INTERNALS "Include internals in documentation" OFF)
 
 # options GLSLANG
-option(BUILD_SHARED_LIBS "Build Shared Libraries" OFF)
-set(SKIP_GLSLANG_INSTALL OFF)
+option(BUILD_SHARED_LIBS "Build Shared Libraries" ON)
+set(SKIP_GLSLANG_INSTALL ON)
 option(ENABLE_SPVREMAPPER "Enables building of SPVRemapper" OFF)
 option(ENABLE_GLSLANG_BINARIES "Builds glslang and spirv-remap" OFF)
 option(ENABLE_OPT "Enables spirv-opt capability if present" OFF)
