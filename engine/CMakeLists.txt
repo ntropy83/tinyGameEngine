@@ -42,6 +42,9 @@ option(PHYSFS_ARCHIVE_VDF "Enable Gothic I/II VDF archive support" FALSE)
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 
+# Specify a relative path for the zip file
+set(ZIP_FILE "${CMAKE_BINARY_DIR}/data.zip")
+
 function(create_zip output_file input_files working_dir)
     add_custom_command(
         COMMAND ${CMAKE_COMMAND} -E tar "cf" "${output_file}" --format=zip -- ${input_files}
@@ -53,9 +56,9 @@ function(create_zip output_file input_files working_dir)
 endfunction()
 
 file(GLOB ZIP_FILES "${CMAKE_SOURCE_DIR}/editor/assets/*")
-create_zip("${CMAKE_SOURCE_DIR}/build/data.zip" "${ZIP_FILES}" "${CMAKE_SOURCE_DIR}/editor/assets")
+create_zip("${ZIP_FILE}" "${ZIP_FILES}" "${CMAKE_SOURCE_DIR}/editor/assets")
 
-add_custom_target("project-data" ALL DEPENDS "${CMAKE_SOURCE_DIR}/build/data.zip")
+add_custom_target("project-data" ALL DEPENDS "${ZIP_FILE}")
 
 ## Include subdirectories
 

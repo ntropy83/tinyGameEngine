@@ -13,27 +13,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-latest
-          - windows-latest
+        os: [ubuntu-latest, windows-latest]
         build_type: [Release]
         c_compiler: [gcc, clang]
+        cpp_compiler: [g++, clang++]
         include:
+          - os: windows-latest
+            c_compiler: mingw32-gcc
+            cpp_compiler: mingw32-g++
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
           - os: ubuntu-latest
-            c_compiler: clang
-            cpp_compiler: clang++
-          - os: windows-latest
-            c_compiler: gcc
-            cpp_compiler: g++
-          - os: windows-latest
             c_compiler: clang
             cpp_compiler: clang++
         exclude:
           - os: windows-latest
-            c_compiler: cl
+            c_compiler: gcc
+          - os: windows-latest
+            c_compiler: clang
 
     steps:
     - uses: actions/checkout@v3
@@ -42,7 +40,8 @@ jobs:
 
     - name: Set reusable strings
       id: strings
-      run: echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_ENV"
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
@@ -67,23 +66,19 @@ jobs:
 
     - name: Set Vulkan SDK environment variable
       if: runner.os == 'Windows'
-      run: echo "VULKAN_SDK=${env:VULKAN_SDK}" >> $GITHUB_ENV
+      run: |
+        echo "VULKAN_SDK=${{ env.VULKAN_SDK }}" >> $GITHUB_ENV
 
-    - name: Configure CMake for Linux
-      if: runner.os == 'Linux'
-      run: cmake -B build-linux -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }}
-
-    - name: Configure CMake for Windows
-      if: runner.os == 'Windows'
-      run: cmake -B build-windows -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }}
+    - name: Configure CMake
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -S ${{ github.workspace }}
 
     - name: Build
-      run: |
-        if [ "${{ runner.os }}" == "Linux" ]; then
-          cmake --build build-linux --config ${{ matrix.build_type }}
-        elif [ "${{ runner.os }}" == "Windows" ]; then
-          cmake --build build-windows --config ${{ matrix.build_type }}
-        fi
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
