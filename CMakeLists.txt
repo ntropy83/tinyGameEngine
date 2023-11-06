@@ -46,9 +46,7 @@ if(UNIX AND NOT APPLE)
     set(LINUX TRUE)
     find_package(X11 REQUIRED)
 elseif(APPLE)
-    set(CMAKE_C_COMPILER /usr/bin/clang)
-    set(CMAKE_CXX_COMPILER /usr/bin/clang++)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_MACOS_MVK -DVK_EXAMPLE_XCODE_GENERATED")
+    return()  # Exit the CMakeLists.txt for macOS
 endif()
 
 # Qt setup
