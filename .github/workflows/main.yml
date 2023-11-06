@@ -31,6 +31,9 @@ jobs:
           - os: windows-latest
             c_compiler: clang
             cpp_compiler: clang++
+        exclude:
+          - os: windows-latest
+            c_compiler: cl
 
     steps:
     - uses: actions/checkout@v3
@@ -68,14 +71,19 @@ jobs:
 
     - name: Configure CMake for Linux
       if: runner.os == 'Linux'
-      run: cmake -B ${{ steps.strings.outputs.build-output-dir }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }}
+      run: cmake -B build-linux -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }}
 
     - name: Configure CMake for Windows
       if: runner.os == 'Windows'
-      run: cmake -B ${{ steps.strings.outputs.build-output-dir }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }}
+      run: cmake -B build-windows -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }}
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      run: |
+        if [ "${{ runner.os }}" == "Linux" ]; then
+          cmake --build build-linux --config ${{ matrix.build_type }}
+        elif [ "${{ runner.os }}" == "Windows" ]; then
+          cmake --build build-windows --config ${{ matrix.build_type }}
+        fi
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
