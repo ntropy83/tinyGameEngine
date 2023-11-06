@@ -25,7 +25,8 @@ jobs:
             cpp_compiler: clang++
         exclude:
           - os: windows-latest
-            c_compiler: cl
+            c_compiler: clang
+            cpp_compiler: clang++
 
     steps:
     - uses: actions/checkout@v3
@@ -34,9 +35,7 @@ jobs:
 
     - name: Set reusable strings
       id: strings
-      shell: bash
-      run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+      run: echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
@@ -58,26 +57,18 @@ jobs:
         sudo apt-get install -y libxinerama-dev
         sudo apt-get install -y libxcursor-dev
         sudo apt-get install -y mesa-common-dev
-      shell: bash
 
     - name: Set Vulkan SDK environment variable
       if: runner.os == 'Windows'
-      run: |
-        echo "VULKAN_SDK=${env:VULKAN_SDK}" >> $GITHUB_ENV
-      shell: powershell
+      run: echo "VULKAN_SDK=${env:VULKAN_SDK}" >> $GITHUB_ENV
 
-    - name: Configure CMake
-      run: |
-        if [ "${{ runner.os }}" == "Windows" ]; then
-          export PATH="/c/ProgramData/chocolatey/bin:$PATH"
-          export CC=gcc
-          export CXX=g++
-        fi
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}
+    - name: Configure CMake for Linux
+      if: runner.os == 'Linux'
+      run: cmake -B ${{ steps.strings.outputs.build-output-dir }} -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }}
+
+    - name: Configure CMake for Windows
+      if: runner.os == 'Windows'
+      run: cmake -B ${{ steps.strings.outputs.build-output-dir }} -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }}
 
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
