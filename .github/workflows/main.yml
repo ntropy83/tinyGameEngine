@@ -70,11 +70,11 @@ jobs:
     - name: Configure CMake (Windows)
       if: matrix.os == 'windows-latest'
       run: |
-        cmake -B "${{ env.BUILD_OUTPUT_DIR }}" `
+        cmake -B ${{ env.BUILD_OUTPUT_DIR }} `
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} `
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} `
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} `
-        -S "${{ github.workspace }}"
+        -S ${{ github.workspace }}
       shell: pwsh
 
     - name: Configure CMake (Linux)
