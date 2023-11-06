@@ -15,12 +15,10 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         build_type: [Release]
-        c_compiler: [gcc, clang]
-        cpp_compiler: [g++, clang++]
         include:
           - os: windows-latest
-            c_compiler: mingw32-gcc
-            cpp_compiler: mingw32-g++
+            c_compiler: gcc
+            cpp_compiler: g++
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
@@ -28,8 +26,6 @@ jobs:
             c_compiler: clang
             cpp_compiler: clang++
         exclude:
-          - os: windows-latest
-            c_compiler: gcc
           - os: windows-latest
             c_compiler: clang
 
@@ -63,6 +59,13 @@ jobs:
         sudo apt-get install -y libxinerama-dev
         sudo apt-get install -y libxcursor-dev
         sudo apt-get install -y mesa-common-dev
+
+    - name: Set up MinGW on Windows
+      if: runner.os == 'Windows'
+      run: |
+        choco install mingw -y
+        echo "CC=gcc" >> $GITHUB_ENV
+        echo "CXX=g++" >> $GITHUB_ENV
 
     - name: Set Vulkan SDK environment variable
       if: runner.os == 'Windows'
