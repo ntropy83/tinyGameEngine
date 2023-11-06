@@ -3,31 +3,49 @@ cmake_minimum_required(VERSION 3.11.0)
 message(STATUS "Using ${CMAKE_GENERATOR}")
 
 set(NAME tgEngine)
-
 project(${NAME} VERSION 0.1 LANGUAGES CXX)
-
 set(CMAKE_CXX_STANDARD 17)
-
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
+
+# Check for cross-compiling and set up the MinGW toolchain
+if(CMAKE_CROSSCOMPILING)
+    message(STATUS "Cross-compiling with MinGW")
+    set(CMAKE_SYSTEM_NAME Windows)
+    set(TOOLCHAIN_PREFIX x86_64-w64-mingw32)
+
+    # set compilers
+    set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}-gcc)
+    set(CMAKE_CXX_COMPILER ${TOOLCHAIN_PREFIX}-g++)
+    set(CMAKE_RC_COMPILER ${TOOLCHAIN_PREFIX}-windres)
+    
+    # set sysroot
+    set(CMAKE_FIND_ROOT_PATH /usr/${TOOLCHAIN_PREFIX})
+    
+    # adjust default behavior of FIND_XXX() commands
+    set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+    set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+    set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+    
+    # Set the WIN32 flag to true to ensure Windows code paths are taken
+    add_definitions(-DWIN32)
+endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/editor/src)
 include_directories(${CMAKE_SOURCE_DIR}/editor/include)
 include_directories(${CMAKE_SOURCE_DIR}/engine/include)
 include_directories(${CMAKE_SOURCE_DIR}/engine/submodules)
 
-# Define NOMINMAX Before Including Windows Headers
-if(WIN32)
-  add_definitions(-DNOMINMAX)
-endif()
+# Define NOMINMAX to avoid issues with std::min/max and the Windows macro
+add_definitions(-DNOMINMAX)
 
 # Vulkan setup
 find_package(Vulkan REQUIRED)
 message(STATUS "Found Vulkan: ${Vulkan_LIBRARIES}")
 
 # Platform specific checks
-if(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE AND NOT CMAKE_CROSSCOMPILING)
     set(LINUX TRUE)
     find_package(X11 REQUIRED)
 elseif(APPLE)
@@ -82,22 +100,25 @@ else()
 endif()
 
 # Linking libraries
-if(LINUX)
-    target_link_libraries(${NAME} PRIVATE ${X11_LIBRARIES})
-    target_include_directories(${NAME} PRIVATE ${X11_INCLUDE_DIR})
-elseif(APPLE)
-    # Link any macOS-specific frameworks here if necessary
-endif()
-
 target_link_libraries(${NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Core Vulkan::Vulkan glfw physfs glslang glslang-default-resource-limits SPIRV MachineIndependent GenericCodeGen OSDependent)
 
 # Set target properties
-if(NOT APPLE)
-    set_target_properties(${NAME} PROPERTIES
-        MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-        MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-        MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-        MACOSX_BUNDLE TRUE
-        WIN32_EXECUTABLE TRUE
-    )
+set_target_properties(${NAME} PROPERTIES
+    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
+    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+    WIN32_EXECUTABLE TRUE
+)
+
+# For Linux, link the X11 libraries
+if(LINUX)
+    target_link_libraries(${NAME} PRIVATE ${X11_LIBRARIES})
+    target_include_directories(${NAME} PRIVATE ${X11_INCLUDE_DIR})
+endif()
+
+# Additional target properties for cross-compiling
+if(CMAKE_CROSSCOMPILING)
+    # Here you would set properties specific to Windows when cross-compiling,
+    # such as .exe suffix for binaries, or any Windows-specific compile options
+    set_target_properties(${NAME} PROPERTIES SUFFIX ".exe")
 endif()

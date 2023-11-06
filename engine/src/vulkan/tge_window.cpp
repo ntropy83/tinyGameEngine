@@ -43,10 +43,11 @@ namespace tge {
   }
 
   void TgeWindow::integrateInto(QWidget* placeholder) {
-  #ifdef _WIN32
+    #ifdef _WIN32
       // Windows-specific code
-      HWND win32NativeWindow = glfwGetWin32Window(window);
-      HWND win32NativeWindow = reinterpret_cast<HWND>(static_cast<UINT_PTR>(placeholder->winId()));
+      HWND win32NativeWindow = glfwGetWin32Window(window); // Get the GLFW window's native handle
+
+      HWND qtNativeWindow = reinterpret_cast<HWND>(static_cast<UINT_PTR>(placeholder->winId())); // Get the Qt placeholder's native handle
 
       // You may need to do additional setup for integrating with Qt on Windows
       // For example, setting parent-child relationships or window styles.
@@ -57,7 +58,7 @@ namespace tge {
 
       // Show the GLFW window
       glfwShowWindow(window);
-  #else
+    #else
       // Linux-specific code (X11)
       Window x11NativeWindow = glfwGetX11Window(window);
       Window qtNativeWindow = static_cast<Window>(placeholder->winId());
