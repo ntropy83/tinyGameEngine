@@ -17,6 +17,11 @@ include_directories(${CMAKE_SOURCE_DIR}/editor/include)
 include_directories(${CMAKE_SOURCE_DIR}/engine/include)
 include_directories(${CMAKE_SOURCE_DIR}/engine/submodules)
 
+# Define NOMINMAX Before Including Windows Headers
+if(WIN32)
+  add_definitions(-DNOMINMAX)
+endif()
+
 # Vulkan setup
 find_package(Vulkan REQUIRED)
 message(STATUS "Found Vulkan: ${Vulkan_LIBRARIES}")
