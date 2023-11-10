@@ -1,5 +1,3 @@
-# toolchain-mingw64.cmake
-
 # Set the system name to Windows to specify the target system
 set(CMAKE_SYSTEM_NAME Windows)
 
@@ -17,15 +15,13 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
-# Vulkan specific setup, adjust the paths for your system
-# Assuming Vulkan SDK is installed at C:/VulkanSDK
-set(Vulkan_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/crosscompile/vulkan-sdk/1.3.268.0/Include")
-set(Vulkan_LIBRARY "${CMAKE_SOURCE_DIR}/crosscompile/vulkan-sdk/1.3.268.0/Lib/vulkan-1.lib")
+# Set Vulkan and Qt paths
+set(VULKAN_ROOT "${CMAKE_SOURCE_DIR}/crosscompile/vulkan-sdk")
+set(Qt5_DIR "${CMAKE_SOURCE_DIR}/crosscompile/qt6/mingw_64/lib/cmake/Qt6")
 
-# Then you can do something like the following to inform CMake of the location of the Qt libraries
-set(Qt5Core_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/crosscompile/qt5/mingw81_64/include/QtCore")
-set(Qt5Gui_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/crosscompile/qt5/mingw81_64/include/QtGui")
-set(Qt5Widgets_INCLUDE_DIRS "C:/Qt/5.15/mingw81_64/include/QtWidgets")
-set(Qt5Core_LIBRARY "C:/Qt/5.15/mingw81_64/lib/Qt5Core.dll")
-set(Qt5Gui_LIBRARY "C:/Qt/5.15/mingw81_64/lib/Qt5Gui.dll")
-set(Qt5Widgets_LIBRARY "C:/Qt/5.15/mingw81_64/lib/Qt5Widgets.dll")
+# Set include and library directories
+set(Vulkan_INCLUDE_DIRS "${VULKAN_ROOT}/1.3.268.0/Include")
+set(Vulkan_LIBRARY "${VULKAN_ROOT}/1.3.268.0/Lib/vulkan-1.lib")
+
+# Inform CMake to use these paths for finding packages
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "${VULKAN_ROOT}" "${Qt5_DIR}")
