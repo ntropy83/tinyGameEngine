@@ -9,7 +9,7 @@ PhysFS          - an isolated file tree from a zip for assets
 
 glslang         - runtime shader compiler from GLSL to SPIR-V
 
-Qt              - create an Editor
+Qt6             - create an Editor
 
 # Build
 Deps on Ubuntu:
@@ -24,6 +24,8 @@ git clone --recursive https://github.com/ntropy83/tinyGameEngine
 mkdir build && cd build
 cmake .. && make -j${nproc}
 ```
-All necessary runtime files go to build/debug.
+# Crosscompile
+(WIP) To crosscompile from Linux to Windows, create a folder crosscompile in the project root and copy the Vulkan SDK and Qt6 SDK.
+The respective paths can be set within the toolchain-mingw64.cmake.
 
 ![Vulkan Triangle](https://github.com/ntropy83/tinyGameEngine/blob/main/screenshot_triangle_qt.png?raw=true)
