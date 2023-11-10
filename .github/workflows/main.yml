@@ -52,6 +52,8 @@ jobs:
       run: echo "BUILD_OUTPUT_DIR=${{ github.workspace }}/build" >> $GITHUB_ENV
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
+      with:
+        version: 6.6.0
 
     - name: Prepare Vulkan SDK
       uses: humbletim/setup-vulkan-sdk@v1.2.0
