@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.19)
 cmake_policy(SET CMP0144 OLD)
 
-set(CMAKE_CROSSCOMPILING true)
+set(CMAKE_CROSSCOMPILING false)
 
 set(NAME tgEngine)
 
