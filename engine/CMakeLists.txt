@@ -1,7 +1,3 @@
-cmake_minimum_required(VERSION 3.7)
-option(BUILD_SHARED_LIBS "Build shared libraries" ON)
-set(CMAKE_BUILD_TYPE DEBUG)
-
 include_directories(${CMAKE_SOURCE_DIR}/editor/assets)
 include_directories(${CMAKE_SOURCE_DIR}/engine/submodules/glfw/include)
 

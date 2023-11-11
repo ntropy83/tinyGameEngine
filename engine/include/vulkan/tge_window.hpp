@@ -15,7 +15,7 @@
 #ifdef _WIN32
 	#define GLFW_EXPOSE_NATIVE_WIN32
 	#include <GLFW/glfw3native.h>
-	#include <Windows.h>
+	#include <windows.h>
 #endif
 
 #include <string>

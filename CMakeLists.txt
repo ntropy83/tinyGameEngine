@@ -1,8 +1,15 @@
-cmake_minimum_required(VERSION 3.11.0)
+cmake_minimum_required(VERSION 3.19)
+cmake_policy(SET CMP0144 OLD)
 
 set(CMAKE_CROSSCOMPILING false)
 
 set(NAME tgEngine)
+
+if(CMAKE_CROSSCOMPILING)
+    include("${CMAKE_SOURCE_DIR}/toolchain-mingw64.cmake")
+    message(STATUS "Using toolchain-mingw64.cmake")
+endif()
+
 project(${NAME} VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -16,27 +23,22 @@ include_directories(${CMAKE_SOURCE_DIR}/engine/include)
 include_directories(${CMAKE_SOURCE_DIR}/engine/submodules)
 
 # Define NOMINMAX to avoid issues with std::min/max and the Windows macro
-if(WIN32)
-    add_definitions(-DNOMINMAX)
-endif()
+add_definitions(-DNOMINMAX)
+# Avoid RPATH changes on install with Ninja generator
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
-# Include Toolchain for crosscompiling
-if(CMAKE_CROSSCOMPILING)
-    include("${CMAKE_SOURCE_DIR}/toolchain-mingw64.cmake")
-    message(STATUS "Using toolchain-mingw64.cmake")
+# Find packages
+find_package(Vulkan REQUIRED)
+find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
 
-    # Include directories for Vulkan and Qt
-    include_directories(${Vulkan_INCLUDE_DIRS})
-    include_directories(${Qt5Core_INCLUDE_DIRS})
-    include_directories(${Qt5Gui_INCLUDE_DIRS})
-    include_directories(${Qt5Widgets_INCLUDE_DIRS})
-else()
-    find_package(Vulkan REQUIRED)
-    find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
-endif()
+# Include Vulkan and Qt
+include_directories(${Vulkan_INCLUDE_DIRS})
+include_directories(${Qt6Core_INCLUDE_DIRS})
+include_directories(${Qt6Gui_INCLUDE_DIRS})
+include_directories(${Qt6Widgets_INCLUDE_DIRS})
 
 # Platform specific checks
-if(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE AND NOT WIN32)
     set(LINUX TRUE)
     find_package(X11 REQUIRED)
 elseif(APPLE)
@@ -66,16 +68,9 @@ set(PROJECT_SOURCES
 
 add_subdirectory(engine)
 
-qt_add_executable(${NAME} ${PROJECT_SOURCES})
-
-# Qt version-specific setup and linking
-if(NOT CMAKE_CROSSCOMPILING)
-    # Link to the appropriate Qt modules
-    target_link_libraries(${NAME} PRIVATE Qt6::Widgets Qt6::Gui Qt6::Core Vulkan::Vulkan glfw physfs glslang glslang-default-resource-limits SPIRV MachineIndependent GenericCodeGen OSDependent)
-else()
-    # When cross-compiling, link directly to the Qt SDK libraries
-    target_link_libraries(${NAME} PRIVATE ${Vulkan_LIBRARY} glfw physfs glslang glslang-default-resource-limits SPIRV MachineIndependent GenericCodeGen OSDependent)
-endif()
+# Define the executable
+add_executable(${NAME} ${PROJECT_SOURCES})
+target_link_libraries(${NAME} PRIVATE Qt6::Widgets Qt6::Gui Qt6::Core Vulkan::Vulkan glfw physfs glslang glslang-default-resource-limits SPIRV MachineIndependent GenericCodeGen OSDependent)
 
 # Set target properties
 set_target_properties(${NAME} PROPERTIES
