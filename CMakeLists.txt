@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.19)
 cmake_policy(SET CMP0144 OLD)
 
-set(CMAKE_CROSSCOMPILING false)
+set(CMAKE_CROSSCOMPILING true)
 
 set(NAME tgEngine)
 
@@ -70,7 +70,7 @@ add_subdirectory(engine)
 
 # Define the executable
 add_executable(${NAME} ${PROJECT_SOURCES})
-target_link_libraries(${NAME} PRIVATE Qt6::Widgets Qt6::Gui Qt6::Core Vulkan::Vulkan glfw physfs glslang glslang-default-resource-limits SPIRV MachineIndependent GenericCodeGen OSDependent)
+target_link_libraries(${NAME} PRIVATE Qt6::Widgets Qt6::Gui Qt6::Core Vulkan::Vulkan glfw physfs glslang glslang-default-resource-limits SPIRV)
 
 # Set target properties
 set_target_properties(${NAME} PROPERTIES
@@ -83,8 +83,35 @@ if(LINUX)
     target_include_directories(${NAME} PRIVATE ${X11_INCLUDE_DIR})
 endif()
 
+# Copy libraries next to the executable
+add_custom_command(TARGET ${NAME} POST_BUILD
+COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    $<TARGET_FILE:glfw> $<TARGET_FILE_DIR:${NAME}>
+COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    $<TARGET_FILE:glslang> $<TARGET_FILE_DIR:${NAME}>
+COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    $<TARGET_FILE:physfs> $<TARGET_FILE_DIR:${NAME}>
+COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    $<TARGET_FILE:glslang-default-resource-limits> $<TARGET_FILE_DIR:${NAME}>
+COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    $<TARGET_FILE:SPIRV> $<TARGET_FILE_DIR:${NAME}>                
+# Repeat for other submodule libraries
+)
+
 # Additional target properties for cross-compiling
 if(CMAKE_CROSSCOMPILING)
     # Set properties specific to Windows when cross-compiling
     set_target_properties(${NAME} PROPERTIES SUFFIX ".exe")
+
+    add_custom_command(TARGET ${NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${QT_DLL_DIR}/Qt6Core.dll"
+        "${QT_DLL_DIR}/Qt6Gui.dll"
+        "${QT_DLL_DIR}/Qt6Widgets.dll"
+        "${MINGW_DLL_DIR}/libgcc_s_seh-1.dll"
+        "${MINGW_DLL_DIR}/libwinpthread-1.dll"
+        "${MINGW_DLL_DIR}/libstdc++-6.dll"
+        # Add other necessary DLLs here
+        $<TARGET_FILE_DIR:${NAME}>)
+
 endif()

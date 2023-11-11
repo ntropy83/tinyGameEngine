@@ -26,6 +26,6 @@ cmake .. && make -j${nproc}
 ```
 # Crosscompile
 (WIP) To crosscompile from Linux to Windows, create a folder in the project root and copy the Vulkan SDK and Qt6 SDK for Windows.
-The respective paths can be set within the toolchain-mingw64.cmake.
+The respective paths can be set within the toolchain-mingw64.cmake. For the find_package command to work with Vulkan, you may have to change the Include dir of the SDK to lowercase.
 
 ![Vulkan Triangle](https://github.com/ntropy83/tinyGameEngine/blob/main/screenshot_triangle_qt.png?raw=true)

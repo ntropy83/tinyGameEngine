@@ -10,6 +10,10 @@ set(CMAKE_CXX_COMPILER x86_64-w64-mingw32-g++)
 set(CMAKE_FIND_ROOT_PATH /usr/x86_64-w64-mingw32)
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_SOURCE_DIR}/crosscompile/vulkan-sdk/1.3.268.0)
 
+# Dll Path
+set(QT_DLL_DIR "${CMAKE_SOURCE_DIR}/crosscompile/qt6/6.6.0/mingw_64/bin")
+set(MINGW_DLL_DIR "/usr/x86_64-w64-mingw32/bin")
+
 # Adjust the default behaviour of the FIND_XXX() commands:
 # search programs in the host environment and
 # search headers and libraries in the target environment
