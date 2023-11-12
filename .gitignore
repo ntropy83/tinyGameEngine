@@ -166,4 +166,5 @@ cython_debug/
 build/
 CMakeLists.txt.user
 crosscompile/
+Archiv.zip
 

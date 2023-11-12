@@ -8,7 +8,7 @@ TgeSplashScreen::TgeSplashScreen(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TgeSplashScreen)
 {
-    QPixmap pixmap("../ico/splash.png");
+    QPixmap pixmap("res/splash.png");
     if (pixmap.isNull()) {
         qDebug() << "Failed to load splash image";
     }

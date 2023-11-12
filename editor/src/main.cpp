@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
 
     // Start loading Vulkan and other resources here.
     // Placeholder for actual loading code:
-    std::this_thread::sleep_for(std::chrono::seconds(1));  // Simulate some loading
+    std::this_thread::sleep_for(std::chrono::seconds(2));  // Simulate some loading
 
     // After the loading is done or after 1 second, proceed to create the main window
     tge::TgeEditor app{}; 

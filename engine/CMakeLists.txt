@@ -2,7 +2,7 @@ include_directories(${CMAKE_SOURCE_DIR}/editor/assets)
 include_directories(${CMAKE_SOURCE_DIR}/engine/submodules/glfw/include)
 
 # options GLFW
-set(GLFW_LIBRARY_TYPE "SHARED")
+set(GLFW_LIBRARY_TYPE "STATIC")
 option(GLFW_BUILD_EXAMPLES "Build the GLFW example programs" OFF)
 option(GLFW_BUILD_TESTS "Build the GLFW test programs" OFF)
 option(GLFW_BUILD_DOCS "Build the GLFW documentation" OFF)
@@ -10,7 +10,7 @@ option(GLFW_INSTALL "Generate installation target" OFF)
 option(GLFW_DOCUMENT_INTERNALS "Include internals in documentation" OFF)
 
 # options GLSLANG
-option(BUILD_SHARED_LIBS "Build Shared Libraries" ON)
+option(BUILD_SHARED_LIBS "Build Shared Libraries" OFF)
 set(SKIP_GLSLANG_INSTALL ON)
 option(ENABLE_SPVREMAPPER "Enables building of SPVRemapper" OFF)
 option(ENABLE_GLSLANG_BINARIES "Builds glslang and spirv-remap" OFF)
@@ -18,7 +18,8 @@ option(ENABLE_OPT "Enables spirv-opt capability if present" OFF)
 option(ENABLE_HLSL "Enables HLSL input support" OFF)
 
 # options PHYSFS
-option(PHYSFS_BUILD_STATIC "Build static library" FALSE)
+option(PHYSFS_BUILD_STATIC "Build static library" TRUE)
+option(PHYSFS_BUILD_SHARED "Build shared library" FALSE)
 option(PHYSFS_BUILD_TEST "Build stdio test program." FALSE)
 option(PHYSFS_BUILD_DOCS "Build doxygen based documentation" FALSE)
 set(PHYSFS_TARGETNAME_UNINSTALL "uninstall_1" CACHE STRING "Name of 'uninstall' build target")
@@ -39,7 +40,7 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 
 # Specify a relative path for the zip file
-set(ZIP_FILE "${CMAKE_BINARY_DIR}/data.zip")
+set(ZIP_FILE "${BIN_DIR}/data.zip")
 
 function(create_zip output_file input_files working_dir)
     add_custom_command(
