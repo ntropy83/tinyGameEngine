@@ -143,7 +143,7 @@ if(CMAKE_CROSSCOMPILING)
     )
 
     # Add custom command to execute windeployqt6.exe using Wine
-    add_custom_command(TARGET tgEngine POST_BUILD
+    add_custom_command(TARGET ${NAME} POST_BUILD
         COMMAND wine ${CMAKE_SOURCE_DIR}/crosscompile/qt6/6.6.0/mingw_64/bin/windeployqt6.exe ${BIN_DIR}/${NAME}.exe
         WORKING_DIRECTORY $<TARGET_FILE_DIR:${NAME}>
         COMMENT "Running windeployqt6.exe using Wine"

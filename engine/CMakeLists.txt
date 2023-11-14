@@ -20,7 +20,7 @@ option(ENABLE_HLSL "Enables HLSL input support" OFF)
 
 # options PHYSFS
 option(PHYSFS_BUILD_STATIC "Build static library" TRUE)
-option(PHYSFS_BUILD_SHARED "Build shared library" TRUE)
+option(PHYSFS_BUILD_SHARED "Build shared library" FALSE)
 option(PHYSFS_BUILD_TEST "Build stdio test program." FALSE)
 option(PHYSFS_BUILD_DOCS "Build doxygen based documentation" FALSE)
 set(PHYSFS_TARGETNAME_UNINSTALL "uninstall_1" CACHE STRING "Name of 'uninstall' build target")
