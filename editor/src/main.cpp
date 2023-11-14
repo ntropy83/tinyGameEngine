@@ -20,7 +20,7 @@
 int main(int argc, char *argv[]) {
     FileSystem::Init();
     #ifdef _WIN32
-        FileSystem::Mount("data.zip", "C:\\");
+        FileSystem::Mount("data.zip", "/");
     #else
         FileSystem::Mount("data.zip", "/");
     #endif
