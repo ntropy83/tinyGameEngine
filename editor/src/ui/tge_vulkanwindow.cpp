@@ -9,10 +9,11 @@
 namespace tge {
 
   TgeEditor::TgeEditor() :
-      tgeWindow(WIDTH, HEIGHT, "Hello Vulkan!"),
+      tgeWindow(WIDTH, HEIGHT, "Tge_VulkanWindow"),
       tgeDevice(tgeWindow),
       tgeSwapChain(tgeDevice, tgeWindow.getExtent())
   {
+    loadModels();
     createPipelineLayout();
     createPipeline();
     createCommandBuffers();
@@ -27,6 +28,31 @@ namespace tge {
         drawFrame();
         vkDeviceWaitIdle(tgeDevice.device());
   };
+
+  void TgeEditor::sierpinski (
+      std::vector<TgeModel::Vertex> &vertices,
+      int depth,
+      glm::vec2 left,
+      glm::vec2 right,
+      glm::vec2 top) {
+    if (depth <= 0) {
+      vertices.push_back({top});
+      vertices.push_back({right});
+      vertices.push_back({left});
+    } else {
+      auto leftTop = 0.5f * (left + top);
+      auto rightTop = 0.5f * (right + top);
+      auto leftRight = 0.5f * (left + right);
+      sierpinski(vertices, depth - 1, left, leftRight, leftTop);
+      sierpinski(vertices, depth - 1, leftRight, right, rightTop);
+      sierpinski(vertices, depth - 1, leftTop, rightTop, top);
+    }
+  }
+  void TgeEditor::loadModels() {
+    std::vector<TgeModel::Vertex> vertices{};
+    sierpinski(vertices, 5, {-0.9f, 0.9f}, {0.9f, 0.9f}, {0.0f, -0.9f});
+    tgeModel = std::make_unique<TgeModel>(tgeDevice, vertices);
+  }
 
   void TgeEditor::createPipelineLayout(){
     VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
@@ -100,7 +126,8 @@ if (vkBeginCommandBuffer(commandBuffers[i], &beginInfo) != VK_SUCCESS) {
     vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
     tgePipeline->bind(commandBuffers[i]);
-    vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);
+    tgeModel->bind(commandBuffers[i]);
+    tgeModel->draw(commandBuffers[i]);
 
     vkCmdEndRenderPass(commandBuffers[i]);
     if (vkEndCommandBuffer(commandBuffers[i]) != VK_SUCCESS) {

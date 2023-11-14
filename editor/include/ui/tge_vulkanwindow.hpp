@@ -6,6 +6,7 @@
 #include "vulkan/tge_pipeline.hpp"
 #include "vulkan/tge_swap_chain.hpp"
 #include "vulkan/tge_window.hpp"
+#include "vulkan/tge_model.hpp"
 
 // ImGUI
 //#include "ui/tge_gui.hpp"
@@ -38,6 +39,15 @@ namespace tge {
       void update();
 
     private:
+      void sierpinski (
+        std::vector<TgeModel::Vertex> &vertices,
+        int depth,
+        glm::vec2 left,
+        glm::vec2 right,
+        glm::vec2 top
+      );
+
+      void loadModels(); 
       void createPipelineLayout();
       void createPipeline();
       void createCommandBuffers();
@@ -49,6 +59,7 @@ namespace tge {
       std::unique_ptr<TgePipeline> tgePipeline;
       VkPipelineLayout pipelineLayout;
       std::vector<VkCommandBuffer> commandBuffers;
+      std::unique_ptr<TgeModel> tgeModel;
 
       bool window_should_close(){ return tgeWindow.shouldClose(); }
   };

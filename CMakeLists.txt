@@ -65,6 +65,7 @@ set(PROJECT_SOURCES
     engine/src/vulkan/tge_swap_chain.cpp
     engine/include/vulkan/tge_window.hpp
     engine/src/vulkan/tge_window.cpp
+    engine/src/vulkan/tge_model.cpp
 )
 
 # Define directories for binaries and libraries
@@ -75,7 +76,7 @@ add_subdirectory(engine)
 
 # Define the executable
 add_executable(${NAME} ${PROJECT_SOURCES})
-target_link_libraries(${NAME} PRIVATE Qt6::Widgets Qt6::Gui Qt6::Core Vulkan::Vulkan glfw physfs-static glslang glslang-default-resource-limits SPIRV)
+target_link_libraries(${NAME} PRIVATE Qt6::Widgets Qt6::Gui Qt6::Core Vulkan::Vulkan glfw physfs-static glm glslang glslang-default-resource-limits SPIRV)
 
 # Set target properties
 set_target_properties(${NAME} PROPERTIES
@@ -143,8 +144,8 @@ if(CMAKE_CROSSCOMPILING)
 
     # Add custom command to execute windeployqt6.exe using Wine
     add_custom_command(TARGET tgEngine POST_BUILD
-        COMMAND wine ${CMAKE_SOURCE_DIR}/crosscompile/qt6/6.6.0/mingw_64/bin/windeployqt6.exe ${BIN_DIR}/tgEngine.exe
-        WORKING_DIRECTORY $<TARGET_FILE_DIR:tgEngine>
+        COMMAND wine ${CMAKE_SOURCE_DIR}/crosscompile/qt6/6.6.0/mingw_64/bin/windeployqt6.exe ${BIN_DIR}/${NAME}.exe
+        WORKING_DIRECTORY $<TARGET_FILE_DIR:${NAME}>
         COMMENT "Running windeployqt6.exe using Wine"
     )
 

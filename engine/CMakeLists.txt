@@ -1,5 +1,6 @@
 include_directories(${CMAKE_SOURCE_DIR}/editor/assets)
 include_directories(${CMAKE_SOURCE_DIR}/engine/submodules/glfw/include)
+include_directories(${CMAKE_SOURCE_DIR}/engine/submodules/glm/)
 
 # options GLFW
 set(GLFW_LIBRARY_TYPE "STATIC")
@@ -19,7 +20,7 @@ option(ENABLE_HLSL "Enables HLSL input support" OFF)
 
 # options PHYSFS
 option(PHYSFS_BUILD_STATIC "Build static library" TRUE)
-option(PHYSFS_BUILD_SHARED "Build shared library" FALSE)
+option(PHYSFS_BUILD_SHARED "Build shared library" TRUE)
 option(PHYSFS_BUILD_TEST "Build stdio test program." FALSE)
 option(PHYSFS_BUILD_DOCS "Build doxygen based documentation" FALSE)
 set(PHYSFS_TARGETNAME_UNINSTALL "uninstall_1" CACHE STRING "Name of 'uninstall' build target")
@@ -62,3 +63,4 @@ add_custom_target("project-data" ALL DEPENDS "${ZIP_FILE}")
 add_subdirectory("submodules/glfw")
 add_subdirectory("submodules/glslang")
 add_subdirectory("submodules/physfs")
+add_subdirectory("submodules/glm")

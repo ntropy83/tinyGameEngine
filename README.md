@@ -12,11 +12,14 @@ glslang         - runtime shader compiler from GLSL to SPIR-V
 Qt6             - create an Editor
 
 # Build
-Deps on Ubuntu:
+Deps on Arch Linux:
 ```
-sudo apt-get install vulkan-validationlayers-dev \
-                     spirv-tools libxxf86vm-dev libxi-dev libxrandr-dev \
-                     libxinerama-dev libxcursor-dev mesa-common-dev qt5-default libvulkan-dev
+sudo pacman -S vulkan-devel qt6-base qt6-declarative
+```
+
+Deps on Windows:
+```
+Qt6 SDK, Vulkan SDK 
 ```
 
 ```
@@ -25,7 +28,7 @@ mkdir build && cd build
 cmake .. && make -j${nproc}
 ```
 # Crosscompile
-(WIP) To crosscompile from Linux to Windows, create a folder in the project root and copy the Vulkan SDK and Qt6 SDK for Windows.
+To crosscompile from Linux to Windows, create a folder in the project root and copy the Vulkan SDK and Qt6 SDK for Windows.
 The respective paths can be set within the toolchain-mingw64.cmake. For the find_package command to work with Vulkan, you may have to change the Include dir of the SDK to lowercase.
 
 ![Vulkan Triangle](https://github.com/ntropy83/tinyGameEngine/blob/main/screenshot_triangle_qt.png?raw=true)

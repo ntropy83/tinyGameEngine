@@ -19,7 +19,11 @@
 
 int main(int argc, char *argv[]) {
     FileSystem::Init();
-    FileSystem::Mount("data.zip", "/");
+    #ifdef _WIN32
+        FileSystem::Mount("data.zip", "C:\\");
+    #else
+        FileSystem::Mount("data.zip", "/");
+    #endif
 
     QApplication a(argc, argv);
 
@@ -32,7 +36,7 @@ int main(int argc, char *argv[]) {
 
     // Start loading Vulkan and other resources here.
     // Placeholder for actual loading code:
-    std::this_thread::sleep_for(std::chrono::seconds(2));  // Simulate some loading
+    std::this_thread::sleep_for(std::chrono::seconds(0));  // Simulate some loading
 
     // After the loading is done or after 1 second, proceed to create the main window
     tge::TgeEditor app{}; 
@@ -81,7 +85,7 @@ int main(int argc, char *argv[]) {
             a.quit();
         }
     });
-    timer.start(33); // Approx. 30fps, formula is 1000 / wanted fps
+    timer.start(16); // Approx. 30fps, formula is 1000 / wanted fps
 
     // Run the application event loop
     int exitCode = EXIT_SUCCESS;
