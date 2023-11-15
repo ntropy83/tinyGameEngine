@@ -75,7 +75,7 @@ add_subdirectory(engine)
 
 # Define the executable
 add_executable(${NAME} ${PROJECT_SOURCES})
-target_link_libraries(${NAME} PRIVATE Qt6::Widgets Qt6::Gui Qt6::Core Vulkan::Vulkan glfw physfs-static glm glslang glslang-default-resource-limits SPIRV)
+target_link_libraries(${NAME} PRIVATE Qt6::Widgets Qt6::Gui Qt6::Core Vulkan::Vulkan physfs-static glfw glm glslang glslang-default-resource-limits SPIRV)
 
 # Set target properties
 if(WIN32)
@@ -93,13 +93,13 @@ endif()
 # Copy executable to 'bin' directory and libraries to 'bin/libs'
 add_custom_command(TARGET ${NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory ${BIN_DIR}
-#    COMMAND ${CMAKE_COMMAND} -E make_directory ${LIB_DIR}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${LIB_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${NAME}> ${BIN_DIR}
-#    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:glfw> ${LIB_DIR}
-#    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:glslang> ${LIB_DIR}
-#    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:physfs> ${LIB_DIR}
-#    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:glslang-default-resource-limits> ${LIB_DIR}
-#    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SPIRV> ${LIB_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:glfw> ${LIB_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:glslang> ${LIB_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:physfs-static> ${LIB_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:glslang-default-resource-limits> ${LIB_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SPIRV> ${LIB_DIR}
 )
 
 # Copy Resource files

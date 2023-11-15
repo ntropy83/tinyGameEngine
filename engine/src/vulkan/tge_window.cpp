@@ -26,6 +26,8 @@ namespace tge {
     glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
 
     window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
+    glfwSetWindowUserPointer(window, this);
+    glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
 
     int xpos = 0;
     int ypos = 0;
@@ -40,6 +42,13 @@ namespace tge {
 
       throw std::runtime_error("failed to create window surface");
     }
+  }
+
+  void TgeWindow::framebufferResizeCallback(GLFWwindow *window, int width, int height) {
+    auto tgeWindow = reinterpret_cast<TgeWindow *>(glfwGetWindowUserPointer(window));
+    tgeWindow->framebufferResized = true;
+    tgeWindow->width = width;
+    tgeWindow->height = height;
   }
 
   void TgeWindow::integrateInto(QWidget* placeholder) {
