@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
             a.quit();
         }
     });
-    timer.start(16); // Approx. 30fps, formula is 1000 / wanted fps
+    timer.start(32); // Approx. 30fps, formula is 1000 / wanted fps
 
     // Run the application event loop
     int exitCode = EXIT_SUCCESS;

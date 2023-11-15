@@ -43,8 +43,9 @@ namespace tge {
     		}
 
 			void createWindowSurface(VkInstance instance, VkSurfaceKHR *surface);
-
 			void integrateInto(QWidget* placeholder);
+			void dockInto(QWidget* placeholder);
+    		void undockFrom(QWidget* placeholder);
 
 		private:
 

@@ -22,7 +22,7 @@ namespace tge {
   void TgeWindow::initWindow() {
     glfwInit();
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
     glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
 
     window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
@@ -72,6 +72,35 @@ namespace tge {
       glfwShowWindow(window);
   #endif
   }
+
+    void TgeWindow::dockInto(QWidget* placeholderWidget) {
+        #ifdef _WIN32
+            HWND winHandle = glfwGetWin32Window(window);
+            HWND qtWinHandle = (HWND)placeholderWidget->winId();
+            // Windows-specific docking logic
+            // ...
+        #elif defined(__linux__)
+            Window x11NativeWindow = glfwGetX11Window(window);
+            Window qtNativeWindow = (Window)placeholderWidget->winId();
+            Display* display = glfwGetX11Display();
+            XReparentWindow(display, x11NativeWindow, qtNativeWindow, 0, 0);
+            XResizeWindow(display, x11NativeWindow, placeholderWidget->width(), placeholderWidget->height());
+            XMapWindow(display, x11NativeWindow);
+        #endif
+    }
+
+    void TgeWindow::undockFrom(QWidget* placeholderWidget) {
+        #ifdef _WIN32
+            HWND winHandle = glfwGetWin32Window(window);
+            // Windows-specific undocking logic
+            // ...
+        #elif defined(__linux__)
+            Window x11NativeWindow = glfwGetX11Window(window);
+            Display* display = glfwGetX11Display();
+            XReparentWindow(display, x11NativeWindow, DefaultRootWindow(display), 200, 200);
+            XMapWindow(display, x11NativeWindow);
+        #endif
+    }
 
 } // namespace tge
 

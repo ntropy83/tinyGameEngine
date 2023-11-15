@@ -19,7 +19,7 @@ class TgeSwapChain {
   ~TgeSwapChain();
 
   TgeSwapChain(const TgeSwapChain &) = delete;
-  void operator=(const TgeSwapChain &) = delete;
+  TgeSwapChain &operator=(const TgeSwapChain &) = delete;
 
   VkFramebuffer getFrameBuffer(int index) { return swapChainFramebuffers[index]; }
   VkRenderPass getRenderPass() { return renderPass; }

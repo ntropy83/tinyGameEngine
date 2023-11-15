@@ -20,11 +20,13 @@ QT_END_NAMESPACE
         void customMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 
     private slots:
-        void on_actionQuit_triggered();     
+        void on_actionQuit_triggered();
+        void toggleDocking();     
 
     private:
         Ui::MainWindow *ui;
         tge::TgeWindow &window_;
+        bool isDocked;
     };
 
 #endif // MAINWINDOW_H

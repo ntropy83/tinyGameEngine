@@ -22,7 +22,7 @@ public:
     ~TgeShaderCompiler();
 
     TgeShaderCompiler(const TgeShaderCompiler&) = delete;
-    void operator=(const TgeShaderCompiler&) = delete;
+    TgeShaderCompiler &operator=(const TgeShaderCompiler&) = delete;
 
     std::vector<uint32_t> Compile(vk::ShaderStageFlagBits stage, const std::string &source);
 

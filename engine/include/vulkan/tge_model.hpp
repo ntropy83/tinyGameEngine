@@ -1,7 +1,6 @@
 #pragma once
 
 #include "vulkan/tge_device.hpp"
-#include <vulkan/vulkan_core.h>
 
 // GLM Lib defines
 #define GLM_FORCE_RADIANS
@@ -17,6 +16,7 @@ namespace tge {
 
         struct Vertex {
             glm::vec2 position;
+            glm::vec3 color;
 
             static std::vector<VkVertexInputBindingDescription> getBindingDescriptions();
             static std::vector<VkVertexInputAttributeDescription> getAttributeDescriptions();

@@ -37,7 +37,7 @@ namespace tge {
       ~TgePipeline();
 
       TgePipeline(const TgePipeline&) = delete;
-      void operator = (const TgePipeline&) = delete;
+      TgePipeline &operator = (const TgePipeline&) = delete;
 
       void bind(VkCommandBuffer commandBuffer);
 

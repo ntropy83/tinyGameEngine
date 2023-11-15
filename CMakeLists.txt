@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.19)
-cmake_policy(SET CMP0144 OLD)
 
 # Enable crosscompiling
 set(CMAKE_CROSSCOMPILING false)
@@ -79,9 +78,11 @@ add_executable(${NAME} ${PROJECT_SOURCES})
 target_link_libraries(${NAME} PRIVATE Qt6::Widgets Qt6::Gui Qt6::Core Vulkan::Vulkan glfw physfs-static glm glslang glslang-default-resource-limits SPIRV)
 
 # Set target properties
-set_target_properties(${NAME} PROPERTIES
-    WIN32_EXECUTABLE TRUE
-)
+if(WIN32)
+    set_target_properties(${NAME} PROPERTIES
+        WIN32_EXECUTABLE TRUE
+    )
+endif()
 
 # For Linux, link the X11 libraries
 if(LINUX)
@@ -96,7 +97,7 @@ add_custom_command(TARGET ${NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${NAME}> ${BIN_DIR}
 #    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:glfw> ${LIB_DIR}
 #    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:glslang> ${LIB_DIR}
-#    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:physfs-static> ${LIB_DIR}
+#    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:physfs> ${LIB_DIR}
 #    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:glslang-default-resource-limits> ${LIB_DIR}
 #    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SPIRV> ${LIB_DIR}
 )
