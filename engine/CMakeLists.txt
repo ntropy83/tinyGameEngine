@@ -19,7 +19,7 @@ option(ENABLE_OPT "Enables spirv-opt capability if present" OFF)
 option(ENABLE_HLSL "Enables HLSL input support" OFF)
 
 # options PHYSFS
-option(PHYSFS_BUILD_STATIC "Build static library" FALSE)
+option(PHYSFS_BUILD_STATIC "Build static library" TRUE)
 option(PHYSFS_BUILD_SHARED "Build shared library" TRUE)
 option(PHYSFS_BUILD_TEST "Build stdio test program." FALSE)
 option(PHYSFS_BUILD_DOCS "Build doxygen based documentation" FALSE)
