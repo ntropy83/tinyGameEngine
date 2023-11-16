@@ -1,7 +1,5 @@
 #include "vulkan/tge_window.hpp"
-
 #include "debug/tge_vulDebug.hpp"
-
 #include "GLFW/glfw3.h"
 
 // include std
@@ -10,106 +8,77 @@
 
 namespace tge {
 
-  TgeWindow::TgeWindow(int w, int h, std::string name, QWidget *parent) : width{w}, height{h}, windowName{name} {
-    initWindow();
-  }
-
-  TgeWindow::~TgeWindow() {
-    glfwDestroyWindow(window);
-    glfwTerminate();
-  }
-
-  void TgeWindow::initWindow() {
-    glfwInit();
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-    glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
-
-    window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
-    glfwSetWindowUserPointer(window, this);
-    glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
-
-    int xpos = 0;
-    int ypos = 0;
-    glfwSetWindowPos(window, xpos, ypos);
-  }
-    
-  void TgeWindow::createWindowSurface(VkInstance instance, VkSurfaceKHR *surface) {
-    if(glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS) {
-
-      TgeVulDebug vulDebug;
-      vulDebug.writeToBuffer("failed to create window surface", MessageType::Critical);
-
-      throw std::runtime_error("failed to create window surface");
+    TgeWindow::TgeWindow(int w, int h, std::string name, QWidget *parent) 
+        : width{w}, height{h}, windowName{name} {
+        initWindow();
     }
-  }
 
-  void TgeWindow::framebufferResizeCallback(GLFWwindow *window, int width, int height) {
-    auto tgeWindow = reinterpret_cast<TgeWindow *>(glfwGetWindowUserPointer(window));
-    tgeWindow->framebufferResized = true;
-    tgeWindow->width = width;
-    tgeWindow->height = height;
-  }
+    TgeWindow::~TgeWindow() {
+        glfwDestroyWindow(window);
+        glfwTerminate();
+    }
 
-  void TgeWindow::integrateInto(QWidget* placeholder) {
-    #ifdef _WIN32
-      // Windows-specific code
-      HWND win32NativeWindow = glfwGetWin32Window(window); // Get the GLFW window's native handle
+    void TgeWindow::initWindow() {
+        glfwInit();
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+        glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
 
-      HWND qtNativeWindow = reinterpret_cast<HWND>(static_cast<UINT_PTR>(placeholder->winId())); // Get the Qt placeholder's native handle
+        window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
+        glfwSetWindowUserPointer(window, this);
+        glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
 
-      // You may need to do additional setup for integrating with Qt on Windows
-      // For example, setting parent-child relationships or window styles.
+        int xpos = 0;
+        int ypos = 0;
+        glfwSetWindowPos(window, xpos, ypos);
+    }
 
-      // Reparenting code specific to Windows, if necessary.
-      // Example:
-      SetParent(win32NativeWindow, qtNativeWindow);
+    void TgeWindow::createWindowSurface(VkInstance instance, VkSurfaceKHR *surface) {
+        if (glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS) {
+            TgeVulDebug vulDebug;
+            vulDebug.writeToBuffer("failed to create window surface", MessageType::Critical);
+            throw std::runtime_error("failed to create window surface");
+        }
+    }
 
-      // Show the GLFW window
-      glfwShowWindow(window);
-    #else
-      // Linux-specific code (X11)
-      Window x11NativeWindow = glfwGetX11Window(window);
-      Window qtNativeWindow = static_cast<Window>(placeholder->winId());
+    void TgeWindow::framebufferResizeCallback(GLFWwindow *window, int width, int height) {
+        auto tgeWindow = reinterpret_cast<TgeWindow *>(glfwGetWindowUserPointer(window));
+        tgeWindow->framebufferResized = true;
+        tgeWindow->width = width;
+        tgeWindow->height = height;
+    }
 
-      Display* display = glfwGetX11Display();
+    void TgeWindow::integrateInto(QTabWidget* vulkanWindowWidget, int tabIndex) {
+        QWidget* tab = vulkanWindowWidget->widget(tabIndex);
+        auto nativeWindow = getNativeWindowHandle();
 
-      // Reparenting code for X11
-      XReparentWindow(display, x11NativeWindow, qtNativeWindow, 0, 0);
-
-      // Show the GLFW window
-      glfwShowWindow(window);
-  #endif
-  }
-
-    void TgeWindow::dockInto(QWidget* placeholderWidget) {
         #ifdef _WIN32
-            HWND winHandle = glfwGetWin32Window(window);
-            HWND qtWinHandle = (HWND)placeholderWidget->winId();
-            // Windows-specific docking logic
-            // ...
-        #elif defined(__linux__)
-            Window x11NativeWindow = glfwGetX11Window(window);
-            Window qtNativeWindow = (Window)placeholderWidget->winId();
+            SetParent(nativeWindow, (HWND)tab->winId());
+            SetWindowPos(nativeWindow, HWND_TOP, 0, 0, tab->width(), tab->height(), SWP_SHOWWINDOW);
+        #else
             Display* display = glfwGetX11Display();
-            XReparentWindow(display, x11NativeWindow, qtNativeWindow, 0, 0);
-            XResizeWindow(display, x11NativeWindow, placeholderWidget->width(), placeholderWidget->height());
-            XMapWindow(display, x11NativeWindow);
+            XReparentWindow(display, nativeWindow, tab->winId(), 0, 0);
+            XResizeWindow(display, nativeWindow, tab->width(), tab->height());
+            XMapWindow(display, nativeWindow);
         #endif
+
+        std::cout << tab->width() << '\n' << tab->height();
     }
 
     void TgeWindow::undockFrom(QWidget* placeholderWidget) {
+        auto nativeWindow = getNativeWindowHandle();
+
         #ifdef _WIN32
-            HWND winHandle = glfwGetWin32Window(window);
-            // Windows-specific undocking logic
-            // ...
-        #elif defined(__linux__)
-            Window x11NativeWindow = glfwGetX11Window(window);
+            SetParent(nativeWindow, NULL); // Detach from parent
+            SetWindowLongPtr(nativeWindow, GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
+            SetWindowPos(nativeWindow, HWND_TOP, 200, 200, 800, 600, SWP_SHOWWINDOW);
+            SetForegroundWindow(nativeWindow);
+            SetFocus(nativeWindow);
+        #else
             Display* display = glfwGetX11Display();
-            XReparentWindow(display, x11NativeWindow, DefaultRootWindow(display), 200, 200);
-            XMapWindow(display, x11NativeWindow);
+            XReparentWindow(display, nativeWindow, DefaultRootWindow(display), 200, 200);
+            XMapRaised(display, nativeWindow);
+            XSetInputFocus(display, nativeWindow, RevertToParent, CurrentTime);
         #endif
     }
-
 } // namespace tge
-

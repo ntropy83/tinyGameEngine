@@ -13,6 +13,7 @@
 // std
 #include <cstdlib>
 #include <iostream>
+#include <qtabwidget.h>
 #include <stdexcept>
 #include <chrono>
 #include <thread>
@@ -44,22 +45,27 @@ int main(int argc, char *argv[]) {
     MainWindow w(vulkan_window);
 
     // Setup tree view
-    QTreeView* treeView = w.findChild<QTreeView*>("treeView");
+    QTreeView* assets_browser = w.findChild<QTreeView*>("treeView");
+    if (!assets_browser) {
+        qCritical() << "Failed to find treeView(assets_browser)";
+        splash.close();
+        return EXIT_FAILURE;
+    }
+
     QFileSystemModel fileSystemModel;
     fileSystemModel.setRootPath(QDir::rootPath());
-    treeView->setModel(&fileSystemModel);
-    treeView->setRootIndex(fileSystemModel.index(QDir::currentPath()));
+    assets_browser->setModel(&fileSystemModel);
+    assets_browser->setRootIndex(fileSystemModel.index(QDir::currentPath()));
 
-    // Setup GLFW placeholder
-    QWidget* glfwPlaceholder = w.findChild<QWidget*>("glfwPlaceholder");
-    if (!glfwPlaceholder) {
-        qCritical() << "Failed to find glfwPlaceholder";
+    QTabWidget* vulkanViewWidget = w.findChild<QTabWidget*>("VulkanView_Widget");
+    if (!vulkanViewWidget) {
+        qCritical() << "Failed to find vulkanViewWidget";
         splash.close();
         return EXIT_FAILURE;
     }
 
     // Integrate Vulkan window into the placeholder widget
-    vulkan_window.integrateInto(glfwPlaceholder);
+    vulkan_window.integrateInto(vulkanViewWidget, vulkanViewWidget->currentIndex());
 
     // Setup debug console
     QTextEdit* debugConsole = w.findChild<QTextEdit*>("debugConsole");

@@ -36,7 +36,7 @@ void MainWindow::toggleDocking() {
         isDocked = false;
     } else {
         // Dock the GLFW window
-        window_.dockInto(this); // You need to implement this method in TgeWindow
+        window_.integrateInto(ui->VulkanView_Widget, ui->VulkanView_Widget->currentIndex()); // You need to implement this method in TgeWindow
         isDocked = true;
     }
 }

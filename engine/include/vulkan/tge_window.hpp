@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QTabWidget>
 
 #include <vulkan/vulkan.hpp>
 #include <GLFW/glfw3.h>
@@ -45,11 +46,17 @@ namespace tge {
     		}
 
 			void createWindowSurface(VkInstance instance, VkSurfaceKHR *surface);
-			void integrateInto(QWidget* placeholder);
-			void dockInto(QWidget* placeholder);
+			void integrateInto(QTabWidget* vulkanWindowWidget, int tabIndex);
     		void undockFrom(QWidget* placeholder);
 
 		private:
+    		auto getNativeWindowHandle() {
+        		#ifdef _WIN32
+            		return glfwGetWin32Window(window);
+        		#else
+            		return glfwGetX11Window(window);
+        		#endif
+    		}
 
 			static void framebufferResizeCallback(GLFWwindow *window, int width, int height);
 			GLFWwindow *window;

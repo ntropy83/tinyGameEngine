@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.19)
+cmake_policy(SET CMP0144 OLD)
 
 # Enable crosscompiling
 set(CMAKE_CROSSCOMPILING false)
@@ -17,6 +18,8 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=thread")
+
 include_directories(${CMAKE_SOURCE_DIR}/editor/src)
 include_directories(${CMAKE_SOURCE_DIR}/editor/include)
 include_directories(${CMAKE_SOURCE_DIR}/engine/include)
@@ -25,7 +28,7 @@ include_directories(${CMAKE_SOURCE_DIR}/engine/submodules)
 # Define NOMINMAX to avoid issues with std::min/max and the Windows macro
 add_definitions(-DNOMINMAX)
 # Avoid RPATH changes on install with Ninja generator
-set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+#set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
 # Find packages
 find_package(Vulkan REQUIRED)
@@ -97,7 +100,7 @@ add_custom_command(TARGET ${NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${NAME}> ${BIN_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:glfw> ${LIB_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:glslang> ${LIB_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:physfs-static> ${LIB_DIR}
+    #COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:physfs-static> ${LIB_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:glslang-default-resource-limits> ${LIB_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SPIRV> ${LIB_DIR}
 )
