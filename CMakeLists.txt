@@ -78,7 +78,7 @@ add_subdirectory(engine)
 
 # Define the executable
 add_executable(${NAME} ${PROJECT_SOURCES})
-target_link_libraries(${NAME} PRIVATE Qt6::Widgets Qt6::Gui Qt6::Core Vulkan::Vulkan physfs-static glfw glm glslang glslang-default-resource-limits SPIRV)
+target_link_libraries(${NAME} PRIVATE Qt6::Widgets Qt6::Gui Qt6::Core Vulkan::Vulkan physfs glfw glm glslang glslang-default-resource-limits SPIRV)
 
 # Set target properties
 if(WIN32)
