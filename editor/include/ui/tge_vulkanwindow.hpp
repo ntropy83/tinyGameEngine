@@ -8,16 +8,11 @@
 #include "vulkan/tge_window.hpp"
 #include "vulkan/tge_model.hpp"
 
-// ImGUI
-//#include "ui/tge_gui.hpp"
-
 // std
 #include <memory>
 #include <vector>
 
 namespace tge {
-
-  // const GameConfig gameConfig(FileSystem::Read("game.json"));
 
   class TgeEditor {
 
