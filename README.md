@@ -34,3 +34,6 @@ The respective paths can be set within the toolchain-mingw64.cmake. For the find
 ![Vulkan Triangle](https://github.com/ntropy83/tinyGameEngine/blob/main/screenshot_triangle_qt.png?raw=true)
 
 Based on the Vulkan Tutorial: https://www.youtube.com/watch?v=Y9U9IE0gVHA&list=PL8327DO66nu9qYVKLDmdLW_84-yE4auCR&index=1&t=0s
+
+# Remember to be implemented
+Entity Component System for GameObjects

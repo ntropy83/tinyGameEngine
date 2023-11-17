@@ -6,11 +6,12 @@
 #include "vulkan/tge_pipeline.hpp"
 #include "vulkan/tge_swap_chain.hpp"
 #include "vulkan/tge_window.hpp"
-#include "vulkan/tge_model.hpp"
+#include "tge_game_object.hpp"
 
 // std
 #include <memory>
 #include <vector>
+#include <vulkan/vulkan_core.h>
 
 namespace tge {
 
@@ -35,7 +36,7 @@ namespace tge {
 
     private:
 
-      void loadModels(); 
+      void loadGameObjects(); 
       void createPipelineLayout();
       void createPipeline();
       void createCommandBuffers();
@@ -43,6 +44,7 @@ namespace tge {
       void drawFrame();
       void recreateSwapChain();
       void recordCommandBuffer(int imageIndex);
+      void renderGameObjects(VkCommandBuffer commandBuffer);
 
       TgeWindow tgeWindow;
       TgeDevice tgeDevice;
@@ -50,7 +52,7 @@ namespace tge {
       std::unique_ptr<TgePipeline> tgePipeline;
       VkPipelineLayout pipelineLayout;
       std::vector<VkCommandBuffer> commandBuffers;
-      std::unique_ptr<TgeModel> tgeModel;
+      std::vector<TgeGameObject> gameObjects;
 
       bool window_should_close(){ return tgeWindow.shouldClose(); }
   };
