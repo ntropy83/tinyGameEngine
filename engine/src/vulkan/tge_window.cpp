@@ -61,8 +61,6 @@ namespace tge {
             XResizeWindow(display, nativeWindow, tab->width(), tab->height());
             XMapWindow(display, nativeWindow);
         #endif
-
-        std::cout << tab->width() << '\n' << tab->height();
     }
 
     void TgeWindow::undockFrom(QWidget* placeholderWidget) {

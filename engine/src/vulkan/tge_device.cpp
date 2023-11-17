@@ -2,6 +2,11 @@
 
 #include "debug/tge_vulDebug.hpp"
 
+// include ImGUI
+#include "imgui.h"
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_vulkan.h"
+
 // std headers
 #include <cstring>
 #include <iostream>
@@ -151,7 +156,7 @@ void TgeDevice::pickPhysicalDevice() {
 
 
 void TgeDevice::createLogicalDevice() {
-  QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
+  indices = findQueueFamilies(physicalDevice);
 
   std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
   std::set<uint32_t> uniqueQueueFamilies = {indices.graphicsFamily, indices.presentFamily};
@@ -561,6 +566,32 @@ void TgeDevice::createImageWithInfo(
   if (vkBindImageMemory(device_, image, imageMemory, 0) != VK_SUCCESS) {
     throw std::runtime_error("failed to bind image memory!");
   }
+}
+
+void TgeDevice::initImGui() {
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+
+    // Setup Platform/Renderer bindings
+    ImGui_ImplGlfw_InitForVulkan(window.getGLFWWindow(), true);
+    ImGui_ImplVulkan_InitInfo init_info = {};
+    init_info.Instance = instance;
+    init_info.PhysicalDevice = physicalDevice;
+    init_info.Device = device_;
+    init_info.QueueFamily = indices.graphicsFamily;
+    init_info.Queue = graphicsQueue_;
+    init_info.PipelineCache = VK_NULL_HANDLE;
+    //init_info.DescriptorPool = imguiDescriptorPool; // needs to be created
+    init_info.Allocator = nullptr;
+    init_info.MinImageCount = 2;
+    //init_info.ImageCount = swapChainImageCount; // Set this to your swap chain image count
+    init_info.CheckVkResultFn = nullptr;
+    //ImGui_ImplVulkan_Init(&init_info, renderPass); // You need to pass the render pass that ImGui will use
 }
 
 }  // namespace lve

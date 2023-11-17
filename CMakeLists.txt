@@ -24,6 +24,7 @@ include_directories(${CMAKE_SOURCE_DIR}/editor/src)
 include_directories(${CMAKE_SOURCE_DIR}/editor/include)
 include_directories(${CMAKE_SOURCE_DIR}/engine/include)
 include_directories(${CMAKE_SOURCE_DIR}/engine/submodules)
+include_directories(${CMAKE_SOURCE_DIR}/engine/submodules/imgui)
 
 # Define NOMINMAX to avoid issues with std::min/max and the Windows macro
 add_definitions(-DNOMINMAX)
@@ -51,6 +52,7 @@ endif()
 set(TS_FILES editor/lang/tge_qt_gui_de_DE.ts)
 
 set(PROJECT_SOURCES
+    # editor
     editor/src/debug/tge_QtDebug.cpp
     editor/src/main.cpp
     editor/include/ui/tge_mainwindow.h
@@ -59,6 +61,7 @@ set(PROJECT_SOURCES
     editor/src/ui/tge_splashscreen.cpp
     editor/src/ui/qt_ui/mainwindow.ui
     editor/src/ui/tge_vulkanwindow.cpp
+    # engine
     engine/src/debug/tge_vulDebug.cpp
     engine/src/file/filesystem.cpp
     engine/src/vulkan/tge_shadercomp.cpp
@@ -68,6 +71,13 @@ set(PROJECT_SOURCES
     engine/include/vulkan/tge_window.hpp
     engine/src/vulkan/tge_window.cpp
     engine/src/vulkan/tge_model.cpp
+    # imgui
+    engine/submodules/imgui/imgui.cpp
+    engine/submodules/imgui/imgui_draw.cpp
+    engine/submodules/imgui/imgui_tables.cpp
+    engine/submodules/imgui/imgui_widgets.cpp
+    engine/submodules/imgui/backends/imgui_impl_glfw.cpp
+    engine/submodules/imgui/backends/imgui_impl_vulkan.cpp
 )
 
 # Define directories for binaries and libraries

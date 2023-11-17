@@ -8,7 +8,7 @@
                 "${workspaceFolder}/engine/submodules",
                 "${workspaceFolder}/engine/submodules/glslang",
                 "${workspaceFolder}/editor/include",
-                "${workspaceFolder}/editor/submodules/imgui"
+                "${workspaceFolder}/engine/submodules/imgui"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

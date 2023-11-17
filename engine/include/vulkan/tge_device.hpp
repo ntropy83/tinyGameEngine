@@ -74,6 +74,8 @@ class TgeDevice {
 
   VkPhysicalDeviceProperties properties;
 
+  void initImGui();  
+
  private:
   void createInstance();
   void setupDebugMessenger();
@@ -98,6 +100,7 @@ class TgeDevice {
   VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
   TgeWindow &window;
   VkCommandPool commandPool;
+  QueueFamilyIndices indices;   
 
   VkDevice device_;
   VkSurfaceKHR surface_;

@@ -1,6 +1,4 @@
 include_directories(${CMAKE_SOURCE_DIR}/editor/assets)
-include_directories(${CMAKE_SOURCE_DIR}/engine/submodules/glfw/include)
-include_directories(${CMAKE_SOURCE_DIR}/engine/submodules/glm/)
 
 # options GLFW
 set(GLFW_LIBRARY_TYPE "STATIC")

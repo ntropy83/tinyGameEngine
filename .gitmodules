@@ -10,3 +10,6 @@
 [submodule "engine/submodules/glm"]
 	path = engine/submodules/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "engine/submodules/imgui"]
+	path = engine/submodules/imgui
+	url = https://github.com/ocornut/imgui
