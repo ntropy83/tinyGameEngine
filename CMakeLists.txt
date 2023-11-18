@@ -11,7 +11,7 @@ if(CMAKE_CROSSCOMPILING)
     message(STATUS "Using toolchain-mingw64.cmake")
 endif()
 
-project(${NAME} VERSION 0.2.0 LANGUAGES CXX)
+project(${NAME} VERSION 0.2.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOUIC ON)
