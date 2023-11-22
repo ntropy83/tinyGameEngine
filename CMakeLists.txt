@@ -63,14 +63,17 @@ set(PROJECT_SOURCES
     editor/src/ui/tge_vulkanwindow.cpp
     # engine
     engine/src/debug/tge_vulDebug.cpp
+    engine/include/vulkan/tge_window.hpp
+    engine/src/vulkan/tge_window.cpp    
     engine/src/file/filesystem.cpp
     engine/src/vulkan/tge_shadercomp.cpp
     engine/src/vulkan/tge_device.cpp
     engine/src/vulkan/tge_pipeline.cpp
     engine/src/vulkan/tge_swap_chain.cpp
-    engine/include/vulkan/tge_window.hpp
-    engine/src/vulkan/tge_window.cpp
+    engine/src/vulkan/tge_renderer.cpp
     engine/src/vulkan/tge_model.cpp
+    # Systems
+    engine/src/vulkan/systems/simple_render_system.cpp
     # imgui
     engine/submodules/imgui/imgui.cpp
     engine/submodules/imgui/imgui_draw.cpp

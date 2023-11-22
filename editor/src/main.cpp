@@ -1,11 +1,14 @@
 #include "debug/tge_vulDebug.hpp"
 #include "debug/tge_QtDebug.hpp"
 
+#include "file/filesystem.hpp"
+
 #include <QApplication>
 #include <QTimer>
 #include <QTreeView>
 #include <QFileSystemModel>
 #include <QDir>
+
 #include "ui/tge_vulkanwindow.hpp"
 #include "ui/tge_mainwindow.h"
 #include "ui/tge_splashscreen.h"
@@ -13,7 +16,6 @@
 // std
 #include <cstdlib>
 #include <iostream>
-#include <qtabwidget.h>
 #include <stdexcept>
 #include <chrono>
 #include <thread>
@@ -91,7 +93,7 @@ int main(int argc, char *argv[]) {
             a.quit();
         }
     });
-    timer.start(32); // Approx. 30fps, formula is 1000 / wanted fps
+    timer.start(17); // Approx. 30fps, formula is 1000 / wanted fps
 
     // Run the application event loop
     int exitCode = EXIT_SUCCESS;

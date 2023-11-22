@@ -1,17 +1,14 @@
 #pragma once
 
-//#include "JsonFiles.hpp"
-
+#include "vulkan/systems/simple_render_system.hpp"
 #include "vulkan/tge_device.hpp"
-#include "vulkan/tge_pipeline.hpp"
-#include "vulkan/tge_swap_chain.hpp"
 #include "vulkan/tge_window.hpp"
 #include "tge_game_object.hpp"
+#include "vulkan/tge_renderer.hpp"
 
 // std
 #include <memory>
 #include <vector>
-#include <vulkan/vulkan_core.h>
 
 namespace tge {
 
@@ -28,8 +25,6 @@ namespace tge {
       TgeEditor(const TgeEditor &) = delete;
 			TgeEditor &operator=(const TgeEditor &) = delete;
 
-      std::vector<VkCommandBuffer> commandBuffer(){ return commandBuffers; }
-
       TgeWindow& getWindow() { return tgeWindow; }
       
       void update();
@@ -37,22 +32,13 @@ namespace tge {
     private:
 
       void loadGameObjects(); 
-      void createPipelineLayout();
-      void createPipeline();
-      void createCommandBuffers();
-      void freeCommandBuffers();
-      void drawFrame();
-      void recreateSwapChain();
-      void recordCommandBuffer(int imageIndex);
-      void renderGameObjects(VkCommandBuffer commandBuffer);
 
       TgeWindow tgeWindow;
       TgeDevice tgeDevice;
-      std::unique_ptr<TgeSwapChain> tgeSwapChain;
-      std::unique_ptr<TgePipeline> tgePipeline;
-      VkPipelineLayout pipelineLayout;
-      std::vector<VkCommandBuffer> commandBuffers;
+      TgeRenderer tgeRenderer{tgeWindow, tgeDevice};
       std::vector<TgeGameObject> gameObjects;
+
+      SimpleRenderSystem simpleRenderSystem;
 
       bool window_should_close(){ return tgeWindow.shouldClose(); }
   };
