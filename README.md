@@ -120,6 +120,5 @@ Another submodule is the math library glm and the overlay GUI imGUI, which is no
 │       ├── glm
 │       ├── glslang
 │       ├── imgui
-│       ├── physfs
-│       └── simdjson
+│       └── physfs
 ```
