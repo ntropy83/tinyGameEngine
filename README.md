@@ -3,13 +3,15 @@ Playground to create a tiny vulkan game engine and editor
 
 Implemented:
 
-Vulkan Pipeline - command and frame buffer
+Vulkan Pipeline - Graphics Pipeline and Simple Render system
 
 PhysFS          - an isolated file tree from a zip for assets
 
 glslang         - runtime shader compiler from GLSL to SPIR-V
 
-Qt6             - create an Editor
+imGUI           - implemented
+
+Qt6             - create a Window Editor
 
 # Build
 Deps on Arch Linux:
@@ -29,7 +31,7 @@ cmake .. && make -j${nproc}
 ```
 # Crosscompile
 To crosscompile from Linux to Windows, create a folder in the project root and copy the Vulkan SDK and Qt6 SDK for Windows.
-The respective paths can be set within the toolchain-mingw64.cmake. For the find_package command to work with Vulkan, you may have to change the Include dir of the SDK to lowercase.
+The respective paths can be set within the toolchain-mingw64.cmake. For the find_package command to work with Vulkan, you may have to change the Include dir of the SDK to lowercase. Set the crosscompile variable in the main CMakelists.txt to true.
 
 ![Vulkan Triangle](https://github.com/ntropy83/tinyGameEngine/blob/main/screenshot_triangle_qt.png?raw=true)
 
@@ -42,7 +44,7 @@ Based on the Vulkan Tutorial: https://www.youtube.com/watch?v=Y9U9IE0gVHA&list=P
 - Lightning System
 
 # file structure 
-Two CMakeLists.txt, one on the root level, one in the directory engine to configue the submodules. 
+Two CMakeLists.txt, one on the root level, one in the directory engine to configure the submodules. 
 The Vulkan Pipeline is configured in engine/src/vulkan and finishes in in a Render System in engine/src/vulkan/systems.
 In editor the main.cpp runs the App, implementing a GLFW window in a MainWindow that gets refreshed with 60 fps (17 msecs). 
 The tge_vulkanwindow provides the GLFW window and Vulkan Pipeline, while tge_mainwindow handles Qt.
