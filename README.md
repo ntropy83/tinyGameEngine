@@ -100,6 +100,7 @@ Another submodule is the math library glm and the overlay GUI imGUI, which is no
 │   │   └── vulkan
 │   │       ├── systems
 │   │       │   └── simple_render_system.hpp
+│   │       ├── tge_camera.hpp
 │   │       ├── tge_device.hpp
 │   │       ├── tge_model.hpp
 │   │       ├── tge_pipeline.hpp
@@ -115,6 +116,7 @@ Another submodule is the math library glm and the overlay GUI imGUI, which is no
 │   │   └── vulkan
 │   │       ├── systems
 │   │       │   └── simple_render_system.cpp
+│   │       ├── tge_camera.cpp
 │   │       ├── tge_device.cpp
 │   │       ├── tge_model.cpp
 │   │       ├── tge_pipeline.cpp
