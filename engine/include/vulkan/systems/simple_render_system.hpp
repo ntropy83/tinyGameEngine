@@ -1,7 +1,6 @@
 #pragma once
 
-//#include "JsonFiles.hpp"
-
+#include "vulkan/tge_camera.hpp"
 #include "vulkan/tge_device.hpp"
 #include "vulkan/tge_pipeline.hpp"
 #include "tge_game_object.hpp"
@@ -9,7 +8,6 @@
 // std
 #include <memory>
 #include <vector>
-#include <vulkan/vulkan_core.h>
 
 namespace tge {
 
@@ -23,7 +21,10 @@ namespace tge {
       SimpleRenderSystem(const SimpleRenderSystem &) = delete;
 			SimpleRenderSystem &operator=(const SimpleRenderSystem &) = delete;
       
-      void renderGameObjects(VkCommandBuffer commandBuffer, std::vector<TgeGameObject> &gameObjects);
+      void renderGameObjects(
+          VkCommandBuffer commandBuffer, 
+          std::vector<TgeGameObject> &gameObjects,
+          const TgeCamera &camera);
 
     private:
 

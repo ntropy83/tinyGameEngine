@@ -68,7 +68,10 @@ void SimpleRenderSystem::createPipeline(VkRenderPass renderPass) {
         pipelineConfig);
   }
 
-  void SimpleRenderSystem::renderGameObjects(VkCommandBuffer commandBuffer, std::vector<TgeGameObject> &gameObjects) {
+  void SimpleRenderSystem::renderGameObjects(
+          VkCommandBuffer commandBuffer, 
+          std::vector<TgeGameObject> &gameObjects,
+          const TgeCamera &camera) {
     tgePipeline->bind(commandBuffer);
 
     for (auto& obj : gameObjects) {
@@ -78,7 +81,7 @@ void SimpleRenderSystem::createPipeline(VkRenderPass renderPass) {
       for(int j = 0; j < 4; j++) {
         SimplePushConstantData push{};
         push.color = obj.color;
-        push.transform = obj.transform.mat4();
+        push.transform = camera.getProjection() * obj.transform.mat4();
 
         vkCmdPushConstants(commandBuffer, pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 
                             0, sizeof(SimplePushConstantData), &push);

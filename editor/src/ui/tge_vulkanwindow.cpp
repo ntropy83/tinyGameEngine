@@ -1,7 +1,5 @@
 #include "ui/tge_vulkanwindow.hpp"
 
-#include "glm/gtc/constants.hpp"
-
 #include "tge_game_object.hpp"
 #include "vulkan/systems/simple_render_system.hpp"
 
@@ -18,7 +16,8 @@ namespace tge {
   TgeEditor::TgeEditor() :
       tgeWindow(WIDTH, HEIGHT, "Tge_3DView"),
       tgeDevice(tgeWindow),
-      simpleRenderSystem(tgeDevice, tgeRenderer.getSwapChainRenderPass())
+      simpleRenderSystem(tgeDevice, tgeRenderer.getSwapChainRenderPass()),
+      camera()
   {
     loadGameObjects();
   }
@@ -28,10 +27,14 @@ namespace tge {
   void TgeEditor::update() {
     
     glfwPollEvents();
-    
+
+    float aspect = tgeRenderer.getAspectRatio();
+    // camera.setOrthographicProjection(-aspect, aspect, -1, 1, -1, 1);
+    camera.setPerspectiveProjection(glm::radians(50.f), aspect, 0.1f, 10.f);
+
     if (auto commandBuffer = tgeRenderer.beginFrame()) {
       tgeRenderer.beginSwapChainRenderPass(commandBuffer);
-      simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects);
+      simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects, camera);
       tgeRenderer.endSwapChainRenderPass(commandBuffer);
       tgeRenderer.endFrame();
     }
@@ -102,7 +105,7 @@ std::unique_ptr<TgeModel> createCubeModel(TgeDevice& device, glm::vec3 offset) {
     std::shared_ptr<TgeModel> tgeModel = createCubeModel(tgeDevice, {.0f, .0f, .0f});
     auto cube = TgeGameObject::createGameObject();
     cube.model = tgeModel;
-    cube.transform.translation = {.0f, .0f, .5f};
+    cube.transform.translation = {.0f, .0f, 2.5f};
     cube.transform.scale ={.5f, .5f, .5f};
     gameObjects.push_back(std::move(cube));
   }

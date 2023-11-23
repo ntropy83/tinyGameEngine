@@ -37,6 +37,7 @@ namespace tge {
       TgeDevice tgeDevice;
       TgeRenderer tgeRenderer{tgeWindow, tgeDevice};
       std::vector<TgeGameObject> gameObjects;
+      TgeCamera camera;
 
       SimpleRenderSystem simpleRenderSystem;
 

@@ -25,6 +25,7 @@ include_directories(${CMAKE_SOURCE_DIR}/editor/include)
 include_directories(${CMAKE_SOURCE_DIR}/engine/include)
 include_directories(${CMAKE_SOURCE_DIR}/engine/submodules)
 include_directories(${CMAKE_SOURCE_DIR}/engine/submodules/imgui)
+include_directories(${CMAKE_SOURCE_DIR}/engine/submodules/stb)
 
 # Define NOMINMAX to avoid issues with std::min/max and the Windows macro
 add_definitions(-DNOMINMAX)
@@ -72,6 +73,7 @@ set(PROJECT_SOURCES
     engine/src/vulkan/tge_swap_chain.cpp
     engine/src/vulkan/tge_renderer.cpp
     engine/src/vulkan/tge_model.cpp
+    engine/src/vulkan/tge_camera.cpp
     # Systems
     engine/src/vulkan/systems/simple_render_system.cpp
     # imgui

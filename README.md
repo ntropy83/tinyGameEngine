@@ -3,13 +3,17 @@ Playground to create a tiny vulkan game engine and editor
 
 Implemented:
 
-Vulkan Pipeline - Graphics Pipeline and Simple Render system
+Vulkan Pipeline - graphics pipeline and Simple Render system
 
 PhysFS          - an isolated file tree from a zip for assets
 
 glslang         - runtime shader compiler from GLSL to SPIR-V
 
 imGUI           - implemented
+
+glm             - math library
+
+stb             - image loader library
 
 Qt6             - create a Window Editor
 
@@ -123,5 +127,6 @@ Another submodule is the math library glm and the overlay GUI imGUI, which is no
 │       ├── glm
 │       ├── glslang
 │       ├── imgui
-│       └── physfs
+│       ├── physfs
+│       └── stb
 ```

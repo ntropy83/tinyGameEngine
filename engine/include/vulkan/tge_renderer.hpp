@@ -22,6 +22,7 @@ namespace tge {
 	 TgeRenderer &operator=(const TgeRenderer &) = delete;
 
      VkRenderPass getSwapChainRenderPass() const { return tgeSwapChain->getRenderPass(); }
+     float getAspectRatio() const { return tgeSwapChain->extentAspectRatio(); }
      bool isFrameInProgress() const { return isFrameStarted; }
 
      VkCommandBuffer getCurrentCommandBuffer() {
