@@ -39,6 +39,7 @@ Based on the Vulkan Tutorial: https://www.youtube.com/watch?v=Y9U9IE0gVHA&list=P
 
 # To be implemented
 - 3D Model System and loading
+    - use Quaternions for rotation
 - Entity Component System for GameObjects
 - Material System
 - Lightning System
